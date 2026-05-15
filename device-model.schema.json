@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Device Simulator Configuration",
+  "description": "Schema for validating simulated IoT device telemetry data.",
+  "type": "object",
+  "required": ["deviceId", "intervalMs", "telemetry"],
+  "properties": {
+    "deviceId": {
+      "type": "string",
+      "description": "Unique identifier of the simulated IoT device.",
+      "minLength": 1,
+      "examples": ["device-001"]
+    },
+    "intervalMs": {
+      "type": "integer",
+      "description": "Interval in milliseconds between two telemetry messages.",
+      "minimum": 1000,
+      "examples": [5000]
+    },
+    "telemetry": {
+      "type": "array",
+      "description": "List of telemetry values that will be sent periodically.",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["temperature", "humidity", "pressure", "led"],
+        "properties": {
+          "temperature": {
+            "type": "number",
+            "description": "Temperature value measured by the simulated device.",
+            "examples": [22.5]
+          },
+          "humidity": {
+            "type": "number",
+            "description": "Humidity percentage measured by the simulated device.",
+            "minimum": 0,
+            "maximum": 100,
+            "examples": [45]
+          },
+          "pressure": {
+            "type": "number",
+            "description": "Atmospheric pressure measured by the simulated device.",
+            "examples": [1012]
+          },
+          "led": {
+            "type": "boolean",
+            "description": "Current simulated LED state.",
+            "examples": [false]
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}
