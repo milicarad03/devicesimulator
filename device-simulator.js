@@ -1,10 +1,11 @@
 const fs = require("fs");
 const mqtt = require("mqtt");
-
+const validateConfig= require ("./validator")
 const BROKER_URL = "mqtt://localhost:1883";
 const CONFIG_FILE = "./device-data.json";
+const SCHEMA_FILE= "./device-model.schema.json";
 
-const config = JSON.parse(fs.readFileSync(CONFIG_FILE, "utf8"));
+const config = validateConfig(CONFIG_FILE, SCHEMA_FILE);
 
 const DEVICE_ID = config.deviceId;
 const INTERVAL_MS = config.intervalMs || 5000;

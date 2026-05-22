@@ -3,7 +3,7 @@
   "intervalMs": 5000,
   "telemetry": [
     {
-      "temperature": 22.5,
+      "temperature": 24.3,
       "humidity": 45,
       "pressure": 1012,
       "led": false

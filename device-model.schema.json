@@ -28,6 +28,8 @@
           "temperature": {
             "type": "number",
             "description": "Temperature value measured by the simulated device.",
+            "minimum": -10,
+            "maximum": 35,
             "examples": [22.5]
           },
           "humidity": {
@@ -40,12 +42,20 @@
           "pressure": {
             "type": "number",
             "description": "Atmospheric pressure measured by the simulated device.",
+            "minimum": 300,
+            "maximum": 1100,
+            
             "examples": [1012]
           },
           "led": {
             "type": "boolean",
             "description": "Current simulated LED state.",
             "examples": [false]
+          },
+          "mode": {
+            "type": "string",
+            "description": "Operating mode of the simulated device.",
+            "examples": ["AUTO"]
           }
         },
         "additionalProperties": false
