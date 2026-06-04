@@ -1,11 +1,11 @@
 const fs = require("fs");
 const mqtt = require("mqtt");
-const validateConfig= require ("./validator")
+//const validateConfig= require ("./validator")
 const BROKER_URL = "mqtt://localhost:1883";
 const CONFIG_FILE = "./device-data.json";
 const SCHEMA_FILE= "./device-model.schema.json";
 
-const config = validateConfig(CONFIG_FILE, SCHEMA_FILE);
+//const config = validateConfig(CONFIG_FILE, SCHEMA_FILE);
 
 const DEVICE_ID = config.deviceId;
 const INTERVAL_MS = config.intervalMs || 5000;
@@ -87,17 +87,17 @@ client.on("message", (topic, payload) => {
   }
 });
 
+
 function sendTelemetry() {
   const telemetryItem = config.telemetry[currentIndex];
 
   const message = {
     deviceId: DEVICE_ID,
-    timestamp: nowIso(),
-    data: {
+    telemetry:{
       ...telemetryItem,
-      led: deviceState.led,
-      mode: deviceState.mode,
     },
+    led: deviceState.led,
+    mode: deviceState.mode,
   };
 
   client.publish(
@@ -110,7 +110,6 @@ function sendTelemetry() {
 
   currentIndex = (currentIndex + 1) % config.telemetry.length;
 }
-
 function sendCommandResponse(command, success, extraData = {}) {
   const response = {
     deviceId: DEVICE_ID,

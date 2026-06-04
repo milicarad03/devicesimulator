@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ModelB Telemetry Schema",
+  "type": "object",
+  "required": ["data", "status"],
+  "properties": {
+    "data": {
+      "type": "object",
+      "required": ["temp", "hum", "press"],
+      "properties": {
+        "temp": {
+          "type": "number",
+          "minimum": -50,
+          "maximum": 100
+        },
+        "hum": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "press": {
+          "type": "number",
+          "minimum": 300,
+          "maximum": 1200
+        }
+      },
+      "additionalProperties": false
+    },
+    "status": {
+      "type": "object",
+      "required": ["ledState"],
+      "properties": {
+        "ledState": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

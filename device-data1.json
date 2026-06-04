@@ -1,0 +1,31 @@
+{
+  "intervalMs": 5000,
+  "messages": [
+    {
+      "telemetry": { 
+        "temperature": 24.3, 
+        "humidity": 45, 
+        "pressure": 1012, 
+        "led": false 
+    }
+    },
+    {
+      
+      "telemetry": { 
+        "temperature": 25.3, 
+        "humidity": 46, 
+        "pressure": 1016, 
+        "led": true 
+    }
+    },
+    {
+      
+      "telemetry":{
+      "temperature": 23.1,
+      "humidity": 47,
+      "pressure": 1011,
+      "led": false
+    }
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "DeviceDashboard Telemetry Schema",
+  "description": "Šema za validaciju dolaznih poruka sa simulatora Model A",
+  "type": "object",
+  "required": ["telemetry"],
+  "properties": {
+    "telemetry": {
+      "type": "object",
+      "required": ["temperature", "humidity", "pressure", "led"],
+      "properties": {
+        "temperature": {
+          "type": "number",
+          "minimum": -50,
+          "maximum": 100
+        },
+        "humidity": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "pressure": {
+          "type": "number",
+          "minimum": 300,
+          "maximum": 1200
+        },
+        "led": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

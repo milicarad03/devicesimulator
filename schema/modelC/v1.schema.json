@@ -1,0 +1,39 @@
+{
+  "type": "object",
+  "properties": {
+    "metrics": {
+      "type": "object",
+      "properties": {
+        "environment": {
+          "type": "object",
+          "properties": {
+            "temperature": { "type": "number" },
+            "humidity": { "type": "number" },
+            "pressure": { "type": "number" }
+          },
+          "required": ["temperature", "humidity", "pressure"]
+        }
+      }
+    },
+    "device": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "object",
+          "properties": {
+            "led": { "type": "boolean" },
+            "mode": { "type": "string" }
+          }
+        },
+        "battery": {
+          "type": "object",
+          "properties": {
+            "level": { "type": "number" },
+            "charging": { "type": "boolean" }
+          }
+        }
+      }
+    }
+  },
+  "required": ["metrics", "device"]
+}
