@@ -176,7 +176,6 @@ function createTelemetryGenerator(schema) {
 
   function build() {
 
-    // ✅ MODEL A
     if (isModelA) {
       const telemetry = {};
 
@@ -190,7 +189,7 @@ function createTelemetryGenerator(schema) {
       return { telemetry };
     }
 
-    // ✅ MODEL B
+    
     if (isModelB) {
       return {
         data: {
@@ -204,7 +203,7 @@ function createTelemetryGenerator(schema) {
       };
     }
 
-    // ✅ MODEL C (complex nested)
+    
     if (isModelC) {
       return {
         metrics: {
@@ -273,4 +272,3 @@ function createTelemetryGenerator(schema) {
 module.exports = {
   createTelemetryGenerator,
 };
-``
