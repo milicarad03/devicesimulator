@@ -1,3 +1,14 @@
+class GeneratorLogger {
+  debug(message) {
+    if (global.simulatorLogger) {
+      global.simulatorLogger.debug(`[TelemetryGenerator] ${message}`);
+    }
+  }
+}
+const logger = new GeneratorLogger();
+
+
+
 function createTelemetryGenerator(schema) {
 
   // =========================
@@ -40,9 +51,7 @@ function createTelemetryGenerator(schema) {
     };
   }
 
-  // =========================
-  // STATE
-  // =========================
+
 
   const state = {
     stableCounter: 0,
@@ -69,9 +78,6 @@ function createTelemetryGenerator(schema) {
     }
   });
 
-  // =========================
-  // UTIL
-  // =========================
 
   function clamp(value, min, max) {
     return Math.min(Math.max(value, min), max);
@@ -105,9 +111,7 @@ function createTelemetryGenerator(schema) {
     });
   }
 
-  // =========================
-  // BEHAVIOR
-  // =========================
+  
 
   function normalFluctuation() {
     Object.keys(properties).forEach((key) => {
@@ -170,9 +174,7 @@ function createTelemetryGenerator(schema) {
     }
   }
 
-  // =========================
-  // BUILD
-  // =========================
+
 
   function build() {
 
@@ -227,9 +229,7 @@ function createTelemetryGenerator(schema) {
     }
   }
 
-  // =========================
-  // GENERATE
-  // =========================
+ 
 
   function generate() {
 
@@ -240,7 +240,7 @@ function createTelemetryGenerator(schema) {
 
     if (state.peakCounter === 0 && Math.random() < 0.12) {
       state.peakCounter = Math.floor(randomBetween(3, 6));
-      console.log("[GENERATOR] Peak event");
+      logger.debug(`Peak spike event triggered! Wave duration: ${state.peakCounter} cycles.`);
     }
 
     if (state.peakCounter > 0) {
