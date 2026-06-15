@@ -1,1 +1,124 @@
 [6/9/2026, 10:28:01 AM] [ERROR] [SCHEMA] Missing file path: /home/rmilica/devicesimulator/schema/model/v1.schema.json
+[2026-06-15 13:54:58] [ERROR] Simulation loop processing crash during generation sequence: Cannot create property 'Symbol(level)' on string '[RAW TELEMETRY SENT] {
+  "device": {
+    "hardware": {
+      "serialNumber": "INV-2026-XAE412",
+      "firmware": "v1.0.0-release"
+    },
+    "status": {
+      "operationalMode": "OFF",
+      "gridSwitch": "OFF",
+      "uptimeSeconds": 50
+    },
+    "safety": {
+      "surgeProtectorEngaged": false,
+      "coolingStatus": "ACTIVE_LOW"
+    }
+  },
+  "telemetry": {
+    "pv_panels": {
+      "dcVoltage": 504.2309938904,
+      "dcCurrent": 12.6673098441,
+      "stringStatus": "DISCONNECTED"
+    },
+    "battery": {
+      "soc": 50.6216947571,
+      "soh": 49.2133607789,
+      "chargeDirection": "STAGNANT",
+      "cycles": 51
+    },
+    "grid_output": {
+      "phaseA_voltage": 219.627361669,
+      "frequencyHz": 50.0258575393,
+      "totalActivePowerW": 5117.617519684,
+      "gridQualityIndex": "EXCELLENT"
+    },
+    "environment": {
+      "cabinetTemp": 32.6665927746,
+      "fanSpeedRpm": 3032,
+      "efficiency": 50.5053800374
+    }
+  }
+}'
+[2026-06-15 13:55:03] [ERROR] Simulation loop processing crash during generation sequence: Cannot create property 'Symbol(level)' on string '[RAW TELEMETRY SENT] {
+  "device": {
+    "hardware": {
+      "serialNumber": "INV-2026-XAE412",
+      "firmware": "v1.0.0-release"
+    },
+    "status": {
+      "operationalMode": "STANDBY",
+      "gridSwitch": "OFF",
+      "uptimeSeconds": 49
+    },
+    "safety": {
+      "surgeProtectorEngaged": false,
+      "coolingStatus": "OVERHEATING_BRAKE"
+    }
+  },
+  "telemetry": {
+    "pv_panels": {
+      "dcVoltage": 495.977200399,
+      "dcCurrent": 12.723929657,
+      "stringStatus": "SHADED"
+    },
+    "battery": {
+      "soc": 50.8240505936,
+      "soh": 48.8891326834,
+      "chargeDirection": "CHARGING",
+      "cycles": 50
+    },
+    "grid_output": {
+      "phaseA_voltage": 219.203284738,
+      "frequencyHz": 50.0344525585,
+      "totalActivePowerW": 5288.9253675642,
+      "gridQualityIndex": "ACCEPTABLE"
+    },
+    "environment": {
+      "cabinetTemp": 32.9009479676,
+      "fanSpeedRpm": 2986,
+      "efficiency": 49.7216564507
+    }
+  }
+}'
+[2026-06-15 13:55:08] [ERROR] Simulation loop processing crash during generation sequence: Cannot create property 'Symbol(level)' on string '[RAW TELEMETRY SENT] {
+  "device": {
+    "hardware": {
+      "serialNumber": "INV-2026-XAE412",
+      "firmware": "v1.0.0-release"
+    },
+    "status": {
+      "operationalMode": "STANDBY",
+      "gridSwitch": "ON",
+      "uptimeSeconds": 49
+    },
+    "safety": {
+      "surgeProtectorEngaged": false,
+      "coolingStatus": "OVERHEATING_BRAKE"
+    }
+  },
+  "telemetry": {
+    "pv_panels": {
+      "dcVoltage": 505.7411523196,
+      "dcCurrent": 12.5188278004,
+      "stringStatus": "OPTIMAL"
+    },
+    "battery": {
+      "soc": 51.5857564849,
+      "soh": 48.3777400788,
+      "chargeDirection": "STAGNANT",
+      "cycles": 51
+    },
+    "grid_output": {
+      "phaseA_voltage": 219.5757704849,
+      "frequencyHz": 50.1140007569,
+      "totalActivePowerW": 5286.069316489,
+      "gridQualityIndex": "ACCEPTABLE"
+    },
+    "environment": {
+      "cabinetTemp": 32.4682438622,
+      "fanSpeedRpm": 2950,
+      "efficiency": 49.1769744957
+    }
+  }
+}'

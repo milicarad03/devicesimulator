@@ -1,0 +1,94 @@
+{
+  "title": "SolarStorageInverterTelemetry",
+  "type": "object",
+  "required": ["device", "telemetry"],
+  "properties": {
+    "device": {
+      "type": "object",
+      "required": ["hardware", "status", "safety"],
+      "properties": {
+        "hardware": {
+          "type": "object",
+          "required": ["serialNumber", "firmware"],
+          "properties": {
+            "serialNumber": { 
+              "type": "string", 
+              "pattern": "^INV-202[0-9]-[A-Z]{3}[0-9]{3}$" 
+            },
+            "firmware": { "type": "string" }
+          }
+        },
+        "status": {
+          "type": "object",
+          "required": ["operationalMode", "gridSwitch", "uptimeSeconds"],
+          "properties": {
+            "operationalMode": { 
+              "type": "string", 
+              "enum": ["OFF", "STANDBY", "GRID_TIED", "OFF_GRID", "FAULT_ISOLATION"] 
+            },
+            "gridSwitch": { 
+              "type": "string", 
+              "enum": ["ON", "OFF"] 
+            },
+            "uptimeSeconds": { "type": "integer", "minimum": 0 }
+          }
+        },
+        "safety": {
+          "type": "object",
+          "required": ["surgeProtectorEngaged", "coolingStatus"],
+          "properties": {
+            "surgeProtectorEngaged": { "type": "boolean" },
+            "coolingStatus": { 
+              "type": "string", 
+              "enum": ["PASSIVE", "ACTIVE_LOW", "ACTIVE_HIGH", "OVERHEATING_BRAKE"] 
+            }
+          }
+        }
+      }
+    },
+    "telemetry": {
+      "type": "object",
+      "required": ["pv_panels", "battery", "grid_output", "environment"],
+      "properties": {
+        "pv_panels": {
+          "type": "object",
+          "required": ["dcVoltage", "dcCurrent", "stringStatus"],
+          "properties": {
+            "dcVoltage": { "type": "number", "minimum": 0.0, "maximum": 1000.0 },
+            "dcCurrent": { "type": "number", "minimum": 0.0, "maximum": 25.0 },
+            "stringStatus": { "type": "string", "enum": ["OPTIMAL", "SHADED", "UNDERVOLTAGE", "DISCONNECTED"] }
+          }
+        },
+        "battery": {
+          "type": "object",
+          "required": ["soc", "soh", "chargeDirection", "cycles"],
+          "properties": {
+            "soc": { "type": "number", "minimum": 0.0, "maximum": 100.0 },
+            "soh": { "type": "number", "minimum": 0.0, "maximum": 100.0 },
+            "chargeDirection": { "type": "string", "enum": ["CHARGING", "DISCHARGING", "STAGNANT"] },
+            "cycles": { "type": "integer", "minimum": 0 }
+          }
+        },
+        "grid_output": {
+          "type": "object",
+          "required": ["phaseA_voltage", "frequencyHz", "totalActivePowerW", "gridQualityIndex"],
+          "properties": {
+            "phaseA_voltage": { "type": "number", "minimum": 180.0, "maximum": 260.0 },
+            "frequencyHz": { "type": "number", "minimum": 45.0, "maximum": 55.0 },
+            "totalActivePowerW": { "type": "number", "minimum": -5000.0, "maximum": 15000.0 },
+            "gridQualityIndex": { "type": "string", "enum": ["EXCELLENT", "ACCEPTABLE", "POOR_THD", "CRITICAL_SAG"] }
+          }
+        },
+        "environment": {
+          "type": "object",
+          "required": ["cabinetTemp", "fanSpeedRpm", "efficiency"],
+          "properties": {
+            "cabinetTemp": { "type": "number", "minimum": -20.0, "maximum": 85.0 },
+            "fanSpeedRpm": { "type": "integer", "minimum": 0, "maximum": 6000 },
+            "efficiency": { "type": "number", "minimum": 0.0, "maximum": 100.0 }
+          }
+        }
+      }
+    }
+  }
+}

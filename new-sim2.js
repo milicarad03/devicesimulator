@@ -42,7 +42,7 @@ const REGISTRATION_URL = "http://localhost:3000/device-certificates/register";
 const CONFIG_FILE = "./device-data1.json";
 
 const config = JSON.parse(fs.readFileSync(CONFIG_FILE, "utf8"));
-const { createTelemetryGenerator } = require("./telemetry-generator2");
+const { createTelemetryGenerator } = require("./telemetry-generator3");
 const telemetryGenerator = createTelemetryGenerator(schema);
 
 const INTERVAL_MS = config.intervalMs || 5000;

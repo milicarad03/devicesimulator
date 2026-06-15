@@ -14,10 +14,14 @@ function createTelemetryGenerator(schema) {
   // =========================
   // DETEKCIJA MODELA
   // =========================
+  const isModelE = !!schema.properties.gridQualityIndex || !!schema.properties.stringStatus; 
 
-  const isModelA = !!schema.properties.telemetry;
+
+  const isModelA = !!schema.properties.telemetry && !isModelE;
   const isModelB = !!schema.properties.data;
-  const isModelC = !!schema.properties.metrics;
+  const isModelC = !!schema.properties.metrics && !!schema.properties.device?.properties?.status?.properties?.led;
+  const isModelD = !!schema.properties.networkSignalDb || !!schema.properties.firmwareVersion; 
+
 
   let properties = {};
 
@@ -50,6 +54,15 @@ function createTelemetryGenerator(schema) {
       batteryLevel: battery.level
     };
   }
+  if (isModelD) {
+    properties = schema.properties;
+  }
+
+  if (isModelE) {
+    
+  }
+  
+  
 
 
 
@@ -177,6 +190,67 @@ function createTelemetryGenerator(schema) {
 
 
   function build() {
+     if (isModelE) {
+    
+      const pvVolt = round(randomBetween(500, 800));
+      const pvCurr = round(randomBetween(5, 18));
+      const powerProduced = round(pvVolt * pvCurr);
+      
+      const soc = round(randomBetween(20, 95));
+      const cabTemp = round(randomBetween(35, 55));
+      
+      
+      let chargeDir = "STAGNANT";
+      if (powerProduced > 5000) chargeDir = "CHARGING";
+      if (powerProduced < 2000) chargeDir = "DISCHARGING";
+
+      const opMode = cabTemp > 75 ? "FAULT_ISOLATION" : (powerProduced > 500 ? "GRID_TIED" : "STANDBY");
+      const fanStatus = cabTemp > 45 ? "ACTIVE_HIGH" : "ACTIVE_LOW";
+      const gridSwitchState = opMode === "FAULT_ISOLATION" ? "OFF" : "ON";
+      const pvStatus = powerProduced > 4000 ? "OPTIMAL" : "SHADED";
+
+      return {
+        device: {
+          hardware: {
+            serialNumber: "INV-2026-XAE412",
+            firmware: "v5.4.1-patch3"
+          },
+          status: {
+            operationalMode: opMode,
+            gridSwitch: gridSwitchState,
+            uptimeSeconds: Math.floor(process.uptime())
+          },
+          safety: {
+            surgeProtectorEngaged: Math.random() > 0.98, 
+            coolingStatus: fanStatus
+          }
+        },
+        telemetry: {
+          pv_panels: {
+            dcVoltage: pvVolt,
+            dcCurrent: pvCurr,
+            stringStatus: pvStatus
+          },
+          battery: {
+            soc: soc,
+            soh: 96.4,
+            chargeDirection: chargeDir,
+            cycles: 184
+          },
+          grid_output: {
+            phaseA_voltage: round(randomBetween(225, 235)),
+            frequencyHz: round(randomBetween(49.9, 50.1)),
+            totalActivePowerW: round(powerProduced * 0.95), // Gubitak kroz efikasnost
+            gridQualityIndex: "EXCELLENT"
+          },
+          environment: {
+            cabinetTemp: cabTemp,
+            fanSpeedRpm: cabTemp > 45 ? 4200 : 1800,
+            efficiency: round(randomBetween(94.5, 97.2))
+          }
+        }
+      };
+    }
 
     if (isModelA) {
       const telemetry = {};
@@ -227,6 +301,58 @@ function createTelemetryGenerator(schema) {
         }
       };
     }
+    if (isModelD) { 
+      const flatTelemetry = {};
+      Object.keys(properties).forEach((key) => {
+        if (properties[key].enum) {
+          flatTelemetry[key] = properties[key].enum[0];
+        } else if (properties[key].type === "array") {
+          flatTelemetry[key] = Math.random() > 0.7 && properties[key].items?.enum 
+            ? [properties[key].items.enum[Math.floor(Math.random() * properties[key].items.enum.length)]]
+            : [];
+        } else {
+          flatTelemetry[key] = properties[key].type === "number" ? round(state[key]) : state[key];
+        }
+      });
+
+      return {
+        device: {
+          info: { firmware: flatTelemetry.firmwareVersion || "v1.0.0-release" },
+          state: { 
+            status: flatTelemetry.systemStatus || "RUNNING", 
+            maintenanceCountdown: flatTelemetry.maintenanceCountdown 
+          },
+          diagnostics: { 
+            errorCode: flatTelemetry.errorCode || "0x0000", 
+            activeAlarms: flatTelemetry.activeAlarms 
+          },
+          network: { signalDb: flatTelemetry.networkSignalDb }
+        },
+        metrics: {
+          compressor: { frequency: flatTelemetry.compressorFrequency },
+          fluid: { 
+            coolantLevel: flatTelemetry.coolantLevel, 
+            returnTemp: flatTelemetry.returnLiquidTemp, 
+            flowRate: flatTelemetry.flowRate 
+          },
+          actuators: { valvePosition: flatTelemetry.valvePosition },
+          mechanical: { 
+            vibrationIndex: flatTelemetry.vibrationIndex, 
+            pumpRuntime: flatTelemetry.pumpRuntimeHours 
+          },
+          electrical: { 
+            powerFactor: flatTelemetry.powerFactor, 
+            totalEnergyKwh: flatTelemetry.totalEnergyKwh 
+          },
+          pressure: { 
+            discharge: flatTelemetry.dischargePressure, 
+            suction: flatTelemetry.suctionPressure, 
+            oilStatus: flatTelemetry.oilPressureStatus || "NORMAL" 
+          }
+        }
+      };
+    }
+   
   }
 
  

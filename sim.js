@@ -86,7 +86,7 @@ if (!fs.existsSync(CONFIG_FILE)) {
 }
 
 const config = JSON.parse(fs.readFileSync(CONFIG_FILE, "utf8"));
-const { createTelemetryGenerator } = require("./telemetry-generator2");
+const { createTelemetryGenerator } = require("./telemetry-generator3");
 const telemetryGenerator = createTelemetryGenerator(schema);
 
 const INTERVAL_MS = config.intervalMs || 5000;
@@ -287,6 +287,8 @@ function connectMqtt() {
 function sendTelemetry() {
   try {
     const generatedMessage = telemetryGenerator.generate();
+    console.log(`[RAW TELEMETRY SENT] ${JSON.stringify(generatedMessage, null, 2)}`);
+   
     
     logger.info("Dispatching real-time sensor data packet stream frame...");
     logger.debug(`Generated state simulation details: ${JSON.stringify(generatedMessage)}`);

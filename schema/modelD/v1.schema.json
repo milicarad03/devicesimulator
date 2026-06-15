@@ -1,0 +1,129 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "AdvancedIndustrialChillerTelemetry",
+  "type": "object",
+  "required": [
+  
+    "firmwareVersion",
+    "systemStatus",
+    "compressorFrequency",
+    "coolantLevel",
+    "valvePosition",
+    "vibrationIndex",
+    "errorCode",
+    "activeAlarms",
+    "powerFactor",
+    "ambientTemp",
+    "returnLiquidTemp",
+    "dischargePressure",
+    "suctionPressure",
+    "flowRate",
+    "totalEnergyKwh",
+    "oilPressureStatus",
+    "pumpRuntimeHours",
+    "maintenanceCountdown",
+    "networkSignalDb"
+  ],
+  "properties": {
+    "firmwareVersion": {
+      "type": "string",
+      "pattern": "^v[0-9]+\\.[0-9]+\\.[0-9]+-(alpha|beta|rc|release)$"
+    },
+    "systemStatus": {
+      "type": "string",
+      "enum": ["IDLE", "RUNNING", "DEFROSTING", "MAINTENANCE", "ERROR"]
+    },
+    "compressorFrequency": {
+      "type": "number",
+      "minimum": 0.0,
+      "maximum": 120.0,
+      "multipleOf": 0.5
+    },
+    "coolantLevel": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "valvePosition": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 100,
+      "multipleOf": 5
+    },
+    "vibrationIndex": {
+      "type": "number",
+      "minimum": 0.0,
+      "maximum": 10.0
+    },
+    "errorCode": {
+      "type": "string",
+      "pattern": "^0x[0-9A-Fa-f]{4}$"
+    },
+    "activeAlarms": {
+      "type": "array",
+      "uniqueItems": true,
+      "maxItems": 5,
+      "items": {
+        "type": "string",
+        "enum": ["LOW_PRESSURE", "HIGH_TEMP", "PUMP_FAIL", "SENSOR_DISCONNECT", "VOLTAGE_DROP"]
+      }
+    },
+    "powerFactor": {
+      "type": "number",
+      "minimum": 0.0,
+      "maximum": 1.0,
+      "multipleOf": 0.01
+    },
+    "ambientTemp": {
+      "type": "number",
+      "minimum": -30.0,
+      "maximum": 60.0
+    },
+    "returnLiquidTemp": {
+      "type": "number",
+      "minimum": -10.0,
+      "maximum": 40.0
+    },
+    "dischargePressure": {
+      "type": "number",
+      "minimum": 0.0,
+      "maximum": 30.0
+    },
+    "suctionPressure": {
+      "type": "number",
+      "minimum": 0.0,
+      "maximum": 10.0
+    },
+    "flowRate": {
+      "type": "number",
+      "minimum": 0.0,
+      "maximum": 500.0,
+      "multipleOf": 0.1
+    },
+    "totalEnergyKwh": {
+      "type": "number",
+      "minimum": 0.0
+    },
+    "oilPressureStatus": {
+      "type": "string",
+      "enum": ["LOW", "NORMAL", "HIGH"]
+    },
+    "pumpRuntimeHours": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "maintenanceCountdown": {
+      "type": "integer",
+      "minimum": -100,
+      "maximum": 10000
+    },
+    "networkSignalDb": {
+      "type": "integer",
+      "minimum": -110,
+      "maximum": -30
+    }
+  },
+  "dependentRequired": {
+    "errorCode": ["systemStatus"]
+  }
+}
