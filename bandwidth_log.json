@@ -1,0 +1,602 @@
+[
+  {
+    "deviceId": "device-0",
+    "deltaSize": 49,
+    "fullSize": 95,
+    "saving": "48.42%"
+  },
+  {
+    "deviceId": "device-1",
+    "deltaSize": 95,
+    "fullSize": 93,
+    "saving": "-2.15%"
+  },
+  {
+    "deviceId": "device-2",
+    "deltaSize": 72,
+    "fullSize": 91,
+    "saving": "20.88%"
+  },
+  {
+    "deviceId": "device-3",
+    "deltaSize": 72,
+    "fullSize": 91,
+    "saving": "20.88%"
+  },
+  {
+    "deviceId": "device-4",
+    "deltaSize": 95,
+    "fullSize": 93,
+    "saving": "-2.15%"
+  },
+  {
+    "deviceId": "device-5",
+    "deltaSize": 85,
+    "fullSize": 93,
+    "saving": "8.60%"
+  },
+  {
+    "deviceId": "device-6",
+    "deltaSize": 81,
+    "fullSize": 93,
+    "saving": "12.90%"
+  },
+  {
+    "deviceId": "device-7",
+    "deltaSize": 69,
+    "fullSize": 95,
+    "saving": "27.37%"
+  },
+  {
+    "deviceId": "device-8",
+    "deltaSize": 49,
+    "fullSize": 95,
+    "saving": "48.42%"
+  },
+  {
+    "deviceId": "device-9",
+    "deltaSize": 49,
+    "fullSize": 91,
+    "saving": "46.15%"
+  },
+  {
+    "deviceId": "device-10",
+    "deltaSize": 96,
+    "fullSize": 96,
+    "saving": "0.00%"
+  },
+  {
+    "deviceId": "device-11",
+    "deltaSize": 70,
+    "fullSize": 96,
+    "saving": "27.08%"
+  },
+  {
+    "deviceId": "device-12",
+    "deltaSize": 81,
+    "fullSize": 95,
+    "saving": "14.74%"
+  },
+  {
+    "deviceId": "device-13",
+    "deltaSize": 84,
+    "fullSize": 91,
+    "saving": "7.69%"
+  },
+  {
+    "deviceId": "device-14",
+    "deltaSize": 69,
+    "fullSize": 95,
+    "saving": "27.37%"
+  },
+  {
+    "deviceId": "device-15",
+    "deltaSize": 70,
+    "fullSize": 95,
+    "saving": "26.32%"
+  },
+  {
+    "deviceId": "device-16",
+    "deltaSize": 84,
+    "fullSize": 95,
+    "saving": "11.58%"
+  },
+  {
+    "deviceId": "device-17",
+    "deltaSize": 96,
+    "fullSize": 95,
+    "saving": "-1.05%"
+  },
+  {
+    "deviceId": "device-18",
+    "deltaSize": 70,
+    "fullSize": 95,
+    "saving": "26.32%"
+  },
+  {
+    "deviceId": "device-19",
+    "deltaSize": 96,
+    "fullSize": 95,
+    "saving": "-1.05%"
+  },
+  {
+    "deviceId": "device-20",
+    "deltaSize": 70,
+    "fullSize": 93,
+    "saving": "24.73%"
+  },
+  {
+    "deviceId": "device-21",
+    "deltaSize": 49,
+    "fullSize": 95,
+    "saving": "48.42%"
+  },
+  {
+    "deviceId": "device-22",
+    "deltaSize": 70,
+    "fullSize": 93,
+    "saving": "24.73%"
+  },
+  {
+    "deviceId": "device-23",
+    "deltaSize": 81,
+    "fullSize": 93,
+    "saving": "12.90%"
+  },
+  {
+    "deviceId": "device-24",
+    "deltaSize": 84,
+    "fullSize": 95,
+    "saving": "11.58%"
+  },
+  {
+    "deviceId": "device-25",
+    "deltaSize": 85,
+    "fullSize": 95,
+    "saving": "10.53%"
+  },
+  {
+    "deviceId": "device-26",
+    "deltaSize": 84,
+    "fullSize": 95,
+    "saving": "11.58%"
+  },
+  {
+    "deviceId": "device-27",
+    "deltaSize": 70,
+    "fullSize": 95,
+    "saving": "26.32%"
+  },
+  {
+    "deviceId": "device-28",
+    "deltaSize": 69,
+    "fullSize": 95,
+    "saving": "27.37%"
+  },
+  {
+    "deviceId": "device-29",
+    "deltaSize": 81,
+    "fullSize": 95,
+    "saving": "14.74%"
+  },
+  {
+    "deviceId": "device-30",
+    "deltaSize": 69,
+    "fullSize": 95,
+    "saving": "27.37%"
+  },
+  {
+    "deviceId": "device-31",
+    "deltaSize": 81,
+    "fullSize": 93,
+    "saving": "12.90%"
+  },
+  {
+    "deviceId": "device-32",
+    "deltaSize": 84,
+    "fullSize": 93,
+    "saving": "9.68%"
+  },
+  {
+    "deviceId": "device-33",
+    "deltaSize": 73,
+    "fullSize": 95,
+    "saving": "23.16%"
+  },
+  {
+    "deviceId": "device-34",
+    "deltaSize": 84,
+    "fullSize": 95,
+    "saving": "11.58%"
+  },
+  {
+    "deviceId": "device-35",
+    "deltaSize": 73,
+    "fullSize": 95,
+    "saving": "23.16%"
+  },
+  {
+    "deviceId": "device-36",
+    "deltaSize": 81,
+    "fullSize": 95,
+    "saving": "14.74%"
+  },
+  {
+    "deviceId": "device-37",
+    "deltaSize": 69,
+    "fullSize": 95,
+    "saving": "27.37%"
+  },
+  {
+    "deviceId": "device-38",
+    "deltaSize": 85,
+    "fullSize": 95,
+    "saving": "10.53%"
+  },
+  {
+    "deviceId": "device-39",
+    "deltaSize": 49,
+    "fullSize": 95,
+    "saving": "48.42%"
+  },
+  {
+    "deviceId": "device-40",
+    "deltaSize": 70,
+    "fullSize": 95,
+    "saving": "26.32%"
+  },
+  {
+    "deviceId": "device-41",
+    "deltaSize": 73,
+    "fullSize": 95,
+    "saving": "23.16%"
+  },
+  {
+    "deviceId": "device-42",
+    "deltaSize": 49,
+    "fullSize": 95,
+    "saving": "48.42%"
+  },
+  {
+    "deviceId": "device-43",
+    "deltaSize": 84,
+    "fullSize": 95,
+    "saving": "11.58%"
+  },
+  {
+    "deviceId": "device-44",
+    "deltaSize": 80,
+    "fullSize": 94,
+    "saving": "14.89%"
+  },
+  {
+    "deviceId": "device-45",
+    "deltaSize": 95,
+    "fullSize": 92,
+    "saving": "-3.26%"
+  },
+  {
+    "deviceId": "device-46",
+    "deltaSize": 68,
+    "fullSize": 92,
+    "saving": "26.09%"
+  },
+  {
+    "deviceId": "device-47",
+    "deltaSize": 95,
+    "fullSize": 94,
+    "saving": "-1.06%"
+  },
+  {
+    "deviceId": "device-48",
+    "deltaSize": 72,
+    "fullSize": 94,
+    "saving": "23.40%"
+  },
+  {
+    "deviceId": "device-49",
+    "deltaSize": 68,
+    "fullSize": 94,
+    "saving": "27.66%"
+  },
+  {
+    "deviceId": "device-50",
+    "deltaSize": 69,
+    "fullSize": 94,
+    "saving": "26.60%"
+  },
+  {
+    "deviceId": "device-51",
+    "deltaSize": 80,
+    "fullSize": 94,
+    "saving": "14.89%"
+  },
+  {
+    "deviceId": "device-52",
+    "deltaSize": 69,
+    "fullSize": 94,
+    "saving": "26.60%"
+  },
+  {
+    "deviceId": "device-53",
+    "deltaSize": 83,
+    "fullSize": 94,
+    "saving": "11.70%"
+  },
+  {
+    "deviceId": "device-54",
+    "deltaSize": 68,
+    "fullSize": 94,
+    "saving": "27.66%"
+  },
+  {
+    "deviceId": "device-55",
+    "deltaSize": 48,
+    "fullSize": 94,
+    "saving": "48.94%"
+  },
+  {
+    "deviceId": "device-56",
+    "deltaSize": 48,
+    "fullSize": 94,
+    "saving": "48.94%"
+  },
+  {
+    "deviceId": "device-57",
+    "deltaSize": 80,
+    "fullSize": 94,
+    "saving": "14.89%"
+  },
+  {
+    "deviceId": "device-58",
+    "deltaSize": 68,
+    "fullSize": 94,
+    "saving": "27.66%"
+  },
+  {
+    "deviceId": "device-59",
+    "deltaSize": 80,
+    "fullSize": 95,
+    "saving": "15.79%"
+  },
+  {
+    "deviceId": "device-60",
+    "deltaSize": 95,
+    "fullSize": 93,
+    "saving": "-2.15%"
+  },
+  {
+    "deviceId": "device-61",
+    "deltaSize": 72,
+    "fullSize": 91,
+    "saving": "20.88%"
+  },
+  {
+    "deviceId": "device-62",
+    "deltaSize": 80,
+    "fullSize": 93,
+    "saving": "13.98%"
+  },
+  {
+    "deviceId": "device-63",
+    "deltaSize": 72,
+    "fullSize": 93,
+    "saving": "22.58%"
+  },
+  {
+    "deviceId": "device-64",
+    "deltaSize": 68,
+    "fullSize": 95,
+    "saving": "28.42%"
+  },
+  {
+    "deviceId": "device-65",
+    "deltaSize": 95,
+    "fullSize": 95,
+    "saving": "0.00%"
+  },
+  {
+    "deviceId": "device-66",
+    "deltaSize": 48,
+    "fullSize": 95,
+    "saving": "49.47%"
+  },
+  {
+    "deviceId": "device-67",
+    "deltaSize": 80,
+    "fullSize": 95,
+    "saving": "15.79%"
+  },
+  {
+    "deviceId": "device-68",
+    "deltaSize": 83,
+    "fullSize": 95,
+    "saving": "12.63%"
+  },
+  {
+    "deviceId": "device-69",
+    "deltaSize": 72,
+    "fullSize": 95,
+    "saving": "24.21%"
+  },
+  {
+    "deviceId": "device-70",
+    "deltaSize": 69,
+    "fullSize": 95,
+    "saving": "27.37%"
+  },
+  {
+    "deviceId": "device-71",
+    "deltaSize": 68,
+    "fullSize": 96,
+    "saving": "29.17%"
+  },
+  {
+    "deviceId": "device-72",
+    "deltaSize": 92,
+    "fullSize": 92,
+    "saving": "0.00%"
+  },
+  {
+    "deviceId": "device-73",
+    "deltaSize": 69,
+    "fullSize": 96,
+    "saving": "28.13%"
+  },
+  {
+    "deviceId": "device-74",
+    "deltaSize": 94,
+    "fullSize": 96,
+    "saving": "2.08%"
+  },
+  {
+    "deviceId": "device-75",
+    "deltaSize": 84,
+    "fullSize": 96,
+    "saving": "12.50%"
+  },
+  {
+    "deviceId": "device-76",
+    "deltaSize": 69,
+    "fullSize": 96,
+    "saving": "28.13%"
+  },
+  {
+    "deviceId": "device-77",
+    "deltaSize": 78,
+    "fullSize": 96,
+    "saving": "18.75%"
+  },
+  {
+    "deviceId": "device-78",
+    "deltaSize": 80,
+    "fullSize": 96,
+    "saving": "16.67%"
+  },
+  {
+    "deviceId": "device-79",
+    "deltaSize": 95,
+    "fullSize": 96,
+    "saving": "1.04%"
+  },
+  {
+    "deviceId": "device-80",
+    "deltaSize": 69,
+    "fullSize": 96,
+    "saving": "28.13%"
+  },
+  {
+    "deviceId": "device-81",
+    "deltaSize": 48,
+    "fullSize": 96,
+    "saving": "50.00%"
+  },
+  {
+    "deviceId": "device-82",
+    "deltaSize": 68,
+    "fullSize": 94,
+    "saving": "27.66%"
+  },
+  {
+    "deviceId": "device-83",
+    "deltaSize": 81,
+    "fullSize": 92,
+    "saving": "11.96%"
+  },
+  {
+    "deviceId": "device-84",
+    "deltaSize": 96,
+    "fullSize": 96,
+    "saving": "0.00%"
+  },
+  {
+    "deviceId": "device-85",
+    "deltaSize": 49,
+    "fullSize": 95,
+    "saving": "48.42%"
+  },
+  {
+    "deviceId": "device-86",
+    "deltaSize": 85,
+    "fullSize": 95,
+    "saving": "10.53%"
+  },
+  {
+    "deviceId": "device-87",
+    "deltaSize": 85,
+    "fullSize": 95,
+    "saving": "10.53%"
+  },
+  {
+    "deviceId": "device-88",
+    "deltaSize": 69,
+    "fullSize": 95,
+    "saving": "27.37%"
+  },
+  {
+    "deviceId": "device-89",
+    "deltaSize": 81,
+    "fullSize": 91,
+    "saving": "10.99%"
+  },
+  {
+    "deviceId": "device-90",
+    "deltaSize": 73,
+    "fullSize": 95,
+    "saving": "23.16%"
+  },
+  {
+    "deviceId": "device-91",
+    "deltaSize": 81,
+    "fullSize": 95,
+    "saving": "14.74%"
+  },
+  {
+    "deviceId": "device-92",
+    "deltaSize": 70,
+    "fullSize": 96,
+    "saving": "27.08%"
+  },
+  {
+    "deviceId": "device-93",
+    "deltaSize": 49,
+    "fullSize": 96,
+    "saving": "48.96%"
+  },
+  {
+    "deviceId": "device-94",
+    "deltaSize": 85,
+    "fullSize": 96,
+    "saving": "11.46%"
+  },
+  {
+    "deviceId": "device-95",
+    "deltaSize": 70,
+    "fullSize": 96,
+    "saving": "27.08%"
+  },
+  {
+    "deviceId": "device-96",
+    "deltaSize": 81,
+    "fullSize": 96,
+    "saving": "15.63%"
+  },
+  {
+    "deviceId": "device-97",
+    "deltaSize": 81,
+    "fullSize": 96,
+    "saving": "15.63%"
+  },
+  {
+    "deviceId": "device-98",
+    "deltaSize": 69,
+    "fullSize": 95,
+    "saving": "27.37%"
+  },
+  {
+    "deviceId": "device-99",
+    "deltaSize": 84,
+    "fullSize": 96,
+    "saving": "12.50%"
+  }
+]

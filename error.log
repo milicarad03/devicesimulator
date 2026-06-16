@@ -122,3 +122,4 @@
     }
   }
 }'
+[2026-06-16 13:38:06] [ERROR] Critical failure during bootstrap registration chain execution: fetch failed

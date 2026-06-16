@@ -1,6 +1,10 @@
 {
   "type": "object",
   "properties": {
+    "schemaId": { 
+      "type": "string",
+      "const": "modelC" 
+    },
     "metrics": {
       "type": "object",
       "properties": {

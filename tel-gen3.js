@@ -7,7 +7,7 @@ class GeneratorLogger {
 }
 const logger = new GeneratorLogger();
 
-function createTelemetryGenerator(schema) {
+function createFullTelemetryGenerator(schema) {
   const state = {
     stableCounter: 0,
     peakCounter: 0,
@@ -172,7 +172,7 @@ function createTelemetryGenerator(schema) {
   }
 
  
-  function build(forceFull = false) {
+  function build() {
     const payload = {};
     const schemaId = schema.properties?.schemaId?.const;
     if (schemaId) {
@@ -183,9 +183,7 @@ function createTelemetryGenerator(schema) {
 
 
       const isRequired = path.includes("status") || path === "schemaId";
-      if ( !forceFull && !isRequired && Math.random() < 0.5) { // 50% šanse da preskoči
-        return; // Preskoči ovo polje
-      }
+     
       const def = fieldDefinitions[path];
 
       if (def.enum) {
@@ -245,16 +243,8 @@ function createTelemetryGenerator(schema) {
   }
 
   function generate() {
-    state.cycleCounter++; // Uvećaj brojač pri svakom pozivu
-
-    //DA NA 5 MINUTA POSALJE KOMPLETNU TELEMETRIJU
-    const isFiveMinuteMark = state.cycleCounter >= 300; 
-
-    if (isFiveMinuteMark) {
-      state.cycleCounter = 0; // Resetuj brojač
-      return build(true); // <--- Prosledi "true" u build da forsiramo pun paket
-    }
-
+    
+   
 
     if (state.stableCounter > 0) {
       state.stableCounter--;
@@ -282,7 +272,7 @@ function createTelemetryGenerator(schema) {
       state.stableCounter = Math.floor(randomBetween(1, 2));
     }
 
-    return build(false);
+    return build();
   }
 
   return {
@@ -291,5 +281,5 @@ function createTelemetryGenerator(schema) {
 }
 
 module.exports = {
-  createTelemetryGenerator,
+  createTelemetryGenerator: createFullTelemetryGenerator,
 };

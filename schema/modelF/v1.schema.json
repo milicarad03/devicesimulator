@@ -1,0 +1,80 @@
+{
+  "title": "IndustrialAirCompressorTelemetry",
+  "type": "object",
+  "required": ["system", "diagnostics", "performance"],
+  "properties": {
+    "schemaId": { 
+      "type": "string",
+      "const": "modelF" 
+    },
+    "system": {
+      "type": "object",
+      "properties": {
+        "identity": {
+          "type": "object",
+          "properties": {
+            "serial": { "type": "string", "pattern": "^CP-[0-9]{5}-X$" },
+            "firmware": { "type": "string" }
+          }
+        },
+        "status": {
+          "type": "object",
+          "properties": {
+            "mode": { "type": "string", "enum": ["LOADED", "UNLOADED", "STANDBY", "FAULT"] },
+            "uptime_seconds": { "type": "integer", "minimum": 0 }
+          }
+        }
+      }
+    },
+    "diagnostics": {
+      "type": "object",
+      "properties": {
+        "faults": {
+          "type": "object",
+          "properties": {
+            "code": { "type": "string", "pattern": "^ERR-[0-9]{3}$" },
+            "alarms": { "type": "array", "maxItems": 5, "items": { "type": "string" } }
+          }
+        },
+        "health": {
+          "type": "object",
+          "properties": {
+            "oil_level": { "type": "number", "minimum": 0, "maximum": 100 },
+            "vibration": { "type": "number", "minimum": 0, "maximum": 25.0 }
+          }
+        }
+      }
+    },
+    "performance": {
+      "type": "object",
+      "properties": {
+        "stages": {
+          "type": "object",
+          "properties": {
+            "p1": { "type": "number", "minimum": 0, "maximum": 8.0, "multipleOf": 0.1 },
+            "p2": { "type": "number", "minimum": 0, "maximum": 16.0, "multipleOf": 0.1 },
+            "tempIn": { "type": "number", "minimum": 10, "maximum": 50 },
+            "tempOut": { "type": "number", "minimum": 40, "maximum": 120 }
+          }
+        },
+        "electrical": {
+          "type": "object",
+          "properties": {
+            "load": { "type": "number", "minimum": 0, "maximum": 100 },
+            "kw": { "type": "number", "minimum": 0, "maximum": 250 },
+            "voltage": { "type": "number", "minimum": 380, "maximum": 440 },
+            "pf": { "type": "number", "minimum": 0.7, "maximum": 1.0 }
+          }
+        },
+        "output": {
+          "type": "object",
+          "properties": {
+            "flow": { "type": "number", "minimum": 0, "maximum": 50.0 },
+            "total_runtime": { "type": "integer", "minimum": 0 },
+            "energy_kwh": { "type": "number", "minimum": 0 }
+          }
+        }
+      }
+    }
+  }
+}
