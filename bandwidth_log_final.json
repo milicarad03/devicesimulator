@@ -1,0 +1,613 @@
+{
+  "summary": {
+    "testDate": "2026-06-17T11:54:49.819Z",
+    "totalSamples": 100,
+    "totalFullSizeBytes": 43898,
+    "totalDeltaSizeBytes": 30112,
+    "overallSaving": "31.40%",
+    "regressionCount": 1,
+    "testDurationMs": "17.06"
+  },
+  "logs": [
+    {
+      "deviceId": "device-0",
+      "deltaSize": 439,
+      "fullSize": 437,
+      "saving": "-0.46%"
+    },
+    {
+      "deviceId": "device-1",
+      "deltaSize": 349,
+      "fullSize": 442,
+      "saving": "21.04%"
+    },
+    {
+      "deviceId": "device-2",
+      "deltaSize": 296,
+      "fullSize": 439,
+      "saving": "32.57%"
+    },
+    {
+      "deviceId": "device-3",
+      "deltaSize": 241,
+      "fullSize": 440,
+      "saving": "45.23%"
+    },
+    {
+      "deviceId": "device-4",
+      "deltaSize": 284,
+      "fullSize": 438,
+      "saving": "35.16%"
+    },
+    {
+      "deviceId": "device-5",
+      "deltaSize": 256,
+      "fullSize": 442,
+      "saving": "42.08%"
+    },
+    {
+      "deviceId": "device-6",
+      "deltaSize": 243,
+      "fullSize": 435,
+      "saving": "44.14%"
+    },
+    {
+      "deviceId": "device-7",
+      "deltaSize": 371,
+      "fullSize": 437,
+      "saving": "15.10%"
+    },
+    {
+      "deviceId": "device-8",
+      "deltaSize": 342,
+      "fullSize": 435,
+      "saving": "21.38%"
+    },
+    {
+      "deviceId": "device-9",
+      "deltaSize": 275,
+      "fullSize": 436,
+      "saving": "36.93%"
+    },
+    {
+      "deviceId": "device-10",
+      "deltaSize": 321,
+      "fullSize": 440,
+      "saving": "27.05%"
+    },
+    {
+      "deviceId": "device-11",
+      "deltaSize": 324,
+      "fullSize": 439,
+      "saving": "26.20%"
+    },
+    {
+      "deviceId": "device-12",
+      "deltaSize": 307,
+      "fullSize": 440,
+      "saving": "30.23%"
+    },
+    {
+      "deviceId": "device-13",
+      "deltaSize": 369,
+      "fullSize": 441,
+      "saving": "16.33%"
+    },
+    {
+      "deviceId": "device-14",
+      "deltaSize": 236,
+      "fullSize": 437,
+      "saving": "46.00%"
+    },
+    {
+      "deviceId": "device-15",
+      "deltaSize": 312,
+      "fullSize": 439,
+      "saving": "28.93%"
+    },
+    {
+      "deviceId": "device-16",
+      "deltaSize": 284,
+      "fullSize": 440,
+      "saving": "35.45%"
+    },
+    {
+      "deviceId": "device-17",
+      "deltaSize": 386,
+      "fullSize": 438,
+      "saving": "11.87%"
+    },
+    {
+      "deviceId": "device-18",
+      "deltaSize": 280,
+      "fullSize": 438,
+      "saving": "36.07%"
+    },
+    {
+      "deviceId": "device-19",
+      "deltaSize": 303,
+      "fullSize": 442,
+      "saving": "31.45%"
+    },
+    {
+      "deviceId": "device-20",
+      "deltaSize": 354,
+      "fullSize": 439,
+      "saving": "19.36%"
+    },
+    {
+      "deviceId": "device-21",
+      "deltaSize": 296,
+      "fullSize": 442,
+      "saving": "33.03%"
+    },
+    {
+      "deviceId": "device-22",
+      "deltaSize": 276,
+      "fullSize": 442,
+      "saving": "37.56%"
+    },
+    {
+      "deviceId": "device-23",
+      "deltaSize": 324,
+      "fullSize": 440,
+      "saving": "26.36%"
+    },
+    {
+      "deviceId": "device-24",
+      "deltaSize": 355,
+      "fullSize": 440,
+      "saving": "19.32%"
+    },
+    {
+      "deviceId": "device-25",
+      "deltaSize": 288,
+      "fullSize": 439,
+      "saving": "34.40%"
+    },
+    {
+      "deviceId": "device-26",
+      "deltaSize": 324,
+      "fullSize": 439,
+      "saving": "26.20%"
+    },
+    {
+      "deviceId": "device-27",
+      "deltaSize": 307,
+      "fullSize": 439,
+      "saving": "30.07%"
+    },
+    {
+      "deviceId": "device-28",
+      "deltaSize": 260,
+      "fullSize": 439,
+      "saving": "40.77%"
+    },
+    {
+      "deviceId": "device-29",
+      "deltaSize": 280,
+      "fullSize": 436,
+      "saving": "35.78%"
+    },
+    {
+      "deviceId": "device-30",
+      "deltaSize": 301,
+      "fullSize": 437,
+      "saving": "31.12%"
+    },
+    {
+      "deviceId": "device-31",
+      "deltaSize": 323,
+      "fullSize": 440,
+      "saving": "26.59%"
+    },
+    {
+      "deviceId": "device-32",
+      "deltaSize": 286,
+      "fullSize": 437,
+      "saving": "34.55%"
+    },
+    {
+      "deviceId": "device-33",
+      "deltaSize": 372,
+      "fullSize": 440,
+      "saving": "15.45%"
+    },
+    {
+      "deviceId": "device-34",
+      "deltaSize": 367,
+      "fullSize": 441,
+      "saving": "16.78%"
+    },
+    {
+      "deviceId": "device-35",
+      "deltaSize": 344,
+      "fullSize": 439,
+      "saving": "21.64%"
+    },
+    {
+      "deviceId": "device-36",
+      "deltaSize": 232,
+      "fullSize": 444,
+      "saving": "47.75%"
+    },
+    {
+      "deviceId": "device-37",
+      "deltaSize": 275,
+      "fullSize": 436,
+      "saving": "36.93%"
+    },
+    {
+      "deviceId": "device-38",
+      "deltaSize": 298,
+      "fullSize": 439,
+      "saving": "32.12%"
+    },
+    {
+      "deviceId": "device-39",
+      "deltaSize": 309,
+      "fullSize": 437,
+      "saving": "29.29%"
+    },
+    {
+      "deviceId": "device-40",
+      "deltaSize": 298,
+      "fullSize": 438,
+      "saving": "31.96%"
+    },
+    {
+      "deviceId": "device-41",
+      "deltaSize": 267,
+      "fullSize": 440,
+      "saving": "39.32%"
+    },
+    {
+      "deviceId": "device-42",
+      "deltaSize": 226,
+      "fullSize": 441,
+      "saving": "48.75%"
+    },
+    {
+      "deviceId": "device-43",
+      "deltaSize": 373,
+      "fullSize": 443,
+      "saving": "15.80%"
+    },
+    {
+      "deviceId": "device-44",
+      "deltaSize": 320,
+      "fullSize": 443,
+      "saving": "27.77%"
+    },
+    {
+      "deviceId": "device-45",
+      "deltaSize": 286,
+      "fullSize": 444,
+      "saving": "35.59%"
+    },
+    {
+      "deviceId": "device-46",
+      "deltaSize": 355,
+      "fullSize": 437,
+      "saving": "18.76%"
+    },
+    {
+      "deviceId": "device-47",
+      "deltaSize": 338,
+      "fullSize": 435,
+      "saving": "22.30%"
+    },
+    {
+      "deviceId": "device-48",
+      "deltaSize": 230,
+      "fullSize": 438,
+      "saving": "47.49%"
+    },
+    {
+      "deviceId": "device-49",
+      "deltaSize": 304,
+      "fullSize": 439,
+      "saving": "30.75%"
+    },
+    {
+      "deviceId": "device-50",
+      "deltaSize": 291,
+      "fullSize": 436,
+      "saving": "33.26%"
+    },
+    {
+      "deviceId": "device-51",
+      "deltaSize": 268,
+      "fullSize": 443,
+      "saving": "39.50%"
+    },
+    {
+      "deviceId": "device-52",
+      "deltaSize": 318,
+      "fullSize": 442,
+      "saving": "28.05%"
+    },
+    {
+      "deviceId": "device-53",
+      "deltaSize": 341,
+      "fullSize": 443,
+      "saving": "23.02%"
+    },
+    {
+      "deviceId": "device-54",
+      "deltaSize": 283,
+      "fullSize": 440,
+      "saving": "35.68%"
+    },
+    {
+      "deviceId": "device-55",
+      "deltaSize": 267,
+      "fullSize": 437,
+      "saving": "38.90%"
+    },
+    {
+      "deviceId": "device-56",
+      "deltaSize": 231,
+      "fullSize": 439,
+      "saving": "47.38%"
+    },
+    {
+      "deviceId": "device-57",
+      "deltaSize": 354,
+      "fullSize": 438,
+      "saving": "19.18%"
+    },
+    {
+      "deviceId": "device-58",
+      "deltaSize": 305,
+      "fullSize": 441,
+      "saving": "30.84%"
+    },
+    {
+      "deviceId": "device-59",
+      "deltaSize": 347,
+      "fullSize": 435,
+      "saving": "20.23%"
+    },
+    {
+      "deviceId": "device-60",
+      "deltaSize": 242,
+      "fullSize": 442,
+      "saving": "45.25%"
+    },
+    {
+      "deviceId": "device-61",
+      "deltaSize": 324,
+      "fullSize": 440,
+      "saving": "26.36%"
+    },
+    {
+      "deviceId": "device-62",
+      "deltaSize": 357,
+      "fullSize": 441,
+      "saving": "19.05%"
+    },
+    {
+      "deviceId": "device-63",
+      "deltaSize": 298,
+      "fullSize": 440,
+      "saving": "32.27%"
+    },
+    {
+      "deviceId": "device-64",
+      "deltaSize": 282,
+      "fullSize": 439,
+      "saving": "35.76%"
+    },
+    {
+      "deviceId": "device-65",
+      "deltaSize": 315,
+      "fullSize": 438,
+      "saving": "28.08%"
+    },
+    {
+      "deviceId": "device-66",
+      "deltaSize": 263,
+      "fullSize": 437,
+      "saving": "39.82%"
+    },
+    {
+      "deviceId": "device-67",
+      "deltaSize": 253,
+      "fullSize": 438,
+      "saving": "42.24%"
+    },
+    {
+      "deviceId": "device-68",
+      "deltaSize": 223,
+      "fullSize": 441,
+      "saving": "49.43%"
+    },
+    {
+      "deviceId": "device-69",
+      "deltaSize": 256,
+      "fullSize": 437,
+      "saving": "41.42%"
+    },
+    {
+      "deviceId": "device-70",
+      "deltaSize": 202,
+      "fullSize": 438,
+      "saving": "53.88%"
+    },
+    {
+      "deviceId": "device-71",
+      "deltaSize": 333,
+      "fullSize": 438,
+      "saving": "23.97%"
+    },
+    {
+      "deviceId": "device-72",
+      "deltaSize": 385,
+      "fullSize": 438,
+      "saving": "12.10%"
+    },
+    {
+      "deviceId": "device-73",
+      "deltaSize": 322,
+      "fullSize": 438,
+      "saving": "26.48%"
+    },
+    {
+      "deviceId": "device-74",
+      "deltaSize": 268,
+      "fullSize": 440,
+      "saving": "39.09%"
+    },
+    {
+      "deviceId": "device-75",
+      "deltaSize": 368,
+      "fullSize": 438,
+      "saving": "15.98%"
+    },
+    {
+      "deviceId": "device-76",
+      "deltaSize": 265,
+      "fullSize": 439,
+      "saving": "39.64%"
+    },
+    {
+      "deviceId": "device-77",
+      "deltaSize": 264,
+      "fullSize": 439,
+      "saving": "39.86%"
+    },
+    {
+      "deviceId": "device-78",
+      "deltaSize": 259,
+      "fullSize": 437,
+      "saving": "40.73%"
+    },
+    {
+      "deviceId": "device-79",
+      "deltaSize": 357,
+      "fullSize": 437,
+      "saving": "18.31%"
+    },
+    {
+      "deviceId": "device-80",
+      "deltaSize": 364,
+      "fullSize": 437,
+      "saving": "16.70%"
+    },
+    {
+      "deviceId": "device-81",
+      "deltaSize": 352,
+      "fullSize": 439,
+      "saving": "19.82%"
+    },
+    {
+      "deviceId": "device-82",
+      "deltaSize": 308,
+      "fullSize": 440,
+      "saving": "30.00%"
+    },
+    {
+      "deviceId": "device-83",
+      "deltaSize": 214,
+      "fullSize": 438,
+      "saving": "51.14%"
+    },
+    {
+      "deviceId": "device-84",
+      "deltaSize": 273,
+      "fullSize": 440,
+      "saving": "37.95%"
+    },
+    {
+      "deviceId": "device-85",
+      "deltaSize": 309,
+      "fullSize": 439,
+      "saving": "29.61%"
+    },
+    {
+      "deviceId": "device-86",
+      "deltaSize": 367,
+      "fullSize": 442,
+      "saving": "16.97%"
+    },
+    {
+      "deviceId": "device-87",
+      "deltaSize": 317,
+      "fullSize": 438,
+      "saving": "27.63%"
+    },
+    {
+      "deviceId": "device-88",
+      "deltaSize": 280,
+      "fullSize": 436,
+      "saving": "35.78%"
+    },
+    {
+      "deviceId": "device-89",
+      "deltaSize": 250,
+      "fullSize": 437,
+      "saving": "42.79%"
+    },
+    {
+      "deviceId": "device-90",
+      "deltaSize": 326,
+      "fullSize": 440,
+      "saving": "25.91%"
+    },
+    {
+      "deviceId": "device-91",
+      "deltaSize": 254,
+      "fullSize": 437,
+      "saving": "41.88%"
+    },
+    {
+      "deviceId": "device-92",
+      "deltaSize": 305,
+      "fullSize": 439,
+      "saving": "30.52%"
+    },
+    {
+      "deviceId": "device-93",
+      "deltaSize": 286,
+      "fullSize": 438,
+      "saving": "34.70%"
+    },
+    {
+      "deviceId": "device-94",
+      "deltaSize": 281,
+      "fullSize": 439,
+      "saving": "35.99%"
+    },
+    {
+      "deviceId": "device-95",
+      "deltaSize": 291,
+      "fullSize": 440,
+      "saving": "33.86%"
+    },
+    {
+      "deviceId": "device-96",
+      "deltaSize": 201,
+      "fullSize": 440,
+      "saving": "54.32%"
+    },
+    {
+      "deviceId": "device-97",
+      "deltaSize": 309,
+      "fullSize": 438,
+      "saving": "29.45%"
+    },
+    {
+      "deviceId": "device-98",
+      "deltaSize": 322,
+      "fullSize": 435,
+      "saving": "25.98%"
+    },
+    {
+      "deviceId": "device-99",
+      "deltaSize": 276,
+      "fullSize": 439,
+      "saving": "37.13%"
+    }
+  ]
+}

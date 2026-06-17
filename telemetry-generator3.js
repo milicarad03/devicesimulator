@@ -8,6 +8,7 @@ class GeneratorLogger {
 const logger = new GeneratorLogger();
 
 function createTelemetryGenerator(schema) {
+  let nextIsFull=true;
   const state = {
     stableCounter: 0,
     peakCounter: 0,
@@ -127,6 +128,7 @@ function createTelemetryGenerator(schema) {
     Object.keys(fieldDefinitions).forEach((path) => {
       if (fieldDefinitions[path].type !== "number" && fieldDefinitions[path].type !== "integer") return;
       if (path.includes("maintenance") || path.includes("Runtime")) return;
+      if (Math.random() > 0.3) return;
       const min = fieldDefinitions[path].minimum ?? 0;
       const max = fieldDefinitions[path].maximum ?? 100;
       const range = max - min;
@@ -154,7 +156,14 @@ function createTelemetryGenerator(schema) {
         const max = fieldDefinitions[path].maximum ?? 100;
         const range = max - min;
 
-        state.baseline[path] += randomBetween(-0.02 * range, 0.02 * range);
+        //state.baseline[path] += randomBetween(-0.02 * range, 0.02 * range);
+        let shift = randomBetween(-0.02 * range, 0.02 * range);
+        
+        if (path.includes("temp") || path.includes("temperature")) {
+          state.baseline[path] = clamp(state.baseline[path] + shift, 10, 40);
+        } else {
+          state.baseline[path] += shift;
+        }
       });
       console.log("[GENERATOR] Baseline shift");
     }
@@ -183,23 +192,22 @@ function createTelemetryGenerator(schema) {
 
 
       const isRequired = path.includes("status") || path === "schemaId";
-      if ( !forceFull && !isRequired && Math.random() < 0.5) { // 50% šanse da preskoči
-        return; // Preskoči ovo polje
+
+      if ( !forceFull && !isRequired && Math.random() < 0.5) {
+        return; 
       }
       const def = fieldDefinitions[path];
 
       if (def.enum) {
-        
         const randomEnum = def.enum[Math.floor(Math.random() * def.enum.length)];
         setDeepValue(payload, path, randomEnum);
       } else if (def.type === "array") {
        
         const itemsEnum = def.items?.enum;
-        const mockArray = itemsEnum && Math.random() > 0.8 
-          ? [itemsEnum[Math.floor(Math.random() * itemsEnum.length)]] 
-          : [];
+        const mockArray = itemsEnum && Math.random() > 0.8 ? [itemsEnum[Math.floor(Math.random() * itemsEnum.length)]] : [];
         setDeepValue(payload, path, mockArray);
-      } else if (def.type === "number" || def.type === "integer") {
+
+    } else if (def.type === "number" || def.type === "integer") {
         let val = state[path];
 
         
@@ -223,7 +231,7 @@ function createTelemetryGenerator(schema) {
         
         
         setDeepValue(payload, path, finalValue);
-      } else if (def.type === "boolean") {
+      }else if (def.type === "boolean") {
         setDeepValue(payload, path, state[path]);
       } else if (def.type === "string") {
 
@@ -243,22 +251,24 @@ function createTelemetryGenerator(schema) {
 
     return payload;
   }
+  function setForceFull(val) {
+    nextIsFull = val;
+  }
 
   function generate() {
-    state.cycleCounter++; // Uvećaj brojač pri svakom pozivu
+    state.cycleCounter++; 
 
-    //DA NA 5 MINUTA POSALJE KOMPLETNU TELEMETRIJU
+    
     const isFiveMinuteMark = state.cycleCounter >= 300; 
 
     if (isFiveMinuteMark) {
-      state.cycleCounter = 0; // Resetuj brojač
-      return build(true); // <--- Prosledi "true" u build da forsiramo pun paket
+      state.cycleCounter = 0; 
+      return build(true); 
     }
-
 
     if (state.stableCounter > 0) {
       state.stableCounter--;
-      return build();
+      return build(false);
     }
 
     if (state.peakCounter === 0 && Math.random() < 0.25) {
@@ -281,12 +291,16 @@ function createTelemetryGenerator(schema) {
     if (Math.random() < 0.1) {
       state.stableCounter = Math.floor(randomBetween(1, 2));
     }
+    if(nextIsFull){
+      nextIsFull=false;
+      return build(true);
+    }
 
     return build(false);
   }
 
   return {
-    generate,
+    generate,setForceFull
   };
 }
 

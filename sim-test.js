@@ -86,7 +86,7 @@ if (!fs.existsSync(CONFIG_FILE)) {
 }
 
 const config = JSON.parse(fs.readFileSync(CONFIG_FILE, "utf8"));
-const { createTelemetryGenerator } = require("./telemetry-generator3");
+const { createTelemetryGenerator } = require("./tel-gen3");
 const telemetryGenerator = createTelemetryGenerator(schema);
 
 const INTERVAL_MS = config.intervalMs || 5000;
@@ -289,23 +289,24 @@ function sendTelemetry() {
   try {
     const generatedMessage = telemetryGenerator.generate();
     console.log(`[RAW TELEMETRY SENT] ${JSON.stringify(generatedMessage, null, 2)}`);
-    const payloadString = JSON.stringify(generatedMessage);
-    
-    
-    const sizeInBytes = Buffer.byteLength(payloadString, 'utf8');
-    const logEntry = {
-      deviceId: DEVICE_ID,
-      type: generatedMessage.schemaId ? "FULL" : "DELTA",
-      size: sizeInBytes,
-      timestamp: nowIso()
-    };
-    
-   
-    fs.appendFileSync(STATS_FILE, JSON.stringify(logEntry) + "\n");
    
     
     logger.info("Dispatching real-time sensor data packet stream frame...");
     logger.debug(`Generated state simulation details: ${JSON.stringify(generatedMessage)}`);
+    const payloadString = JSON.stringify(generatedMessage);
+        
+        
+        const sizeInBytes = Buffer.byteLength(payloadString, 'utf8');
+        const logEntry = {
+          deviceId: DEVICE_ID,
+          type: generatedMessage.schemaId ? "FULL" : "DELTA",
+          size: sizeInBytes,
+          timestamp: nowIso()
+        };
+        
+       
+    fs.appendFileSync(STATS_FILE, JSON.stringify(logEntry) + "\n");
+       
 
     client.publish(TELEMETRY_TOPIC, JSON.stringify(generatedMessage), { qos: 1 });
   } catch (err) {
