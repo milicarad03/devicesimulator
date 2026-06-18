@@ -8,11 +8,12 @@ class GeneratorLogger {
 const logger = new GeneratorLogger();
 
 function createFullTelemetryGenerator(schema) {
+
   const state = {
     stableCounter: 0,
     peakCounter: 0,
     baseline: {},
-    cycleCounter: 0,
+   
   };
 
   const fieldDefinitions = {};
@@ -127,6 +128,7 @@ function createFullTelemetryGenerator(schema) {
     Object.keys(fieldDefinitions).forEach((path) => {
       if (fieldDefinitions[path].type !== "number" && fieldDefinitions[path].type !== "integer") return;
       if (path.includes("maintenance") || path.includes("Runtime")) return;
+      if (Math.random() > 0.3) return;
       const min = fieldDefinitions[path].minimum ?? 0;
       const max = fieldDefinitions[path].maximum ?? 100;
       const range = max - min;
@@ -154,7 +156,14 @@ function createFullTelemetryGenerator(schema) {
         const max = fieldDefinitions[path].maximum ?? 100;
         const range = max - min;
 
-        state.baseline[path] += randomBetween(-0.02 * range, 0.02 * range);
+        //state.baseline[path] += randomBetween(-0.02 * range, 0.02 * range);
+        let shift = randomBetween(-0.02 * range, 0.02 * range);
+        
+        if (path.includes("temp") || path.includes("temperature")) {
+          state.baseline[path] = clamp(state.baseline[path] + shift, 10, 40);
+        } else {
+          state.baseline[path] += shift;
+        }
       });
       console.log("[GENERATOR] Baseline shift");
     }
@@ -183,21 +192,20 @@ function createFullTelemetryGenerator(schema) {
 
 
       const isRequired = path.includes("status") || path === "schemaId";
-     
+
+    
       const def = fieldDefinitions[path];
 
       if (def.enum) {
-        
         const randomEnum = def.enum[Math.floor(Math.random() * def.enum.length)];
         setDeepValue(payload, path, randomEnum);
       } else if (def.type === "array") {
        
         const itemsEnum = def.items?.enum;
-        const mockArray = itemsEnum && Math.random() > 0.8 
-          ? [itemsEnum[Math.floor(Math.random() * itemsEnum.length)]] 
-          : [];
+        const mockArray = itemsEnum && Math.random() > 0.8 ? [itemsEnum[Math.floor(Math.random() * itemsEnum.length)]] : [];
         setDeepValue(payload, path, mockArray);
-      } else if (def.type === "number" || def.type === "integer") {
+
+    } else if (def.type === "number" || def.type === "integer") {
         let val = state[path];
 
         
@@ -221,7 +229,7 @@ function createFullTelemetryGenerator(schema) {
         
         
         setDeepValue(payload, path, finalValue);
-      } else if (def.type === "boolean") {
+      }else if (def.type === "boolean") {
         setDeepValue(payload, path, state[path]);
       } else if (def.type === "string") {
 
@@ -242,13 +250,12 @@ function createFullTelemetryGenerator(schema) {
     return payload;
   }
 
+
   function generate() {
-    
-   
 
     if (state.stableCounter > 0) {
       state.stableCounter--;
-      return build();
+      return build(false);
     }
 
     if (state.peakCounter === 0 && Math.random() < 0.25) {
@@ -271,15 +278,15 @@ function createFullTelemetryGenerator(schema) {
     if (Math.random() < 0.1) {
       state.stableCounter = Math.floor(randomBetween(1, 2));
     }
-
+   
     return build();
   }
 
   return {
-    generate,
+    generate
   };
 }
 
 module.exports = {
-  createTelemetryGenerator: createFullTelemetryGenerator,
+  createFullTelemetryGenerator,
 };

@@ -133,3 +133,1152 @@
 [2026-06-17 11:13:36] [ERROR] Simulation loop processing crash during generation sequence: Cannot access 'val' before initialization
 [2026-06-17 11:17:35] [ERROR] Simulation loop processing crash during generation sequence: finalValue is not defined
 [2026-06-17 11:17:40] [ERROR] Simulation loop processing crash during generation sequence: finalValue is not defined
+[2026-06-18 10:14:43] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 10:14:48] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 10:14:53] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 10:14:58] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 10:15:03] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 10:15:08] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 10:15:13] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 10:15:18] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 10:15:21] [ERROR] Critical failure during bootstrap registration chain execution: fetch failed
+[2026-06-18 10:15:40] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 10:15:45] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 10:16:23] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 10:23:58] [ERROR] uncaughtException: telemetryGenerator.setForceFull is not a function
+TypeError: telemetryGenerator.setForceFull is not a function
+    at MqttClient.<anonymous> (/home/rmilica/devicesimulator/sim-test.js:240:24)
+    at MqttClient.emit (node:events:520:35)
+    at Readable.<anonymous> (/home/rmilica/devicesimulator/node_modules/mqtt/build/lib/client.js:1246:26)
+    at Readable.emit (node:events:508:28)
+    at endReadableNT (/home/rmilica/devicesimulator/node_modules/readable-stream/lib/internal/streams/readable.js:1233:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+[2026-06-18 10:24:35] [ERROR] uncaughtException: telemetryGenerator.setForceFull is not a function
+TypeError: telemetryGenerator.setForceFull is not a function
+    at MqttClient.<anonymous> (/home/rmilica/devicesimulator/sim-test.js:240:24)
+    at MqttClient.emit (node:events:520:35)
+    at Readable.<anonymous> (/home/rmilica/devicesimulator/node_modules/mqtt/build/lib/client.js:1246:26)
+    at Readable.emit (node:events:508:28)
+    at endReadableNT (/home/rmilica/devicesimulator/node_modules/readable-stream/lib/internal/streams/readable.js:1233:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+[2026-06-18 10:26:50] [ERROR] uncaughtException: telemetryGenerator.setForceFull is not a function
+TypeError: telemetryGenerator.setForceFull is not a function
+    at MqttClient.<anonymous> (/home/rmilica/devicesimulator/sim-test.js:241:24)
+    at MqttClient.emit (node:events:520:35)
+    at Readable.<anonymous> (/home/rmilica/devicesimulator/node_modules/mqtt/build/lib/client.js:1246:26)
+    at Readable.emit (node:events:508:28)
+    at endReadableNT (/home/rmilica/devicesimulator/node_modules/readable-stream/lib/internal/streams/readable.js:1233:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+[2026-06-18 10:29:40] [ERROR] uncaughtException: telemetryGenerator.setForceFull is not a function
+TypeError: telemetryGenerator.setForceFull is not a function
+    at MqttClient.<anonymous> (/home/rmilica/devicesimulator/sim-test.js:241:24)
+    at MqttClient.emit (node:events:520:35)
+    at Readable.<anonymous> (/home/rmilica/devicesimulator/node_modules/mqtt/build/lib/client.js:1246:26)
+    at Readable.emit (node:events:508:28)
+    at endReadableNT (/home/rmilica/devicesimulator/node_modules/readable-stream/lib/internal/streams/readable.js:1233:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+[2026-06-18 10:30:00] [ERROR] uncaughtException: telemetryGenerator.setForceFull is not a function
+TypeError: telemetryGenerator.setForceFull is not a function
+    at MqttClient.<anonymous> (/home/rmilica/devicesimulator/sim-test.js:241:24)
+    at MqttClient.emit (node:events:520:35)
+    at Readable.<anonymous> (/home/rmilica/devicesimulator/node_modules/mqtt/build/lib/client.js:1246:26)
+    at Readable.emit (node:events:508:28)
+    at endReadableNT (/home/rmilica/devicesimulator/node_modules/readable-stream/lib/internal/streams/readable.js:1233:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+[2026-06-18 10:32:03] [ERROR] uncaughtException: telemetryGenerator.setForceFull is not a function
+TypeError: telemetryGenerator.setForceFull is not a function
+    at MqttClient.<anonymous> (/home/rmilica/devicesimulator/sim-test.js:241:24)
+    at MqttClient.emit (node:events:520:35)
+    at Readable.<anonymous> (/home/rmilica/devicesimulator/node_modules/mqtt/build/lib/client.js:1246:26)
+    at Readable.emit (node:events:508:28)
+    at endReadableNT (/home/rmilica/devicesimulator/node_modules/readable-stream/lib/internal/streams/readable.js:1233:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+[2026-06-18 10:33:16] [ERROR] uncaughtException: telemetryGenerator.setForceFull is not a function
+TypeError: telemetryGenerator.setForceFull is not a function
+    at MqttClient.<anonymous> (/home/rmilica/devicesimulator/sim-test.js:241:24)
+    at MqttClient.emit (node:events:520:35)
+    at Readable.<anonymous> (/home/rmilica/devicesimulator/node_modules/mqtt/build/lib/client.js:1246:26)
+    at Readable.emit (node:events:508:28)
+    at endReadableNT (/home/rmilica/devicesimulator/node_modules/readable-stream/lib/internal/streams/readable.js:1233:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+[2026-06-18 10:33:43] [ERROR] uncaughtException: telemetryGenerator.setForceFull is not a function
+TypeError: telemetryGenerator.setForceFull is not a function
+    at MqttClient.<anonymous> (/home/rmilica/devicesimulator/sim-test.js:241:24)
+    at MqttClient.emit (node:events:520:35)
+    at Readable.<anonymous> (/home/rmilica/devicesimulator/node_modules/mqtt/build/lib/client.js:1246:26)
+    at Readable.emit (node:events:508:28)
+    at endReadableNT (/home/rmilica/devicesimulator/node_modules/readable-stream/lib/internal/streams/readable.js:1233:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+[2026-06-18 10:36:31] [ERROR] uncaughtException: telemetryGenerator.setForceFull is not a function
+TypeError: telemetryGenerator.setForceFull is not a function
+    at MqttClient.<anonymous> (/home/rmilica/devicesimulator/sim-test.js:241:24)
+    at MqttClient.emit (node:events:520:35)
+    at Readable.<anonymous> (/home/rmilica/devicesimulator/node_modules/mqtt/build/lib/client.js:1246:26)
+    at Readable.emit (node:events:508:28)
+    at endReadableNT (/home/rmilica/devicesimulator/node_modules/readable-stream/lib/internal/streams/readable.js:1233:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+[2026-06-18 10:39:09] [ERROR] uncaughtException: telemetryGenerator.setForceFull is not a function
+TypeError: telemetryGenerator.setForceFull is not a function
+    at MqttClient.<anonymous> (/home/rmilica/devicesimulator/sim-test.js:241:24)
+    at MqttClient.emit (node:events:520:35)
+    at Readable.<anonymous> (/home/rmilica/devicesimulator/node_modules/mqtt/build/lib/client.js:1246:26)
+    at Readable.emit (node:events:508:28)
+    at endReadableNT (/home/rmilica/devicesimulator/node_modules/readable-stream/lib/internal/streams/readable.js:1233:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+[2026-06-18 10:43:38] [ERROR] uncaughtException: createFullTelemetryGenerator is not defined
+ReferenceError: createFullTelemetryGenerator is not defined
+    at Object.<anonymous> (/home/rmilica/devicesimulator/tel-gen3.js:291:3)
+    at Module._compile (node:internal/modules/cjs/loader:1812:14)
+    at Object..js (node:internal/modules/cjs/loader:1943:10)
+    at Module.load (node:internal/modules/cjs/loader:1533:32)
+    at Module._load (node:internal/modules/cjs/loader:1335:12)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    at Module.require (node:internal/modules/cjs/loader:1556:12)
+    at require (node:internal/modules/helpers:152:16)
+    at Object.<anonymous> (/home/rmilica/devicesimulator/sim-test.js:89:42)
+    at Module._compile (node:internal/modules/cjs/loader:1812:14)
+[2026-06-18 10:43:56] [ERROR] uncaughtException: createFullTelemetryGenerator is not defined
+ReferenceError: createFullTelemetryGenerator is not defined
+    at Object.<anonymous> (/home/rmilica/devicesimulator/tel-gen3.js:291:3)
+    at Module._compile (node:internal/modules/cjs/loader:1812:14)
+    at Object..js (node:internal/modules/cjs/loader:1943:10)
+    at Module.load (node:internal/modules/cjs/loader:1533:32)
+    at Module._load (node:internal/modules/cjs/loader:1335:12)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    at Module.require (node:internal/modules/cjs/loader:1556:12)
+    at require (node:internal/modules/helpers:152:16)
+    at Object.<anonymous> (/home/rmilica/devicesimulator/sim-test.js:89:42)
+    at Module._compile (node:internal/modules/cjs/loader:1812:14)
+[2026-06-18 10:47:44] [ERROR] uncaughtException: telemetryGenerator.setForceFull is not a function
+TypeError: telemetryGenerator.setForceFull is not a function
+    at MqttClient.<anonymous> (/home/rmilica/devicesimulator/sim-test.js:241:24)
+    at MqttClient.emit (node:events:520:35)
+    at Readable.<anonymous> (/home/rmilica/devicesimulator/node_modules/mqtt/build/lib/client.js:1246:26)
+    at Readable.emit (node:events:508:28)
+    at endReadableNT (/home/rmilica/devicesimulator/node_modules/readable-stream/lib/internal/streams/readable.js:1233:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+[2026-06-18 10:52:59] [ERROR] uncaughtException: telemetryGenerator.setForceFull is not a function
+TypeError: telemetryGenerator.setForceFull is not a function
+    at MqttClient.<anonymous> (/home/rmilica/devicesimulator/sim-test.js:241:24)
+    at MqttClient.emit (node:events:520:35)
+    at Readable.<anonymous> (/home/rmilica/devicesimulator/node_modules/mqtt/build/lib/client.js:1246:26)
+    at Readable.emit (node:events:508:28)
+    at endReadableNT (/home/rmilica/devicesimulator/node_modules/readable-stream/lib/internal/streams/readable.js:1233:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+[2026-06-18 13:16:59] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:16:59] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:16:59] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:00] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:00] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:00] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:01] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:01] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:01] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:01] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:01] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:02] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:02] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:02] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:02] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:02] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:02] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:02] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:02] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:02] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:02] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:02] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:02] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:02] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:02] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:02] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:03] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:03] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:03] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:03] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:03] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:03] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:03] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:03] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:03] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:03] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:03] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:03] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:03] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:03] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:03] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:03] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:03] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:03] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:03] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:03] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:03] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:04] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:04] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:04] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:04] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:04] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:04] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:04] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:04] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:04] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:04] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:04] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:04] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:04] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:04] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:04] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:04] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:04] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:04] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:04] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:04] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:04] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:04] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:04] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:04] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:04] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:04] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:04] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:04] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:04] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:04] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:04] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:04] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:04] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:04] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:04] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:04] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:04] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:04] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:04] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:04] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:04] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:05] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:05] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:05] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:05] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:05] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:05] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:05] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:05] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:05] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:05] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:05] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:05] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:05] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:05] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:05] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:05] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:05] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:05] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:06] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:06] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:06] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:06] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:06] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:07] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:07] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:07] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:07] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:07] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:07] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:07] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:07] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:07] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:07] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:07] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:07] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:07] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:07] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:07] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:08] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:08] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:08] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:08] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:08] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:08] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:08] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:08] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:08] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:08] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:08] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:08] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:08] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:08] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:08] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:08] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:08] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:08] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:08] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:08] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:08] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:09] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:09] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:09] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:09] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:09] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:09] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:09] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:09] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:09] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:09] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:09] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:09] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:09] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:09] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:09] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:09] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:09] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:09] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:09] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:09] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:09] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:09] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:09] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:09] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:09] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:09] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:09] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:09] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:09] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:09] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:09] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:09] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:09] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:09] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:09] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:09] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:09] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:09] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:09] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:09] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:09] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:10] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:10] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:10] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:10] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:10] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:10] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:10] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:10] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:10] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:10] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:10] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:10] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:10] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:10] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:10] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:10] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:10] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:10] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:11] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:11] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:11] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:11] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:11] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:12] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:12] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:12] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:12] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:12] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:12] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:12] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:12] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:12] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:12] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:12] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:12] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:12] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:12] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:12] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:13] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:13] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:13] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:13] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:13] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:13] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:13] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:13] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:13] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:13] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:13] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:13] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:13] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:13] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:13] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:13] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:13] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:13] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:13] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:13] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:13] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:14] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:14] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:14] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:14] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:14] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:14] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:14] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:14] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:14] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:14] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:14] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:14] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:14] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:14] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:14] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:14] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:14] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:14] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:14] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:14] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:14] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:14] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:14] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:14] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:14] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:14] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:14] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:14] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:14] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:14] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:14] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:14] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:14] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:14] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:14] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:14] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:14] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:14] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:14] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:14] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:15] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:15] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:15] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:15] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:15] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:15] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:15] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:15] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:15] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:15] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:15] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:15] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:15] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:15] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:15] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:15] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:15] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:15] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:15] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:16] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:16] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:16] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:16] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:16] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:17] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:17] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:17] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:17] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:17] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:17] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:17] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:17] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:17] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:17] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:17] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:17] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:17] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:17] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:17] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:18] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:18] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:18] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:18] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:18] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:18] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:18] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:18] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:18] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:18] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:18] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:18] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:18] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:18] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:18] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:18] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:18] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:18] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:18] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:18] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:18] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:19] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:19] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:19] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:19] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:19] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:19] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:19] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:19] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:19] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:19] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:19] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:19] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:19] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:19] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:19] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:19] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:19] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:19] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:19] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:19] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:19] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:19] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:19] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:19] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:19] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:19] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:19] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:19] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:19] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:19] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:19] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:19] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:19] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:19] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:19] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:19] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:19] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:19] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:19] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:19] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:20] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:20] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:20] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:20] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:20] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:20] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:20] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:20] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:20] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:20] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:20] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:20] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:20] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:20] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:20] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:20] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:20] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:20] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:20] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:21] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:21] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:21] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:21] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:21] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:22] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:22] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:22] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:22] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:22] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:22] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:22] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:22] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:22] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:22] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:22] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:22] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:22] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:22] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:22] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:23] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:23] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:23] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:23] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:23] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:23] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:23] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:23] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:23] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:23] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:23] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:23] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:23] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:23] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:23] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:23] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:23] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:23] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:23] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:23] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:23] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:24] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:24] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:24] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:24] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:24] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:24] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:24] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:24] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:24] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:24] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:24] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:24] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:24] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:24] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:24] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:24] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:24] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:24] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:24] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:24] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:24] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:24] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:24] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:24] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:24] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:24] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:24] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:24] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:24] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:24] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:24] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:24] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:24] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:24] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:24] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:24] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:24] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:24] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:24] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:24] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:25] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:25] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:25] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:25] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:25] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:25] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:25] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:25] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:25] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:25] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:25] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:25] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:25] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:25] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:25] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:25] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:25] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:25] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:25] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:26] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:26] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:26] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:26] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:26] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:27] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:27] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:27] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:27] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:27] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:27] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:27] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:27] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:27] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:27] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:27] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:27] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:27] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:27] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:27] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:28] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:28] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:28] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:28] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:28] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:28] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:28] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:28] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:28] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:28] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:28] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:28] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:28] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:28] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:28] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:28] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:28] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:28] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:28] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:28] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:28] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:29] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:29] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:29] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:29] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:29] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:29] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:29] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:29] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:29] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:29] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:29] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:29] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:29] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:29] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:29] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:29] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:29] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:29] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:29] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:29] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:29] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:29] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:29] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:29] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:29] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:29] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:29] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:29] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:29] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:29] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:29] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:29] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:29] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:29] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:29] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:29] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:29] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:29] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:29] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:29] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:30] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:30] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:30] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:30] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:30] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:30] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:30] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:30] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:30] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:30] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:30] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:30] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:30] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:30] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:30] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:30] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:30] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:30] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:30] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:31] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:31] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:31] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:31] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:31] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:32] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:32] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:32] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:32] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:32] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:32] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:32] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:32] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:32] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:32] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:32] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:32] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:32] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:32] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:32] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:33] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:33] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:33] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:33] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:33] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:33] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:33] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:33] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:33] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:33] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:33] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:33] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:33] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:33] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:33] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:33] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:33] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:33] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:33] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:33] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:33] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:34] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:34] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:34] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:34] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:34] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:34] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:34] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:34] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:34] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:34] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:34] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:34] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:34] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:34] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:34] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:34] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:34] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:34] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:34] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:34] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:34] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:34] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:34] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:34] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:34] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:34] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:34] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:34] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:34] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:34] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:34] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:34] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:34] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:34] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:34] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:34] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:34] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:34] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:34] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:34] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:35] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:35] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:35] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:35] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:35] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:35] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:35] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:35] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:35] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:35] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:35] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:35] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:35] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:35] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:35] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:35] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:35] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:35] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:35] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:36] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:36] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:36] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:36] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:36] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:37] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:37] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:37] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:37] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:37] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:37] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:37] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:37] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:37] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:37] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:37] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:37] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:37] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:37] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:37] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:38] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:38] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:38] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:38] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:38] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:38] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:38] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:38] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:38] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:38] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:38] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:38] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:38] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:38] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:38] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:38] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:38] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:38] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:38] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:38] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:38] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:39] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:39] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:39] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:39] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:39] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:39] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:39] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:39] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:39] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:39] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:39] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:39] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:39] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:39] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:39] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:39] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:39] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:39] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:39] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:39] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:39] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:39] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:39] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:39] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:39] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:39] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:39] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:39] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:39] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:39] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:39] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:39] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:39] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:39] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:39] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:39] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:39] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:39] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:39] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:40] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:40] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:40] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:40] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:40] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:40] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:40] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:40] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:40] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:40] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:40] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:40] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:40] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:40] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:40] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:40] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:40] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:40] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:40] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:40] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:41] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:41] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:41] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:41] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:41] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:42] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:42] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:42] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:42] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:42] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:42] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:42] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:42] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:42] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:42] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:42] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:42] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:42] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:42] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:42] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:43] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:43] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:43] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:43] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:43] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:43] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:43] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:43] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:43] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:43] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:43] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:43] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:43] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:43] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:43] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:43] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:43] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:43] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:43] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:43] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:43] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:44] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:44] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:44] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:44] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:44] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:44] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:44] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:44] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:44] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:44] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:44] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:44] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:44] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:44] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:44] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:44] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:44] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:44] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:44] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:44] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:44] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:44] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:44] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:44] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:44] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:44] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:44] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:44] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:44] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:44] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:44] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:44] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:44] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:44] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:44] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:44] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:44] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:44] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:45] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:45] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:45] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:45] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:45] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:45] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:45] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:45] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:45] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:45] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:45] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:45] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:45] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:45] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:45] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:45] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:45] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:45] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:45] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:45] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:45] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:46] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:46] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:46] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:46] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:46] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:47] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:47] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:47] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:47] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:47] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:47] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:47] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:47] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:47] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:47] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:47] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:47] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:47] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:47] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:47] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:48] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:48] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:48] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:48] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:48] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:48] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:48] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:48] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:48] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:48] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:48] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:48] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:48] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:48] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:48] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:48] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:48] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:48] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:48] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:48] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:48] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:49] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:49] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:49] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:49] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:49] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:49] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:49] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:49] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:49] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:49] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:49] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:49] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:49] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:49] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:49] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:49] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:49] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:49] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:49] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:49] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:49] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:49] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:49] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:49] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:49] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:49] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:49] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:49] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:49] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:49] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:49] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:49] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:49] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:49] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:49] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:49] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:49] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:49] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:50] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:50] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:50] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:50] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:50] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:50] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:50] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:50] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:50] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:50] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:50] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:50] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:50] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:50] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:50] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:50] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:50] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:50] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:50] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:50] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:50] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:51] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:51] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:51] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:51] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:51] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:52] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:52] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:52] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:52] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:52] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-06-18 13:17:52] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined

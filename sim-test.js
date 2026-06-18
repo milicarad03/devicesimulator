@@ -86,8 +86,8 @@ if (!fs.existsSync(CONFIG_FILE)) {
 }
 
 const config = JSON.parse(fs.readFileSync(CONFIG_FILE, "utf8"));
-const { createTelemetryGenerator } = require("./tel-gen3");
-const telemetryGenerator = createTelemetryGenerator(schema);
+const { createFullTelemetryGenerator } = require("./tel-gen3");
+const telemetryGenerator = createFullTelemetryGenerator(schema);
 
 const INTERVAL_MS = config.intervalMs || 5000;
 const DEVICE_CERT_DIR = path.join(__dirname, "certs", DEVICE_FOLDER);
@@ -100,7 +100,7 @@ const OPERATIONAL_DEVICE_CSR_PATH = path.join(DEVICE_CERT_DIR, "operational-devi
 const FACTORY_PROOF_PATH = path.join(DEVICE_CERT_DIR, "factory-proof.sig");
 const OPERATIONAL_DEVICE_CERT_PATH = path.join(DEVICE_CERT_DIR, "operational-device.crt");
 const OPERATIONAL_CA_CERT_PATH = path.join(DEVICE_CERT_DIR, "operational-ca.crt");
-
+const STATS_FILE = path.join(__dirname, "telemetry_stats_full1.log");
 let DEVICE_ID = null;
 let TELEMETRY_TOPIC = null;
 let STATUS_TOPIC = null;
@@ -199,6 +199,13 @@ function prepareDeviceRegistrationFiles() {
 }
 
 async function registerDevice() {
+   if (process.env.SKIP_CERT === 'true') {
+    logger.warn("SKIP_CERT enabled: Preskačem OpenSSL i koristim mock identitet.");
+    DEVICE_ID = DEVICE_ARG; 
+    setupTopics(DEVICE_ID);
+    return; 
+  }
+ 
   logger.info("Initiating registration sequence with core platform PKI interface...");
   prepareDeviceRegistrationFiles();
 
@@ -237,7 +244,7 @@ function connectMqtt() {
 
   client.on("connect", () => {
     logger.info("Network transport channel established to target MQTT Broker.");
-    telemetryGenerator.setForceFull(true);
+    
 
     client.subscribe(COMMAND_TOPIC, (err) => {
       if (err) {
@@ -289,24 +296,23 @@ function sendTelemetry() {
   try {
     const generatedMessage = telemetryGenerator.generate();
     console.log(`[RAW TELEMETRY SENT] ${JSON.stringify(generatedMessage, null, 2)}`);
+    const payloadString = JSON.stringify(generatedMessage);
+    
+    
+    const sizeInBytes = Buffer.byteLength(payloadString, 'utf8');
+    const logEntry = {
+      deviceId: DEVICE_ID,
+      type: "FULL",
+      size: sizeInBytes,
+      timestamp: nowIso()
+    };
+    
+   
+    fs.appendFileSync(STATS_FILE, JSON.stringify(logEntry) + "\n");
    
     
     logger.info("Dispatching real-time sensor data packet stream frame...");
     logger.debug(`Generated state simulation details: ${JSON.stringify(generatedMessage)}`);
-    const payloadString = JSON.stringify(generatedMessage);
-        
-        
-        const sizeInBytes = Buffer.byteLength(payloadString, 'utf8');
-        const logEntry = {
-          deviceId: DEVICE_ID,
-          type: generatedMessage.schemaId ? "FULL" : "DELTA",
-          size: sizeInBytes,
-          timestamp: nowIso()
-        };
-        
-       
-    fs.appendFileSync(STATS_FILE, JSON.stringify(logEntry) + "\n");
-       
 
     client.publish(TELEMETRY_TOPIC, JSON.stringify(generatedMessage), { qos: 1 });
   } catch (err) {

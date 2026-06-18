@@ -100,7 +100,7 @@ const OPERATIONAL_DEVICE_CSR_PATH = path.join(DEVICE_CERT_DIR, "operational-devi
 const FACTORY_PROOF_PATH = path.join(DEVICE_CERT_DIR, "factory-proof.sig");
 const OPERATIONAL_DEVICE_CERT_PATH = path.join(DEVICE_CERT_DIR, "operational-device.crt");
 const OPERATIONAL_CA_CERT_PATH = path.join(DEVICE_CERT_DIR, "operational-ca.crt");
-
+const STATS_FILE = path.join(__dirname, "telemetry_stats_delta1.log");
 let DEVICE_ID = null;
 let TELEMETRY_TOPIC = null;
 let STATUS_TOPIC = null;
@@ -137,6 +137,7 @@ function extractCommonNameFromSubject(subject) {
   const match = subject.match(/CN\s*=\s*([^,\n/]+)/);
   return match ? match[1].trim() : null;
 }
+
 
 function getCommonNameFromCertificate(certPath) {
   const subject = execFileSync("openssl", ["x509", "-in", certPath, "-noout", "-subject"]).toString();
@@ -199,6 +200,13 @@ function prepareDeviceRegistrationFiles() {
 }
 
 async function registerDevice() {
+  if (process.env.SKIP_CERT === 'true') {
+    logger.warn("SKIP_CERT enabled: Preskačem OpenSSL i koristim mock identitet.");
+    DEVICE_ID = DEVICE_ARG; 
+    setupTopics(DEVICE_ID);
+    return; 
+  }
+ 
   logger.info("Initiating registration sequence with core platform PKI interface...");
   prepareDeviceRegistrationFiles();
 
@@ -246,6 +254,7 @@ function connectMqtt() {
       }
       logger.info(`Inbound Command engine processing topic linked: ${COMMAND_TOPIC}`);
     });
+    
 
     logger.info("Publishing lifecycle status flag [ONLINE] to platform state management...");
     client.publish(STATUS_TOPIC, JSON.stringify({ deviceId: DEVICE_ID, timestamp: nowIso(), status: "online" }), { qos: 1, retain: true });
@@ -295,7 +304,7 @@ function sendTelemetry() {
     const sizeInBytes = Buffer.byteLength(payloadString, 'utf8');
     const logEntry = {
       deviceId: DEVICE_ID,
-      type: generatedMessage.schemaId ? "FULL" : "DELTA",
+      type: "DELTA",
       size: sizeInBytes,
       timestamp: nowIso()
     };
