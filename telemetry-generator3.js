@@ -187,14 +187,20 @@ function createTelemetryGenerator(schema) {
     if (schemaId) {
       payload.schemaId = schemaId;
     }
+    const fields = Object.keys(fieldDefinitions);
+    const desiredPercentage = forceFull ? 1.0 : randomBetween(0.1, 0.8); 
+    const activeFields = fields.filter(() => Math.random() < desiredPercentage);
 
     Object.keys(fieldDefinitions).forEach((path) => {
 
 
       const isRequired = path.includes("status") || path === "schemaId";
 
-      if ( !forceFull && !isRequired && Math.random() < 0.5) {
-        return; 
+      //if ( !forceFull && !isRequired && Math.random() < 0.5) {
+       // return; 
+     // }
+      if (!forceFull && !isRequired && !activeFields.includes(path)) {
+        return;
       }
       const def = fieldDefinitions[path];
 

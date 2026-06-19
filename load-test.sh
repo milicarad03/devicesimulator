@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo "Cleaning up old processes..."
-pkill -9 -f "sim-test.js"
+pkill -9 -f "sim.js"
 pkill -9 -f "dummy-listener.js"
 
 echo "Removing old log files..."
