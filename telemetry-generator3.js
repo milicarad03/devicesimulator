@@ -8,6 +8,9 @@ class GeneratorLogger {
 const logger = new GeneratorLogger();
 
 function createTelemetryGenerator(schema) {
+  if (!schema || typeof schema !== 'object') {
+    throw new Error("Invalid schema");
+  }
   let nextIsFull=true;
   const state = {
     stableCounter: 0,
@@ -192,6 +195,7 @@ function createTelemetryGenerator(schema) {
     const activeFields = fields.filter(() => Math.random() < desiredPercentage);
 
     Object.keys(fieldDefinitions).forEach((path) => {
+      //const isRequired = schema.required?.includes(key) || path.includes("status");
 
 
       const isRequired = path.includes("status") || path === "schemaId";

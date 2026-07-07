@@ -1282,3 +1282,24 @@ TypeError: telemetryGenerator.setForceFull is not a function
 [2026-06-18 13:17:52] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
 [2026-06-18 13:17:52] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
 [2026-06-18 13:17:52] [ERROR] Simulation loop processing crash during generation sequence: STATS_FILE is not defined
+[2026-07-03 11:26:04] [ERROR] Critical failure during bootstrap registration chain execution: fetch failed
+[2026-07-03 14:04:24] [ERROR] Malformed command envelope transaction context parsed: command is not defined
+[2026-07-03 14:04:25] [ERROR] Malformed command envelope transaction context parsed: command is not defined
+[2026-07-03 14:04:30] [ERROR] Malformed command envelope transaction context parsed: command is not defined
+[2026-07-03 14:04:30] [ERROR] Malformed command envelope transaction context parsed: command is not defined
+[2026-07-03 14:04:58] [ERROR] Malformed command envelope transaction context parsed: command is not defined
+[2026-07-03 14:04:59] [ERROR] Malformed command envelope transaction context parsed: command is not defined
+[2026-07-03 14:05:04] [ERROR] Malformed command envelope transaction context parsed: command is not defined
+[2026-07-03 14:05:04] [ERROR] Malformed command envelope transaction context parsed: command is not defined
+[2026-07-03 14:05:09] [ERROR] Malformed command envelope transaction context parsed: command is not defined
+[2026-07-03 14:05:10] [ERROR] Malformed command envelope transaction context parsed: command is not defined
+[2026-07-03 14:12:20] [ERROR] Malformed command envelope transaction context parsed: command is not defined
+[2026-07-03 14:12:20] [ERROR] Malformed command envelope transaction context parsed: command is not defined
+[2026-07-03 14:12:26] [ERROR] Malformed command envelope transaction context parsed: command is not defined
+[2026-07-03 14:12:26] [ERROR] Malformed command envelope transaction context parsed: command is not defined
+[2026-07-03 14:15:09] [ERROR] Malformed command envelope transaction context parsed: command is not defined
+[2026-07-03 14:15:10] [ERROR] Malformed command envelope transaction context parsed: command is not defined
+[2026-07-06 09:29:29] [ERROR] Malformed command envelope transaction context parsed: command is not defined
+[2026-07-06 09:29:30] [ERROR] Malformed command envelope transaction context parsed: command is not defined
+[2026-07-06 09:29:35] [ERROR] Malformed command envelope transaction context parsed: command is not defined
+[2026-07-06 09:29:35] [ERROR] Malformed command envelope transaction context parsed: command is not defined

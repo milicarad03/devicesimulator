@@ -111,6 +111,7 @@ let client = null;
 let telemetryTimer = null;
 
 let deviceState = { led: false, mode: "AUTO" };
+let isTelemetryActive = false;
 
 function nowIso() { return new Date().toISOString(); }
 
@@ -242,6 +243,7 @@ function connectMqtt() {
 
   logger.info(`Connecting to broker instance URL: ${BROKER_URL}`);
   client = mqtt.connect(BROKER_URL);
+  
 
   client.on("connect", () => {
     logger.info("Network transport channel established to target MQTT Broker.");
@@ -264,26 +266,44 @@ function connectMqtt() {
 
   client.on("message", (topic, payload) => {
     try {
-      const command = JSON.parse(payload.toString());
-      logger.info(`Inbound transaction processing command request token: ${command.command}`);
+      const commandObj = JSON.parse(payload.toString());
+      console.log("DEBUG - Primljena poruka:", commandObj);
+      logger.info(`Inbound transaction processing command request token: ${commandObj.command}`);
       logger.debug(`Raw dynamic command parameters payload: ${payload.toString()}`);
-
-      if (command.command === "SET_LED") {
-        deviceState.led = Boolean(command.value);
-        logger.info(`Execution side effect applied -> Hardware Component state led: ${deviceState.led}`);
-        sendCommandResponse(command.command, true, { state: deviceState });
+      
+      if (commandObj.command === "SET_STATE") {
+        const state = commandObj.payload?.state; 
+        
+        if (state === 'ACTIVE') {
+          isTelemetryActive = true;
+          logger.info("Telemetry STREAM ENABLED.");
+          sendCommandResponse(commandObj.command, true, { status: "ACTIVE" });
+        } else if (state === 'IDLE') {
+          isTelemetryActive = false;
+          logger.info("Telemetry STREAM DISABLED.");
+          sendCommandResponse(commandObj.command, true, { status: "IDLE" });
+        } else {
+          sendCommandResponse(commandObj.command, false, { error: "Invalid state. Use ACTIVE or IDLE." });
+        }
         return;
       }
 
-      if (command.command === "SET_MODE") {
-        deviceState.mode = String(command.value);
+      if (commandObj.command === "SET_LED") {
+        deviceState.led = Boolean(commandObj.value);
+        logger.info(`Execution side effect applied -> Hardware Component state led: ${deviceState.led}`);
+        sendCommandResponse(commandObj.command, true, { state: deviceState });
+        return;
+      }
+
+      if (commandObj.command === "SET_MODE") {
+        deviceState.mode = String(commandObj.payload?.value);
         logger.info(`Execution side effect applied -> Internal operating paradigm mode: ${deviceState.mode}`);
-        sendCommandResponse(command.command, true, { state: deviceState });
+        sendCommandResponse(commandObj.command, true, { state: deviceState });
         return;
       }
 
       logger.warn(`Unrecognized action schema. Discarding call command identifier: ${command.command}`);
-      sendCommandResponse(command.command, false, { error: "Unknown command profile received." });
+      sendCommandResponse(commandObj.command, false, { error: "Unknown command profile received." });
     } catch (error) {
       logger.error(`Malformed command envelope transaction context parsed: ${error.message}`);
     }
@@ -295,10 +315,27 @@ function connectMqtt() {
 }
 
 function sendTelemetry() {
+  if(!isTelemetryActive) return;
   try {
-    const generatedMessage = telemetryGenerator.generate();
+   // const generatedMessage = telemetryGenerator.generate();
+   let generatedMessage;
+    try {
+      generatedMessage = telemetryGenerator.generate();
+    } catch (genErr) {
+      logger.error(`[TELEMETRY] Generator failed to produce data: ${genErr.message}`);
+      // Ovde vraćamo iz funkcije da ne bismo pokušali slanje "undefined" poruke
+      return; 
+    }
+    if (!generatedMessage) {
+        logger.warn("[TELEMETRY] Generator returned empty object.");
+        return;
+    }
     console.log(`[RAW TELEMETRY SENT] ${JSON.stringify(generatedMessage, null, 2)}`);
     const payloadString = JSON.stringify(generatedMessage);
+    if (Buffer.byteLength(payloadString) > 1024 * 64) { 
+        logger.warn("Payload prevelik, preskačem slanje...");
+        return;
+    }
     
     
     const sizeInBytes = Buffer.byteLength(payloadString, 'utf8');
@@ -308,8 +345,17 @@ function sendTelemetry() {
       size: sizeInBytes,
       timestamp: nowIso()
     };
-    
-   
+    const MAX_LOG_SIZE = 5 * 1024 * 1024; 
+    if (fs.existsSync(STATS_FILE)) {
+      const stats = fs.statSync(STATS_FILE);
+      if (stats.size > MAX_LOG_SIZE) {
+        
+        fs.truncateSync(STATS_FILE, 0); 
+        logger.warn("Log fajl je dostigao limit, resetovan.");
+        
+      }
+    }
+
     fs.appendFileSync(STATS_FILE, JSON.stringify(logEntry) + "\n");
    
     
@@ -344,6 +390,7 @@ process.on("SIGINT", () => {
 });
 
 async function main() {
+  isTelemetryActive=false;
   try {
     await registerDevice();
     connectMqtt();

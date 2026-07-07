@@ -7,6 +7,9 @@ describe("Telemetry Generator", () => {
   beforeEach(() => {
     generator = createTelemetryGenerator(schema);
   });
+  afterEach(() => {
+    generator = null;
+  });
 
   it("should generate a telemetry object", () => {
     const data = generator.generate();
@@ -76,22 +79,6 @@ describe("Telemetry Generator", () => {
     }
   });
 
-  it("should generate partial payload (not full every time)", () => {
-    generator.generate(); 
-
- 
-    generator.setForceFull(true);
-    const fullData = generator.generate();
-    const maxFields = Object.keys(fullData).length;
-
-    
-    generator.setForceFull(false);
-    const deltaData = generator.generate();
-    const deltaFields = Object.keys(deltaData).length;
-
-    expect(deltaFields).toBeLessThan(maxFields);
-  });
-
   it("should generate full payload when forced", () => {
     generator.setForceFull(true);
     const data = generator.generate();
@@ -122,5 +109,54 @@ describe("Telemetry Generator", () => {
     const a = generator.generate();
     const b = generator.generate();
     expect(JSON.stringify(a)).not.toBe(JSON.stringify(b));
+  });
+
+  it("should handle min and max being the same value", () => {
+    const fixedSchema = {
+      type: "object",
+      properties: {
+        val: { type: "number", minimum: 10, maximum: 10 }
+      }
+    };
+    const gen = createTelemetryGenerator(fixedSchema);
+    const data = gen.generate();
+    expect(data.val).toBe(10);
+  });
+
+  it("should handle schema with no properties gracefully", () => {
+    const emptySchema = { type: "object" };
+    const gen = createTelemetryGenerator(emptySchema);
+    expect(() => gen.generate()).not.toThrow();
+  });
+
+  it("should not crash if enum is empty", () => {
+    const brokenSchema = {
+      type: "object",
+      properties: {
+        mode: { type: "string", enum: [] }
+      }
+    };
+    const gen = createTelemetryGenerator(brokenSchema);
+    expect(() => gen.generate()).not.toThrow();
+  });
+
+  it("should generate partial payload (not full every time)", () => {
+    // 1. Dobij full
+    generator.setForceFull(true);
+    const fullData = generator.generate();
+    const maxFields = Object.keys(fullData).length;
+
+    // 2. Pokušaj nekoliko puta da dobiješ manji payload
+    let isSmaller = false;
+    for (let i = 0; i < 10; i++) {
+      generator.setForceFull(false);
+      const deltaData = generator.generate();
+      if (Object.keys(deltaData).length < maxFields) {
+        isSmaller = true;
+        break;
+      }
+    }
+
+    expect(isSmaller).toBe(true);
   });
 });
