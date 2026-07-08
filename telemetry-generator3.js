@@ -5,6 +5,7 @@ class GeneratorLogger {
     }
   }
 }
+
 const logger = new GeneratorLogger();
 
 function createTelemetryGenerator(schema) {
@@ -17,6 +18,7 @@ function createTelemetryGenerator(schema) {
     peakCounter: 0,
     baseline: {},
     cycleCounter: 0,
+    lastSent: {},
   };
 
   const fieldDefinitions = {};
@@ -62,7 +64,11 @@ function createTelemetryGenerator(schema) {
       });
     } else {
   
-      fieldDefinitions[currentPath] = subSchema;
+      //fieldDefinitions[currentPath] = subSchema;
+      fieldDefinitions[currentPath] = {
+        ...subSchema,
+        reporting: subSchema["x-reporting"] || { "ACTIVE": 5000, "IDLE": 300000 }
+      };
 
       if (subSchema.type === "number" || subSchema.type === "integer") {
         const min = subSchema.minimum ?? 0;
@@ -89,6 +95,23 @@ function createTelemetryGenerator(schema) {
 
   function round(value) {
     return Number(value.toFixed(1));
+  }
+  function getMinimumInterval(mode = "ACTIVE") {
+    let min = Infinity;
+
+    Object.values(fieldDefinitions).forEach((def) => {
+      const interval = def.reporting?.[mode];
+
+      if (
+        typeof interval === "number" &&
+        interval > 0 &&
+        interval < min
+      ) {
+        min = interval;
+      }
+    });
+
+    return min === Infinity ? 1000 : min;
   }
 
   function applyClamp() {
@@ -159,7 +182,6 @@ function createTelemetryGenerator(schema) {
         const max = fieldDefinitions[path].maximum ?? 100;
         const range = max - min;
 
-        //state.baseline[path] += randomBetween(-0.02 * range, 0.02 * range);
         let shift = randomBetween(-0.02 * range, 0.02 * range);
         
         if (path.includes("temp") || path.includes("temperature")) {
@@ -184,18 +206,61 @@ function createTelemetryGenerator(schema) {
   }
 
  
-  function build(forceFull = false) {
+  function build(mode = "delta") {
+
+  const isFull = mode === "full";
+  const isHeartbeat = mode === "heartbeat";
+
     const payload = {};
     const schemaId = schema.properties?.schemaId?.const;
     if (schemaId) {
       payload.schemaId = schemaId;
     }
     const fields = Object.keys(fieldDefinitions);
-    const desiredPercentage = forceFull ? 1.0 : randomBetween(0.1, 0.8); 
-    const activeFields = fields.filter(() => Math.random() < desiredPercentage);
+    const desiredPercentage = isFull? 1.0 : randomBetween(0.1, 0.8); 
+   //const activeFields = fields.filter(() => Math.random() < desiredPercentage);
+
+    const activeFields = fields;
+
+    const now = Date.now();
 
     Object.keys(fieldDefinitions).forEach((path) => {
       //const isRequired = schema.required?.includes(key) || path.includes("status");
+     /* const isKeepAliveField =
+      path.includes("status") ||
+      path.toLowerCase().includes("serial") ||
+      path.toLowerCase().includes("firmware");*/
+      const def = fieldDefinitions[path];
+      const reportingMode = isHeartbeat ? "IDLE" : "ACTIVE";
+      if(!isFull){
+        const interval = def.reporting[reportingMode];
+       // if(!interval) return;
+        if (interval == null) {
+          return;
+        }
+        if (state.lastSent[path] && (now - state.lastSent[path] < interval)) {
+            return; 
+        }
+                console.log(
+          path,
+          "interval=", interval,
+          "lastSent=", state.lastSent[path],
+          "diff=",
+          state.lastSent[path] ? now - state.lastSent[path] : "FIRST"
+        );
+
+      
+      
+      //  state.lastSent[path] = now;
+      }
+      
+   
+     /* if (def.reporting && def.reporting[mode] === null) {
+        return; 
+      }*/
+    /*  if (isHeartbeat && fieldDefinitions[path].frequency !== FREQUENCY.HEARTBEAT) {
+        return;
+      }*/
 
 
       const isRequired = path.includes("status") || path === "schemaId";
@@ -203,10 +268,10 @@ function createTelemetryGenerator(schema) {
       //if ( !forceFull && !isRequired && Math.random() < 0.5) {
        // return; 
      // }
-      if (!forceFull && !isRequired && !activeFields.includes(path)) {
+      if (!isFull && !isRequired && !activeFields.includes(path) && !isHeartbeat) {
         return;
       }
-      const def = fieldDefinitions[path];
+      //const def = fieldDefinitions[path];
 
       if (def.enum) {
         const randomEnum = def.enum[Math.floor(Math.random() * def.enum.length)];
@@ -216,6 +281,10 @@ function createTelemetryGenerator(schema) {
         const itemsEnum = def.items?.enum;
         const mockArray = itemsEnum && Math.random() > 0.8 ? [itemsEnum[Math.floor(Math.random() * itemsEnum.length)]] : [];
         setDeepValue(payload, path, mockArray);
+
+          state.lastSent[path] = now;
+        
+
 
     } else if (def.type === "number" || def.type === "integer") {
         let val = state[path];
@@ -241,26 +310,45 @@ function createTelemetryGenerator(schema) {
         
         
         setDeepValue(payload, path, finalValue);
+
+        state.lastSent[path] = now;
       }else if (def.type === "boolean") {
         setDeepValue(payload, path, state[path]);
+        state.lastSent[path] = now;
       } else if (def.type === "string") {
 
       if (def.pattern) {
           setDeepValue(payload, path, generateFromPattern(def.pattern));
+
+          state.lastSent[path] = now;
+
         } else if (path.toLowerCase().includes("firmware") || path.toLowerCase().includes("version")) {
+          
           setDeepValue(payload, path, "v1.0.0-release");
+          state.lastSent[path] = now;
+
         } else if (path.toLowerCase().includes("serial")) {
           setDeepValue(payload, path, "INV-2026-XAE412");
+          state.lastSent[path] = now;
+
         }else if (path.includes("errorCode")) {
           setDeepValue(payload, path, "0x0000");
+          state.lastSent[path] = now;
+
         }else {
           setDeepValue(payload, path, "OPERATIONAL");
+          state.lastSent[path] = now;
+
         }
       }
     });
 
     return payload;
   }
+  function generateHeartbeat() {
+    return build("heartbeat");
+  }
+
   function setForceFull(val) {
     nextIsFull = val;
   }
@@ -273,12 +361,12 @@ function createTelemetryGenerator(schema) {
 
     if (isFiveMinuteMark) {
       state.cycleCounter = 0; 
-      return build(true); 
+      return build("full"); 
     }
 
     if (state.stableCounter > 0) {
       state.stableCounter--;
-      return build(false);
+      return build("delta");
     }
 
     if (state.peakCounter === 0 && Math.random() < 0.25) {
@@ -303,14 +391,14 @@ function createTelemetryGenerator(schema) {
     }
     if(nextIsFull){
       nextIsFull=false;
-      return build(true);
+      return build("full");
     }
 
-    return build(false);
+    return build("delta");
   }
 
   return {
-    generate,setForceFull
+    generate,generateHeartbeat,setForceFull, getMinimumInterval
   };
 }
 

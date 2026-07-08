@@ -4,10 +4,16 @@
   "type": "object",
   "required": ["data", "status"],
   "properties": {
-     "schemaId": { 
+    "schemaId": {
       "type": "string",
-      "const": "modelB" 
+      "const": "modelB",
+      "x-reporting": {
+        "ACTIVE": 5000,
+        "IDLE": 120000
+      }
+
     },
+
     "data": {
       "type": "object",
       "required": ["temp", "hum", "press"],
@@ -15,31 +21,49 @@
         "temp": {
           "type": "number",
           "minimum": -50,
-          "maximum": 100
+          "maximum": 100,
+          "x-reporting": {
+            "ACTIVE": 5000,
+            "IDLE": null
+          }
         },
         "hum": {
           "type": "number",
           "minimum": 0,
-          "maximum": 100
+          "maximum": 100,
+          "x-reporting": {
+            "ACTIVE": 3000,
+            "IDLE": null
+          }
         },
         "press": {
           "type": "number",
           "minimum": 300,
-          "maximum": 1200
+          "maximum": 1200,
+          "x-reporting": {
+            "ACTIVE": 5000,
+            "IDLE": null
+          }
         }
       },
       "additionalProperties": false
     },
+
     "status": {
       "type": "object",
       "required": ["ledState"],
       "properties": {
         "ledState": {
-          "type": "boolean"
+          "type": "boolean",
+          "x-reporting": {
+            "ACTIVE": 5000,
+            "IDLE": 120000
+          }
         }
       },
       "additionalProperties": false
     }
   },
+
   "additionalProperties": false
 }

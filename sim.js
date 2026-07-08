@@ -88,10 +88,16 @@ if (!fs.existsSync(CONFIG_FILE)) {
 const config = JSON.parse(fs.readFileSync(CONFIG_FILE, "utf8"));
 const { createTelemetryGenerator } = require("./telemetry-generator3");
 const telemetryGenerator = createTelemetryGenerator(schema);
+const MAX_LOG_SIZE = 5 * 1024 * 1024;
 
-const INTERVAL_MS = config.intervalMs || 5000;
+//const INTERVAL_MS = config.intervalMs || 5000;
+const ACTIVE_INTERVAL = config.intervalMs || 5000;
+//const IDLE_INTERVAL = config.heartbeatMs || 3600000;
+const IDLE_INTERVAL = config.heartbeatMs || 120000;
 const DEVICE_CERT_DIR = path.join(__dirname, "certs", DEVICE_FOLDER);
 logger.debug(`Using local certificates target directory: ${DEVICE_CERT_DIR}`);
+////
+//const schemaConfig = schema.properties.schemaId["x-reporting"];
 
 const FACTORY_DEVICE_KEY_PATH = path.join(DEVICE_CERT_DIR, "factory-device.key");
 const FACTORY_DEVICE_CERT_PATH = path.join(DEVICE_CERT_DIR, "factory-device.crt");
@@ -109,6 +115,9 @@ let RESPONSE_TOPIC = null;
 
 let client = null;
 let telemetryTimer = null;
+
+let logCheckCounter = 0;
+
 
 let deviceState = { led: false, mode: "AUTO" };
 let isTelemetryActive = false;
@@ -237,6 +246,11 @@ async function registerDevice() {
     throw err;
   }
 }
+const activeTick =
+  telemetryGenerator.getMinimumInterval("ACTIVE");
+
+const idleTick =
+  telemetryGenerator.getMinimumInterval("IDLE");
 
 function connectMqtt() {
   if (!DEVICE_ID) throw new Error("Initialization fault: MQTT startup aborted due to undefined parameters.");
@@ -261,7 +275,9 @@ function connectMqtt() {
     logger.info("Publishing lifecycle status flag [ONLINE] to platform state management...");
     client.publish(STATUS_TOPIC, JSON.stringify({ deviceId: DEVICE_ID, timestamp: nowIso(), status: "online" }), { qos: 1, retain: true });
 
-    telemetryTimer = setInterval(sendTelemetry, INTERVAL_MS);
+    //telemetryTimer = setInterval(sendTelemetry, INTERVAL_MS);
+    //switchTelemetryInterval(IDLE_INTERVAL);
+    switchTelemetryInterval(idleTick);
   });
 
   client.on("message", (topic, payload) => {
@@ -276,10 +292,12 @@ function connectMqtt() {
         
         if (state === 'ACTIVE') {
           isTelemetryActive = true;
+          switchTelemetryInterval(activeTick);
           logger.info("Telemetry STREAM ENABLED.");
           sendCommandResponse(commandObj.command, true, { status: "ACTIVE" });
         } else if (state === 'IDLE') {
           isTelemetryActive = false;
+          switchTelemetryInterval(idleTick);
           logger.info("Telemetry STREAM DISABLED.");
           sendCommandResponse(commandObj.command, true, { status: "IDLE" });
         } else {
@@ -314,13 +332,27 @@ function connectMqtt() {
   client.on("offline", () => { logger.warn("Transport layer shifted status to OFFLINE."); });
 }
 
+function trimLogFile() {
+  if (!fs.existsSync(STATS_FILE)) return;
+
+  const content = fs.readFileSync(STATS_FILE, "utf8");
+  const lines = content.split("\n").filter(Boolean);
+
+ 
+  if (lines.length > 10) {
+    const lastTen = lines.slice(-10); 
+    fs.writeFileSync(STATS_FILE, lastTen.join("\n") + "\n", "utf8");
+    logger.warn("[LOG ROTATION] Truncated to last 10 lines.");
+  }
+}
 function sendTelemetry() {
-  if(!isTelemetryActive) return;
+//  if(!isTelemetryActive) return;
   try {
    // const generatedMessage = telemetryGenerator.generate();
    let generatedMessage;
     try {
-      generatedMessage = telemetryGenerator.generate();
+      //generatedMessage = telemetryGenerator.generate();
+      generatedMessage = isTelemetryActive ? telemetryGenerator.generate() : telemetryGenerator.generateHeartbeat();
     } catch (genErr) {
       logger.error(`[TELEMETRY] Generator failed to produce data: ${genErr.message}`);
       // Ovde vraćamo iz funkcije da ne bismo pokušali slanje "undefined" poruke
@@ -330,7 +362,8 @@ function sendTelemetry() {
         logger.warn("[TELEMETRY] Generator returned empty object.");
         return;
     }
-    console.log(`[RAW TELEMETRY SENT] ${JSON.stringify(generatedMessage, null, 2)}`);
+    logger.info(`RAW TELEMETRY SENT: ${JSON.stringify(generatedMessage, null, 2)}`);
+   
     const payloadString = JSON.stringify(generatedMessage);
     if (Buffer.byteLength(payloadString) > 1024 * 64) { 
         logger.warn("Payload prevelik, preskačem slanje...");
@@ -345,7 +378,7 @@ function sendTelemetry() {
       size: sizeInBytes,
       timestamp: nowIso()
     };
-    const MAX_LOG_SIZE = 5 * 1024 * 1024; 
+   /*
     if (fs.existsSync(STATS_FILE)) {
       const stats = fs.statSync(STATS_FILE);
       if (stats.size > MAX_LOG_SIZE) {
@@ -355,8 +388,15 @@ function sendTelemetry() {
         
       }
     }
-
+*/
     fs.appendFileSync(STATS_FILE, JSON.stringify(logEntry) + "\n");
+
+    logCheckCounter++;
+
+    if (logCheckCounter % 100 === 0) {
+      trimLogFile();
+    }
+
    
     
     logger.info("Dispatching real-time sensor data packet stream frame...");
@@ -389,6 +429,16 @@ process.on("SIGINT", () => {
   });
 });
 
+function switchTelemetryInterval(intervalMs) {
+  if (telemetryTimer) {
+    clearInterval(telemetryTimer);
+  }
+
+  telemetryTimer = setInterval(
+    sendTelemetry,
+    intervalMs
+  );
+}
 async function main() {
   isTelemetryActive=false;
   try {
