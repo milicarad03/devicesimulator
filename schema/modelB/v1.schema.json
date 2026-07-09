@@ -1,17 +1,87 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "ModelB Telemetry Schema",
+  "title": "ModelB",
   "type": "object",
+
+  "commands": {
+    "SET_LED": {
+      "payload": {
+        "type": "object",
+        "required": ["value"],
+        "properties": {
+          "value": {
+            "type": "boolean"
+          }
+        },
+          "additionalProperties": false
+      }
+    },
+
+    "SET_LED_COLOR": {
+      "payload": {
+        "type": "object",
+        "required": ["color"],
+        "properties": {
+          "color": {
+            "type": "string",
+            "enum": [
+              "RED",
+              "GREEN",
+              "BLUE",
+              "YELLOW",
+              "WHITE"
+            ]
+          }
+        },
+          "additionalProperties": false
+      }
+    },
+
+    "SET_STATE": {
+      "payload": {
+        "type": "object",
+        "required": ["state"],
+        "properties": {
+          "state": {
+            "type": "string",
+            "enum": [
+              "ACTIVE",
+              "IDLE"
+            ]
+          }
+        },
+          "additionalProperties": false
+      }
+    },
+    "SET_MODE": {
+      "payload": {
+        "type": "object",
+        "required": ["value"],
+        "properties": {
+          "value": {
+            "type": "string",
+            "enum": [
+              "AUTO",
+              "RUNNING",
+              "SERVICE"
+            ]
+          }
+        },
+          "additionalProperties": false
+      }
+    }
+  },
+
   "required": ["data", "status"],
+
   "properties": {
     "schemaId": {
       "type": "string",
       "const": "modelB",
       "x-reporting": {
-        "ACTIVE": 5000,
-        "IDLE": 120000
-      }
-
+            "ACTIVE": 6000,
+            "IDLE": 120000
+        }
     },
 
     "data": {
@@ -23,7 +93,7 @@
           "minimum": -50,
           "maximum": 100,
           "x-reporting": {
-            "ACTIVE": 5000,
+            "ACTIVE": 6000,
             "IDLE": null
           }
         },
@@ -40,10 +110,11 @@
           "type": "number",
           "minimum": 300,
           "maximum": 1200,
-          "x-reporting": {
-            "ACTIVE": 5000,
+             "x-reporting": {
+            "ACTIVE": 6000,
             "IDLE": null
           }
+          
         }
       },
       "additionalProperties": false
@@ -51,19 +122,32 @@
 
     "status": {
       "type": "object",
-      "required": ["ledState"],
+      "required": ["ledState", "ledColor"],
       "properties": {
         "ledState": {
           "type": "boolean",
-          "x-reporting": {
-            "ACTIVE": 5000,
+           "x-reporting": {
+            "ACTIVE": 6000,
             "IDLE": 120000
+          }
+        },
+        "ledColor": {
+          "type": "string",
+          "enum": [
+            "RED",
+            "GREEN",
+            "BLUE",
+            "YELLOW",
+            "WHITE"
+          ],
+        "x-reporting": {
+                "ACTIVE": 6000,
+                "IDLE": 120000
           }
         }
       },
       "additionalProperties": false
     }
   },
-
   "additionalProperties": false
 }

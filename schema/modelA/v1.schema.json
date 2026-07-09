@@ -7,7 +7,11 @@
   "properties": {
     "schemaId": { 
       "type": "string",
-      "const": "modelA" 
+      "const": "modelA",
+       "x-reporting": {
+        "ACTIVE": 5000,
+        "IDLE": 120000
+      }
     },
     "telemetry": {
       "type": "object",
@@ -16,20 +20,36 @@
         "temperature": {
           "type": "number",
           "minimum": -50,
-          "maximum": 100
+          "maximum": 100,
+           "x-reporting": {
+            "ACTIVE": 4000,
+            "IDLE": null
+          }
         },
         "humidity": {
           "type": "number",
           "minimum": 0,
-          "maximum": 100
+          "maximum": 100,
+           "x-reporting": {
+            "ACTIVE": 3000,
+            "IDLE": null
+          }
         },
         "pressure": {
           "type": "number",
           "minimum": 300,
-          "maximum": 1200
+          "maximum": 1200,
+          "x-reporting": {
+            "ACTIVE": 4000,
+            "IDLE": null
+          }
         },
         "led": {
-          "type": "boolean"
+          "type": "boolean",
+           "x-reporting": {
+            "ACTIVE": 4000,
+            "IDLE": 120000
+          }
         }
       },
       "additionalProperties": false

@@ -5,7 +5,11 @@
   "properties": {
     "schemaId": { 
       "type": "string",
-      "const": "modelE" 
+      "const": "modelE",
+      "x-reporting": {
+          "ACTIVE": 7000,
+          "IDLE": 120000
+          }
     },
     "device": {
       "type": "object",
@@ -17,9 +21,17 @@
           "properties": {
             "serialNumber": { 
               "type": "string", 
-              "pattern": "^INV-202[0-9]-[A-Z]{3}[0-9]{3}$" 
+              "pattern": "^INV-202[0-9]-[A-Z]{3}[0-9]{3}$",
+                "x-reporting": {
+                "ACTIVE": 7000,
+                "IDLE": 120000
+              }
             },
-            "firmware": { "type": "string" }
+            "firmware": { "type": "string",
+            "x-reporting": {
+              "ACTIVE": 7000,
+              "IDLE": 120000
+            }}
           }
         },
         "status": {
@@ -28,23 +40,43 @@
           "properties": {
             "operationalMode": { 
               "type": "string", 
-              "enum": ["OFF", "STANDBY", "GRID_TIED", "OFF_GRID", "FAULT_ISOLATION"] 
+              "enum": ["OFF", "STANDBY", "GRID_TIED", "OFF_GRID", "FAULT_ISOLATION"] ,
+              "x-reporting": {
+                "ACTIVE": 6000,
+                "IDLE": null
+              }
             },
             "gridSwitch": { 
               "type": "string", 
-              "enum": ["ON", "OFF"] 
+              "enum": ["ON", "OFF"],
+              "x-reporting": {
+                "ACTIVE": 6000,
+                "IDLE": null
+              }
             },
-            "uptimeSeconds": { "type": "integer", "minimum": 0 }
+            "uptimeSeconds": { "type": "integer", "minimum": 0,
+            "x-reporting": {
+              "ACTIVE": 6000,
+              "IDLE": null
+            }}
           }
         },
         "safety": {
           "type": "object",
           "required": ["surgeProtectorEngaged", "coolingStatus"],
           "properties": {
-            "surgeProtectorEngaged": { "type": "boolean" },
+            "surgeProtectorEngaged": { "type": "boolean" ,
+             "x-reporting": {
+              "ACTIVE": 6000,
+              "IDLE": null
+            }},
             "coolingStatus": { 
               "type": "string", 
-              "enum": ["PASSIVE", "ACTIVE_LOW", "ACTIVE_HIGH", "OVERHEATING_BRAKE"] 
+              "enum": ["PASSIVE", "ACTIVE_LOW", "ACTIVE_HIGH", "OVERHEATING_BRAKE"],
+              "x-reporting": {
+              "ACTIVE": 6000,
+              "IDLE": 120000
+            }
             }
           }
         }
@@ -58,38 +90,94 @@
           "type": "object",
           "required": ["dcVoltage", "dcCurrent", "stringStatus"],
           "properties": {
-            "dcVoltage": { "type": "number", "minimum": 0.0, "maximum": 1000.0 },
-            "dcCurrent": { "type": "number", "minimum": 0.0, "maximum": 25.0 },
-            "stringStatus": { "type": "string", "enum": ["OPTIMAL", "SHADED", "UNDERVOLTAGE", "DISCONNECTED"] }
+            "dcVoltage": { "type": "number", "minimum": 0.0, "maximum": 1000.0,
+            "x-reporting": {
+              "ACTIVE": 6000,
+              "IDLE": null
+            } },
+            "dcCurrent": { "type": "number", "minimum": 0.0, "maximum": 25.0,
+            "x-reporting": {
+              "ACTIVE": 6000,
+              "IDLE": null
+            }},
+            "stringStatus": { "type": "string", "enum": ["OPTIMAL", "SHADED", "UNDERVOLTAGE", "DISCONNECTED"],
+            "x-reporting": {
+              "ACTIVE": 6000,
+              "IDLE": null
+            } }
           }
         },
         "battery": {
           "type": "object",
           "required": ["soc", "soh", "chargeDirection", "cycles"],
           "properties": {
-            "soc": { "type": "number", "minimum": 0.0, "maximum": 100.0 },
-            "soh": { "type": "number", "minimum": 0.0, "maximum": 100.0 },
-            "chargeDirection": { "type": "string", "enum": ["CHARGING", "DISCHARGING", "STAGNANT"] },
-            "cycles": { "type": "integer", "minimum": 0 }
+            "soc": { "type": "number", "minimum": 0.0, "maximum": 100.0,  
+            "x-reporting": {
+              "ACTIVE": 6000,
+              "IDLE": null
+            } },
+            "soh": { "type": "number", "minimum": 0.0, "maximum": 100.0,
+            "x-reporting": {
+              "ACTIVE": 6000,
+              "IDLE": null
+            } },
+            "chargeDirection": { "type": "string", "enum": ["CHARGING", "DISCHARGING", "STAGNANT"],
+            "x-reporting": {
+              "ACTIVE": 6000,
+              "IDLE": null
+            } },
+            "cycles": { "type": "integer", "minimum": 0,
+            "x-reporting": {
+              "ACTIVE": 6000,
+              "IDLE": null
+            } }
           }
         },
         "grid_output": {
           "type": "object",
           "required": ["phaseA_voltage", "frequencyHz", "totalActivePowerW", "gridQualityIndex"],
           "properties": {
-            "phaseA_voltage": { "type": "number", "minimum": 180.0, "maximum": 260.0 },
-            "frequencyHz": { "type": "number", "minimum": 45.0, "maximum": 55.0 },
-            "totalActivePowerW": { "type": "number", "minimum": -5000.0, "maximum": 15000.0 },
-            "gridQualityIndex": { "type": "string", "enum": ["EXCELLENT", "ACCEPTABLE", "POOR_THD", "CRITICAL_SAG"] }
+            "phaseA_voltage": { "type": "number", "minimum": 180.0, "maximum": 260.0,
+            "x-reporting": {
+              "ACTIVE": 6000,
+              "IDLE": null
+            } },
+            "frequencyHz": { "type": "number", "minimum": 45.0, "maximum": 55.0,
+            "x-reporting": {
+              "ACTIVE": 6000,
+              "IDLE": null
+            }},
+            "totalActivePowerW": { "type": "number", "minimum": -5000.0, "maximum": 15000.0,
+            "x-reporting": {
+              "ACTIVE": 6000,
+              "IDLE": null
+            }},
+            "gridQualityIndex": { "type": "string", "enum": ["EXCELLENT", "ACCEPTABLE", "POOR_THD", "CRITICAL_SAG"],
+            "x-reporting": {
+              "ACTIVE": 6000,
+              "IDLE": null
+            } }
           }
         },
         "environment": {
           "type": "object",
           "required": ["cabinetTemp", "fanSpeedRpm", "efficiency"],
           "properties": {
-            "cabinetTemp": { "type": "number", "minimum": -20.0, "maximum": 85.0 },
-            "fanSpeedRpm": { "type": "integer", "minimum": 0, "maximum": 6000 },
-            "efficiency": { "type": "number", "minimum": 0.0, "maximum": 100.0 }
+            "cabinetTemp": { "type": "number", "minimum": -20.0, "maximum": 85.0,
+            "x-reporting": {
+              "ACTIVE": 6000,
+              "IDLE": null
+            }},
+            "fanSpeedRpm": { "type": "integer", "minimum": 0, "maximum": 6000,
+            "x-reporting": {
+              "ACTIVE": 6000,
+              "IDLE": null
+            } },
+            "efficiency": { "type": "number", "minimum": 0.0, "maximum": 100.0,
+            "x-reporting": {
+              "ACTIVE": 6000,
+              "IDLE": null
+            } }
           }
         }
       }

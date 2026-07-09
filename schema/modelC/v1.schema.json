@@ -3,7 +3,11 @@
   "properties": {
     "schemaId": { 
       "type": "string",
-      "const": "modelC" 
+      "const": "modelC",
+       "x-reporting": {
+        "ACTIVE": 5000,
+        "IDLE": 120000
+      }
     },
     "metrics": {
       "type": "object",
@@ -11,9 +15,21 @@
         "environment": {
           "type": "object",
           "properties": {
-            "temperature": { "type": "number" },
-            "humidity": { "type": "number" },
-            "pressure": { "type": "number" }
+            "temperature": { "type": "number" , 
+            "x-reporting": {
+              "ACTIVE": 3000,
+              "IDLE": null
+            }},
+            "humidity": { "type": "number",
+                "x-reporting": {
+              "ACTIVE": 5000,
+              "IDLE": null
+            } },
+            "pressure": { "type": "number",
+            "x-reporting": {
+              "ACTIVE": 5000,
+              "IDLE": null
+            }}
           },
           "required": ["temperature", "humidity", "pressure"]
         }
@@ -25,15 +41,31 @@
         "status": {
           "type": "object",
           "properties": {
-            "led": { "type": "boolean" },
-            "mode": { "type": "string" }
+            "led": { "type": "boolean",
+            "x-reporting": {
+              "ACTIVE": 3000,
+              "IDLE": 120000
+            } },
+            "mode": { "type": "string",
+            "x-reporting": {
+              "ACTIVE": 5000,
+              "IDLE": 120000
+            }}
           }
         },
         "battery": {
           "type": "object",
           "properties": {
-            "level": { "type": "number" },
-            "charging": { "type": "boolean" }
+            "level": { "type": "number" ,
+            "x-reporting": {
+              "ACTIVE": 6000,
+              "IDLE": 120000
+            }},
+            "charging": { "type": "boolean",
+              "x-reporting": {
+              "ACTIVE": 6000,
+              "IDLE": 120000
+            }}
           }
         }
       }

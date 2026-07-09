@@ -1303,3 +1303,6 @@ TypeError: telemetryGenerator.setForceFull is not a function
 [2026-07-06 09:29:30] [ERROR] Malformed command envelope transaction context parsed: command is not defined
 [2026-07-06 09:29:35] [ERROR] Malformed command envelope transaction context parsed: command is not defined
 [2026-07-06 09:29:35] [ERROR] Malformed command envelope transaction context parsed: command is not defined
+[2026-07-09 12:22:48] [ERROR] Simulator terminated by server. Reason: INVALID_TELEMETRY_SCHEMA
+[2026-07-09 12:48:22] [ERROR] Critical failure during bootstrap registration chain execution: fetch failed
+[2026-07-09 13:33:39] [ERROR] Simulator terminated by server. Reason: INVALID_TELEMETRY_SCHEMA

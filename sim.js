@@ -84,10 +84,10 @@ if (!fs.existsSync(CONFIG_FILE)) {
   handleEarlyError(`Configuration file missing: ${CONFIG_FILE}`);
   process.exit(1);
 }
-
+let deviceState = { led: false, ledColor:"GREEN", mode: "AUTO" };
 const config = JSON.parse(fs.readFileSync(CONFIG_FILE, "utf8"));
 const { createTelemetryGenerator } = require("./telemetry-generator3");
-const telemetryGenerator = createTelemetryGenerator(schema);
+const telemetryGenerator = createTelemetryGenerator(schema, deviceState);
 const MAX_LOG_SIZE = 5 * 1024 * 1024;
 
 //const INTERVAL_MS = config.intervalMs || 5000;
@@ -117,10 +117,18 @@ let client = null;
 let telemetryTimer = null;
 
 let logCheckCounter = 0;
+const supportsLed =
+  !!schema.commands?.SET_LED;
+
+const supportsLedColor =
+  !!schema.commands?.SET_LED_COLOR;
 
 
-let deviceState = { led: false, mode: "AUTO" };
+//let deviceState = { led: false, mode: "AUTO" };
+//let deviceState = { led: false, ledColor:"GREEN", mode: "AUTO" };
 let isTelemetryActive = false;
+
+const allowedColors = schema.commands?.SET_LED_COLOR?.payload?.properties?.color?.enum || [];
 
 function nowIso() { return new Date().toISOString(); }
 
@@ -247,10 +255,15 @@ async function registerDevice() {
   }
 }
 const activeTick =
-  telemetryGenerator.getMinimumInterval("ACTIVE");
+  telemetryGenerator.getOptimalTick("ACTIVE");
 
 const idleTick =
-  telemetryGenerator.getMinimumInterval("IDLE");
+  telemetryGenerator.getOptimalTick("IDLE");
+
+function supportsFeature(feature) {
+  return feature in fieldDefinitions;
+}
+//supportsFeature("status.ledColor");
 
 function connectMqtt() {
   if (!DEVICE_ID) throw new Error("Initialization fault: MQTT startup aborted due to undefined parameters.");
@@ -307,9 +320,36 @@ function connectMqtt() {
       }
 
       if (commandObj.command === "SET_LED") {
-        deviceState.led = Boolean(commandObj.value);
+
+      if (!supportsLed) { 
+        sendCommandResponse( commandObj.command, false, { error: "LED not supported by this device model." });
+        return;
+      }
+
+        deviceState.led = Boolean(commandObj.payload?.value);
         logger.info(`Execution side effect applied -> Hardware Component state led: ${deviceState.led}`);
         sendCommandResponse(commandObj.command, true, { state: deviceState });
+        return;
+      }
+      if (commandObj.command === "SET_LED_COLOR") {
+
+          if (!supportsLedColor) { 
+            sendCommandResponse( commandObj.command, false, { error: "LED color not supported by this device model." });
+              return;
+          }
+
+          if (!allowedColors.includes(commandObj.payload.color)) {
+            sendCommandResponse( commandObj.command, false, { error: "Invalid LED color." });
+            return;
+          }
+
+        deviceState.ledColor = commandObj.payload.color;
+
+        logger.info(
+          `Execution side effect applied -> Hardware Component color led: ${deviceState.ledColor}`
+        );
+
+        sendCommandResponse( commandObj.command, true, { state: deviceState });
         return;
       }
 
@@ -319,8 +359,40 @@ function connectMqtt() {
         sendCommandResponse(commandObj.command, true, { state: deviceState });
         return;
       }
+      if (commandObj.command === "STOP_DEVICE") {
+          logger.error(
+            `Simulator terminated by server. Reason: ${commandObj.reason}`
+          );
 
-      logger.warn(`Unrecognized action schema. Discarding call command identifier: ${command.command}`);
+          if (telemetryTimer) {
+          clearInterval(telemetryTimer);
+        }
+
+        if (client) {
+          client.publish(
+            STATUS_TOPIC,
+            JSON.stringify({
+              deviceId: DEVICE_ID,
+              timestamp: nowIso(),
+              status: "offline"
+            }),
+            { qos: 1, retain: true },
+            () => {
+                          
+              if (client) {
+                client.end(true);
+              }
+
+              process.exit(1);
+            }
+          );
+        } else {
+          process.exit(1);
+        }
+        return;
+      }
+
+      logger.warn(`Unrecognized action schema. Discarding call command identifier: ${commandObj.command}`);
       sendCommandResponse(commandObj.command, false, { error: "Unknown command profile received." });
     } catch (error) {
       logger.error(`Malformed command envelope transaction context parsed: ${error.message}`);

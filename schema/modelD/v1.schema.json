@@ -5,7 +5,11 @@
   "properties": {
     "schemaId": { 
       "type": "string",
-      "const": "modelD" 
+      "const": "modelD" ,
+      "x-reporting": {
+          "ACTIVE": 6000,
+          "IDLE": 120000
+      }
     },
     "device": {
       "type": "object",
@@ -14,30 +18,54 @@
         "info": {
           "type": "object",
           "properties": {
-            "firmware": { "type": "string", "pattern": "^v[0-9]+\\.[0-9]+\\.[0-9]+-(alpha|beta|rc|release)$" }
+            "firmware": { "type": "string", "pattern": "^v[0-9]+\\.[0-9]+\\.[0-9]+-(alpha|beta|rc|release)$" ,   
+            "x-reporting": {
+              "ACTIVE": 6000,
+              "IDLE": 120000
+            }}
           }
         },
         "state": {
           "type": "object",
           "properties": {
-            "status": { "type": "string", "enum": ["IDLE", "RUNNING", "DEFROSTING", "MAINTENANCE", "ERROR"] },
-            "maintenanceCountdown": { "type": "integer", "minimum": -100, "maximum": 10000 }
+            "status": { "type": "string", "enum": ["IDLE", "RUNNING", "DEFROSTING", "MAINTENANCE", "ERROR"] ,
+             "x-reporting": {
+              "ACTIVE": 6000,
+              "IDLE": 120000
+            }},
+            "maintenanceCountdown": { "type": "integer", "minimum": -100, "maximum": 10000,
+             "x-reporting": {
+              "ACTIVE": 6000,
+              "IDLE": 120000
+            }} 
           }
         },
         "diagnostics": {
           "type": "object",
           "properties": {
-            "errorCode": { "type": "string", "pattern": "^0x[0-9A-Fa-f]{4}$" },
+            "errorCode": { "type": "string", "pattern": "^0x[0-9A-Fa-f]{4}$" ,   
+            "x-reporting": {
+              "ACTIVE": 6000,
+              "IDLE": 120000
+            }},
             "activeAlarms": {
               "type": "array",
-              "items": { "type": "string", "enum": ["LOW_PRESSURE", "HIGH_TEMP", "PUMP_FAIL", "SENSOR_DISCONNECT", "VOLTAGE_DROP"] }
+              "items": { "type": "string", "enum": ["LOW_PRESSURE", "HIGH_TEMP", "PUMP_FAIL", "SENSOR_DISCONNECT", "VOLTAGE_DROP"]}, 
+              "x-reporting": {
+              "ACTIVE": 6000,
+              "IDLE": 120000
+             }} 
             }
-          }
+          
         },
         "network": {
           "type": "object",
           "properties": {
-            "signalDb": { "type": "integer", "minimum": -110, "maximum": -30 }
+            "signalDb": { "type": "integer", "minimum": -110, "maximum": -30,
+             "x-reporting": {
+              "ACTIVE": 6000,
+              "IDLE": null
+            }}
           }
         }
       }
@@ -49,43 +77,89 @@
         "fluid": {
           "type": "object",
           "properties": {
-            "flowRate": { "type": "number", "minimum": 0.0, "maximum": 500.0 },
-            "coolantLevel": { "type": "integer", "minimum": 0, "maximum": 100 },
-            "returnTemp": { "type": "number", "minimum": -10.0, "maximum": 40.0 }
+            "flowRate": { "type": "number", "minimum": 0.0, "maximum": 500.0 ,
+            "x-reporting": {
+              "ACTIVE": 6000,
+              "IDLE": null
+            }},
+            "coolantLevel": { "type": "integer", "minimum": 0, "maximum": 100, 
+             "x-reporting": {
+              "ACTIVE": 6000,
+              "IDLE": null
+            }},
+            "returnTemp": { "type": "number", "minimum": -10.0, "maximum": 40.0,
+            "x-reporting": {
+                "ACTIVE": 6000,
+                "IDLE": null
+              }}
           }
         },
         "pressure": {
           "type": "object",
           "properties": {
-            "suction": { "type": "number", "minimum": 0.0, "maximum": 10.0 },
-            "discharge": { "type": "number", "minimum": 0.0, "maximum": 30.0 },
-            "oilStatus": { "type": "string", "enum": ["LOW", "NORMAL", "HIGH"] }
+            "suction": { "type": "number", "minimum": 0.0, "maximum": 10.0, 
+             "x-reporting": {
+              "ACTIVE": 6000,
+              "IDLE": null
+            }},
+            "discharge": { "type": "number", "minimum": 0.0, "maximum": 30.0, 
+             "x-reporting": {
+              "ACTIVE": 6000,
+              "IDLE": null
+            }},
+            "oilStatus": { "type": "string", "enum": ["LOW", "NORMAL", "HIGH"],
+           "x-reporting": {
+              "ACTIVE": 6000,
+              "IDLE": 120000
+            }}
           }
         },
         "electrical": {
           "type": "object",
           "properties": {
-            "powerFactor": { "type": "number", "minimum": 0.0, "maximum": 1.0 },
-            "totalEnergyKwh": { "type": "number", "minimum": 0.0 }
+            "powerFactor": { "type": "number", "minimum": 0.0, "maximum": 1.0, "x-reporting": {
+              "ACTIVE": 6000,
+              "IDLE": null
+            }},
+            "totalEnergyKwh": { "type": "number", "minimum": 0.0,
+            "x-reporting": {
+                "ACTIVE": 5000,
+                "IDLE": null
+            }}
           }
         },
         "mechanical": {
           "type": "object",
           "properties": {
-            "vibrationIndex": { "type": "number", "minimum": 0.0, "maximum": 10.0 },
-            "pumpRuntime": { "type": "integer", "minimum": 0 }
+            "vibrationIndex": { "type": "number", "minimum": 0.0, "maximum": 10.0 ,
+            "x-reporting": {
+              "ACTIVE": 6000,
+              "IDLE": null
+            }},
+            "pumpRuntime": { "type": "integer", "minimum": 0 , "x-reporting": {
+              "ACTIVE": 6000,
+              "IDLE": null
+            }}
           }
         },
         "compressor": {
           "type": "object",
           "properties": {
-            "frequency": { "type": "number", "minimum": 0.0, "maximum": 120.0 }
+            "frequency": { "type": "number", "minimum": 0.0, "maximum": 120.0,
+           "x-reporting": {
+              "ACTIVE": 6000,
+              "IDLE": null
+            }}
           }
         },
         "environment": {
           "type": "object",
           "properties": {
-            "ambientTemp": { "type": "number", "minimum": -30.0, "maximum": 60.0 }
+            "ambientTemp": { "type": "number", "minimum": -30.0, "maximum": 60.0, 
+             "x-reporting": {
+              "ACTIVE": 6000,
+              "IDLE": null
+            }}
           }
         }
       }

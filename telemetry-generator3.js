@@ -8,7 +8,7 @@ class GeneratorLogger {
 
 const logger = new GeneratorLogger();
 
-function createTelemetryGenerator(schema) {
+function createTelemetryGenerator(schema, deviceState) {
   if (!schema || typeof schema !== 'object') {
     throw new Error("Invalid schema");
   }
@@ -95,6 +95,24 @@ function createTelemetryGenerator(schema) {
 
   function round(value) {
     return Number(value.toFixed(1));
+  }
+  function calculateNZD(a, b) {
+      while (b) {
+          a = a % b;
+          [a, b] = [b, a];
+      }
+      return a;
+  }
+  function getOptimalTick(mode = "ACTIVE") {
+      const intervals = Object.values(fieldDefinitions)
+          .map(def => def.reporting?.[mode])
+          .filter(i => typeof i === 'number' && i > 0);
+
+      if (intervals.length === 0) return 1000;
+
+    
+      const gcd = intervals.reduce((acc, curr) => calculateNZD(acc, curr));
+      return Math.max(gcd, 100);
   }
   function getMinimumInterval(mode = "ACTIVE") {
     let min = Infinity;
@@ -212,15 +230,15 @@ function createTelemetryGenerator(schema) {
   const isHeartbeat = mode === "heartbeat";
 
     const payload = {};
-    const schemaId = schema.properties?.schemaId?.const;
-    if (schemaId) {
+   // const schemaId = schema.properties?.schemaId?.const;
+   /* if (schemaId) {
       payload.schemaId = schemaId;
-    }
+    }*/
     const fields = Object.keys(fieldDefinitions);
     const desiredPercentage = isFull? 1.0 : randomBetween(0.1, 0.8); 
-   //const activeFields = fields.filter(() => Math.random() < desiredPercentage);
+    const activeFields = fields.filter(() => Math.random() < desiredPercentage);
 
-    const activeFields = fields;
+   //const activeFields = fields;
 
     const now = Date.now();
 
@@ -262,34 +280,45 @@ function createTelemetryGenerator(schema) {
         return;
       }*/
 
+    //  const isRequired = path.includes("status") || path === "schemaId";
+    const isRequired = path === "schemaId";
 
-      const isRequired = path.includes("status") || path === "schemaId";
-
-      //if ( !forceFull && !isRequired && Math.random() < 0.5) {
-       // return; 
-     // }
       if (!isFull && !isRequired && !activeFields.includes(path) && !isHeartbeat) {
         return;
       }
       //const def = fieldDefinitions[path];
+      if (path.endsWith("ledState")) {
+          setDeepValue(
+              payload,
+              path,
+              deviceState.led
+          );
 
-      if (def.enum) {
+          state.lastSent[path] = now;
+      }else  if (path.endsWith("ledColor")) {
+        setDeepValue(
+          payload,
+          path,
+          deviceState.ledColor
+        );
+
+        state.lastSent[path] = now;
+      }else if (def.enum) {
         const randomEnum = def.enum[Math.floor(Math.random() * def.enum.length)];
         setDeepValue(payload, path, randomEnum);
+        state.lastSent[path] = now;
       } else if (def.type === "array") {
        
         const itemsEnum = def.items?.enum;
         const mockArray = itemsEnum && Math.random() > 0.8 ? [itemsEnum[Math.floor(Math.random() * itemsEnum.length)]] : [];
         setDeepValue(payload, path, mockArray);
 
-          state.lastSent[path] = now;
+        state.lastSent[path] = now;
         
 
 
     } else if (def.type === "number" || def.type === "integer") {
         let val = state[path];
-
-        
         if (def.multipleOf) {
           val = Math.round(val / def.multipleOf) * def.multipleOf;
         }
@@ -343,8 +372,19 @@ function createTelemetryGenerator(schema) {
       }
     });
 
+    
+    if (Object.keys(payload).length === 0) {
+      return null;
+    }
+
+    const schemaId = schema.properties?.schemaId?.const;
+    if (schemaId) {
+      payload.schemaId = schemaId;
+    }
+
     return payload;
   }
+  
   function generateHeartbeat() {
     return build("heartbeat");
   }
@@ -398,7 +438,7 @@ function createTelemetryGenerator(schema) {
   }
 
   return {
-    generate,generateHeartbeat,setForceFull, getMinimumInterval
+    generate,generateHeartbeat,setForceFull, getMinimumInterval, getOptimalTick
   };
 }
 
