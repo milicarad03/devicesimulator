@@ -13,7 +13,7 @@
     },
     "device": {
       "type": "object",
-      "required": ["hardware", "status", "safety"],
+   
       "properties": {
         "hardware": {
           "type": "object",
@@ -63,7 +63,7 @@
         },
         "safety": {
           "type": "object",
-          "required": ["surgeProtectorEngaged", "coolingStatus"],
+        
           "properties": {
             "surgeProtectorEngaged": { "type": "boolean" ,
              "x-reporting": {
@@ -84,11 +84,11 @@
     },
     "telemetry": {
       "type": "object",
-      "required": ["pv_panels", "battery", "grid_output", "environment"],
+     
       "properties": {
         "pv_panels": {
           "type": "object",
-          "required": ["dcVoltage", "dcCurrent", "stringStatus"],
+        
           "properties": {
             "dcVoltage": { "type": "number", "minimum": 0.0, "maximum": 1000.0,
             "x-reporting": {
@@ -109,7 +109,7 @@
         },
         "battery": {
           "type": "object",
-          "required": ["soc", "soh", "chargeDirection", "cycles"],
+          
           "properties": {
             "soc": { "type": "number", "minimum": 0.0, "maximum": 100.0,  
             "x-reporting": {
@@ -135,7 +135,7 @@
         },
         "grid_output": {
           "type": "object",
-          "required": ["phaseA_voltage", "frequencyHz", "totalActivePowerW", "gridQualityIndex"],
+        
           "properties": {
             "phaseA_voltage": { "type": "number", "minimum": 180.0, "maximum": 260.0,
             "x-reporting": {
@@ -161,7 +161,7 @@
         },
         "environment": {
           "type": "object",
-          "required": ["cabinetTemp", "fanSpeedRpm", "efficiency"],
+         
           "properties": {
             "cabinetTemp": { "type": "number", "minimum": -20.0, "maximum": 85.0,
             "x-reporting": {

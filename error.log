@@ -1306,3 +1306,54 @@ TypeError: telemetryGenerator.setForceFull is not a function
 [2026-07-09 12:22:48] [ERROR] Simulator terminated by server. Reason: INVALID_TELEMETRY_SCHEMA
 [2026-07-09 12:48:22] [ERROR] Critical failure during bootstrap registration chain execution: fetch failed
 [2026-07-09 13:33:39] [ERROR] Simulator terminated by server. Reason: INVALID_TELEMETRY_SCHEMA
+[2026-07-10 09:45:39] [ERROR] Simulator terminated by server. Reason: INVALID_TELEMETRY_SCHEMA
+[2026-07-10 11:57:21] [ERROR] uncaughtException: requiredFields is not defined
+ReferenceError: requiredFields is not defined
+    at parseSchema (/home/rmilica/devicesimulator/telemetry-generator3.js:72:9)
+    at /home/rmilica/devicesimulator/telemetry-generator3.js:63:9
+    at Array.forEach (<anonymous>)
+    at parseSchema (/home/rmilica/devicesimulator/telemetry-generator3.js:60:41)
+    at /home/rmilica/devicesimulator/telemetry-generator3.js:63:9
+    at Array.forEach (<anonymous>)
+    at parseSchema (/home/rmilica/devicesimulator/telemetry-generator3.js:60:41)
+    at createTelemetryGenerator (/home/rmilica/devicesimulator/telemetry-generator3.js:92:3)
+    at Object.<anonymous> (/home/rmilica/devicesimulator/sim.js:90:28)
+    at Module._compile (node:internal/modules/cjs/loader:1812:14)
+[2026-07-10 11:57:43] [ERROR] uncaughtException: requiredFields is not defined
+ReferenceError: requiredFields is not defined
+    at parseSchema (/home/rmilica/devicesimulator/telemetry-generator3.js:72:9)
+    at /home/rmilica/devicesimulator/telemetry-generator3.js:63:9
+    at Array.forEach (<anonymous>)
+    at parseSchema (/home/rmilica/devicesimulator/telemetry-generator3.js:60:41)
+    at /home/rmilica/devicesimulator/telemetry-generator3.js:63:9
+    at Array.forEach (<anonymous>)
+    at parseSchema (/home/rmilica/devicesimulator/telemetry-generator3.js:60:41)
+    at createTelemetryGenerator (/home/rmilica/devicesimulator/telemetry-generator3.js:92:3)
+    at Object.<anonymous> (/home/rmilica/devicesimulator/sim.js:90:28)
+    at Module._compile (node:internal/modules/cjs/loader:1812:14)
+[2026-07-10 11:58:13] [ERROR] uncaughtException: requiredFields is not defined
+ReferenceError: requiredFields is not defined
+    at parseSchema (/home/rmilica/devicesimulator/telemetry-generator3.js:72:9)
+    at /home/rmilica/devicesimulator/telemetry-generator3.js:63:9
+    at Array.forEach (<anonymous>)
+    at parseSchema (/home/rmilica/devicesimulator/telemetry-generator3.js:60:41)
+    at /home/rmilica/devicesimulator/telemetry-generator3.js:63:9
+    at Array.forEach (<anonymous>)
+    at parseSchema (/home/rmilica/devicesimulator/telemetry-generator3.js:60:41)
+    at createTelemetryGenerator (/home/rmilica/devicesimulator/telemetry-generator3.js:92:3)
+    at Object.<anonymous> (/home/rmilica/devicesimulator/sim.js:90:28)
+    at Module._compile (node:internal/modules/cjs/loader:1812:14)
+[2026-07-10 11:59:09] [ERROR] uncaughtException: requiredFields is not defined
+ReferenceError: requiredFields is not defined
+    at parseSchema (/home/rmilica/devicesimulator/telemetry-generator3.js:72:9)
+    at /home/rmilica/devicesimulator/telemetry-generator3.js:63:9
+    at Array.forEach (<anonymous>)
+    at parseSchema (/home/rmilica/devicesimulator/telemetry-generator3.js:60:41)
+    at /home/rmilica/devicesimulator/telemetry-generator3.js:63:9
+    at Array.forEach (<anonymous>)
+    at parseSchema (/home/rmilica/devicesimulator/telemetry-generator3.js:60:41)
+    at /home/rmilica/devicesimulator/telemetry-generator3.js:63:9
+    at Array.forEach (<anonymous>)
+    at parseSchema (/home/rmilica/devicesimulator/telemetry-generator3.js:60:41)
+[2026-07-10 12:06:35] [ERROR] [TELEMETRY] Generator failed to produce data: Cannot access 'isRequired' before initialization
+[2026-07-10 12:06:38] [ERROR] [TELEMETRY] Generator failed to produce data: Cannot access 'isRequired' before initialization

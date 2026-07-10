@@ -13,7 +13,7 @@
     },
     "device": {
       "type": "object",
-      "required": ["info", "state", "diagnostics", "network"],
+    
       "properties": {
         "info": {
           "type": "object",
@@ -72,7 +72,7 @@
     },
     "metrics": {
       "type": "object",
-      "required": ["fluid", "pressure", "electrical", "mechanical", "compressor", "environment"],
+     
       "properties": {
         "fluid": {
           "type": "object",

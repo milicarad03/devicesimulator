@@ -53,20 +53,26 @@ function createTelemetryGenerator(schema, deviceState) {
   return "UNKNOWN";
 }
 
-  function parseSchema(subSchema, currentPath = "") {
+  function parseSchema(subSchema, currentPath = "", requiredFields = []) {
     if (!subSchema || typeof subSchema !== "object") return;
 
     if (subSchema.type === "object" && subSchema.properties) {
       Object.keys(subSchema.properties).forEach((key) => {
         if (key === "schemaId") return;
         const nextPath = currentPath ? `${currentPath}.${key}` : key;
-        parseSchema(subSchema.properties[key], nextPath);
+        parseSchema(subSchema.properties[key], nextPath, subSchema.required || []);
       });
     } else {
   
       //fieldDefinitions[currentPath] = subSchema;
       fieldDefinitions[currentPath] = {
         ...subSchema,
+
+      required:
+        requiredFields.includes(
+          currentPath.split(".").pop()
+        ),
+
         reporting: subSchema["x-reporting"] || { "ACTIVE": 5000, "IDLE": 300000 }
       };
 
@@ -249,8 +255,9 @@ function createTelemetryGenerator(schema, deviceState) {
       path.toLowerCase().includes("serial") ||
       path.toLowerCase().includes("firmware");*/
       const def = fieldDefinitions[path];
+      const isRequired = def.required === true;
       const reportingMode = isHeartbeat ? "IDLE" : "ACTIVE";
-      if(!isFull){
+      if(!isFull && !isRequired){
         const interval = def.reporting[reportingMode];
        // if(!interval) return;
         if (interval == null) {
@@ -281,7 +288,12 @@ function createTelemetryGenerator(schema, deviceState) {
       }*/
 
     //  const isRequired = path.includes("status") || path === "schemaId";
-    const isRequired = path === "schemaId";
+    //const isRequired = path === "schemaId";
+   /* const isRequired =
+      path === "schemaId" ||
+      path === "status.ledState" ||
+      path === "status.ledColor";*/
+  
 
       if (!isFull && !isRequired && !activeFields.includes(path) && !isHeartbeat) {
         return;

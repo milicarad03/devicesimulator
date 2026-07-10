@@ -30,8 +30,7 @@
               "ACTIVE": 5000,
               "IDLE": null
             }}
-          },
-          "required": ["temperature", "humidity", "pressure"]
+          }
         }
       }
     },
@@ -70,6 +69,5 @@
         }
       }
     }
-  },
-  "required": ["metrics", "device"]
+  }
 }

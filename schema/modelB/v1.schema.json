@@ -72,7 +72,7 @@
     }
   },
 
-  "required": ["data", "status"],
+  "required": ["status"],
 
   "properties": {
     "schemaId": {
@@ -86,7 +86,7 @@
 
     "data": {
       "type": "object",
-      "required": ["temp", "hum", "press"],
+    
       "properties": {
         "temp": {
           "type": "number",

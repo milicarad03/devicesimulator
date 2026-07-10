@@ -3,7 +3,7 @@
   "title": "DeviceDashboard Telemetry Schema",
   "description": "Šema za validaciju dolaznih poruka sa simulatora Model A",
   "type": "object",
-  "required": ["telemetry"],
+
   "properties": {
     "schemaId": { 
       "type": "string",
@@ -15,7 +15,7 @@
     },
     "telemetry": {
       "type": "object",
-      "required": ["temperature", "humidity", "pressure", "led"],
+      
       "properties": {
         "temperature": {
           "type": "number",
