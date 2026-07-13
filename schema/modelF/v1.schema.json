@@ -1,13 +1,142 @@
 {
   "title": "IndustrialAirCompressorTelemetry",
   "type": "object",
+  "commands": {
+  "SET_STATE": {
+    "payload": {
+      "type": "object",
+      "required": ["state"],
+      "properties": {
+        "state": {
+          "type": "string",
+          "enum": ["ACTIVE", "IDLE"]
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+
+  "SET_OPERATIONAL_MODE": {
+    "payload": {
+      "type": "object",
+      "required": ["mode"],
+      "properties": {
+        "mode": {
+          "type": "string",
+          "enum": [
+            "OFF",
+            "STANDBY",
+            "GRID_TIED",
+            "OFF_GRID",
+            "FAULT_ISOLATION"
+          ]
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+
+  "SET_GRID_SWITCH": {
+    "payload": {
+      "type": "object",
+      "required": ["value"],
+      "properties": {
+        "value": {
+          "type": "string",
+          "enum": ["ON", "OFF"]
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+
+  "SET_BATTERY_MODE": {
+    "payload": {
+      "type": "object",
+      "required": ["mode"],
+      "properties": {
+        "mode": {
+          "type": "string",
+          "enum": [
+            "CHARGING",
+            "DISCHARGING",
+            "STAGNANT"
+          ]
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "SET_OPERATING_PROFILE": {
+  "payload": {
+    "type": "object",
+    "required": [
+      "mode",
+      "pressure",
+      "safety",
+      "schedule"
+    ],
+    "properties": {
+      "mode": {
+        "type": "string",
+        "enum": [
+          "ECONOMY",
+          "NORMAL",
+          "BOOST"
+        ]
+      },
+
+      "pressure": {
+        "type": "object",
+        "required": ["target"],
+        "properties": {
+          "target": {
+            "type": "number",
+            "minimum": 2,
+            "maximum": 16
+          }
+        }
+      },
+
+      "safety": {
+        "type": "object",
+        "required": [
+          "maxTemperature",
+          "maxVibration"
+        ],
+        "properties": {
+          "maxTemperature": {
+            "type": "number"
+          },
+          "maxVibration": {
+            "type": "number"
+          }
+        }
+      },
+
+      "schedule": {
+        "type": "object",
+        "required": ["durationMinutes"],
+        "properties": {
+          "durationMinutes": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1440
+          }
+        }
+      }
+    },
+    "additionalProperties": false
+  }
+}
+},
  
   "properties": {
      "schemaId": { 
       "type": "string",
       "const": "modelF",
       "x-reporting": {
-          "ACTIVE": 5000,
+          "ACTIVE": 6000,
           "IDLE": 120000
         }
     },
@@ -19,13 +148,13 @@
           "properties": {
             "serial": { "type": "string", "pattern": "^CP-[0-9]{5}-X$" ,   
             "x-reporting": {
-              "ACTIVE": 5000,
+              "ACTIVE": 6000,
               "IDLE": 120000
             }},
             
             "firmware": { "type": "string",
              "x-reporting": {
-              "ACTIVE": 5000,
+              "ACTIVE": 6000,
               "IDLE": 120000
             }}
           }
@@ -35,14 +164,17 @@
           "properties": {
             "mode": { "type": "string", "enum": ["LOADED", "UNLOADED", "STANDBY", "FAULT"],
              "x-reporting": {
-              "ACTIVE": 4000,
+              "ACTIVE": 6000,
               "IDLE": 120000
             } },
             "uptime_seconds": { "type": "integer", "minimum": 0,
              "x-reporting": {
-              "ACTIVE": 5000,
+              "ACTIVE": 6000,
               "IDLE": null
-            }}
+            }},
+            "operatingProfile": {"type": "string", "enum": [ "ECONOMY", "NORMAL", "BOOST"
+          ]}
+
           }
         }
       }
@@ -55,12 +187,12 @@
           "properties": {
             "code": { "type": "string", "pattern": "^ERR-[0-9]{3}$" ,   
             "x-reporting": {
-              "ACTIVE": 5000,
+              "ACTIVE": 6000,
               "IDLE": 120000
             }},
             "alarms": { "type": "array", "maxItems": 5, "items": { "type": "string" },
              "x-reporting": {
-              "ACTIVE": 5000,
+              "ACTIVE": 6000,
               "IDLE": 120000
             }}
           }
@@ -70,12 +202,12 @@
           "properties": {
             "oil_level": { "type": "number", "minimum": 0, "maximum": 100,
              "x-reporting": {
-              "ACTIVE": 5000,
+              "ACTIVE": 6000,
               "IDLE": 120000
             }},
             "vibration": { "type": "number", "minimum": 0, "maximum": 25.0,
              "x-reporting": {
-              "ACTIVE": 5000,
+              "ACTIVE": 6000,
               "IDLE": 120000
             }}
           }
@@ -90,22 +222,22 @@
           "properties": {
             "p1": { "type": "number", "minimum": 0, "maximum": 8.0,
              "x-reporting": {
-              "ACTIVE": 3000,
+              "ACTIVE": 6000,
               "IDLE": null
             }},
             "p2": { "type": "number", "minimum": 0, "maximum": 16.0,
              "x-reporting": {
-              "ACTIVE": 3000,
+              "ACTIVE": 6000,
               "IDLE": null
             }},
             "tempIn": { "type": "number", "minimum": 10, "maximum": 50,
              "x-reporting": {
-              "ACTIVE": 5000,
+              "ACTIVE": 6000,
               "IDLE": null
             }},
             "tempOut": { "type": "number", "minimum": 40, "maximum": 120,
             "x-reporting": {
-                "ACTIVE": 5000,
+                "ACTIVE": 6000,
                 "IDLE": null
               }}
           }
@@ -115,24 +247,24 @@
           "properties": {
             "load": { "type": "number", "minimum": 0, "maximum": 100,
             "x-reporting": {
-              "ACTIVE": 5000,
+              "ACTIVE": 6000,
               "IDLE": null
             }},
             
             "kw": { "type": "number", "minimum": 0, "maximum": 250,
             "x-reporting": {
-                "ACTIVE": 5000,
+                "ACTIVE": 6000,
                 "IDLE": null
               }},
             "voltage": { "type": "number", "minimum": 380, "maximum": 440,
             "x-reporting": {
-              "ACTIVE": 5000,
+              "ACTIVE": 6000,
               "IDLE": null
             }},
             
             "pf": { "type": "number", "minimum": 0.7, "maximum": 1.0,
             "x-reporting": {
-                "ACTIVE": 5000,
+                "ACTIVE": 6000,
                 "IDLE": null
               }}
             
@@ -143,19 +275,19 @@
           "properties": {
             "flow": { "type": "number", "minimum": 0, "maximum": 50.0,
             "x-reporting": {
-              "ACTIVE": 5000,
+              "ACTIVE": 6000,
               "IDLE": null
             }},
             
             
             "total_runtime": { "type": "integer", "minimum": 0,
             "x-reporting": {
-                "ACTIVE": 5000,
+                "ACTIVE": 6000,
                 "IDLE": null
               }},
             "energy_kwh": { "type": "number", "minimum": 0,
             "x-reporting": {
-                "ACTIVE": 5000,
+                "ACTIVE": 6000,
                 "IDLE": null
               }}
           }

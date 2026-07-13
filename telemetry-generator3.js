@@ -229,6 +229,70 @@ function createTelemetryGenerator(schema, deviceState) {
     current[parts[parts.length - 1]] = value;
   }
 
+  function applyOperatingProfile() {
+    const profile = deviceState.operatingProfile;
+
+    if (!profile) {
+      return;
+    }
+
+    switch (profile.mode) {
+
+      case "BOOST":
+        if (state["performance.output.flow"] !== undefined) {
+          state["performance.output.flow"] *= 1.15;
+        }
+
+        if (state["performance.electrical.load"] !== undefined) {
+          state["performance.electrical.load"] *= 1.10;
+        }
+
+        if (state["performance.electrical.kw"] !== undefined) {
+          state["performance.electrical.kw"] *= 1.10;
+        }
+
+        if (state["performance.stages.p2"] !== undefined) {
+          state["performance.stages.p2"] = profile.pressure.target;
+        }
+
+        if (state["performance.stages.tempOut"] !== undefined) {
+          state["performance.stages.tempOut"] += 2;
+        }
+
+        break;
+
+      case "ECONOMY":
+        if (state["performance.output.flow"] !== undefined) {
+          state["performance.output.flow"] *= 0.85;
+        }
+
+        if (state["performance.electrical.load"] !== undefined) {
+          state["performance.electrical.load"] *= 0.80;
+        }
+
+        if (state["performance.electrical.kw"] !== undefined) {
+          state["performance.electrical.kw"] *= 0.80;
+        }
+
+        if (state["performance.stages.p2"] !== undefined) {
+          state["performance.stages.p2"] = profile.pressure.target;
+        }
+
+        break;
+
+      case "NORMAL":
+        if (state["performance.stages.p2"] !== undefined) {
+          state["performance.stages.p2"] = profile.pressure.target;
+        }
+
+        break;
+
+      default:
+        break;
+    }
+
+    applyClamp();
+  }
  
   function build(mode = "delta") {
 
@@ -266,13 +330,13 @@ function createTelemetryGenerator(schema, deviceState) {
         if (state.lastSent[path] && (now - state.lastSent[path] < interval)) {
             return; 
         }
-                console.log(
+        /*console.log(
           path,
           "interval=", interval,
           "lastSent=", state.lastSent[path],
           "diff=",
           state.lastSent[path] ? now - state.lastSent[path] : "FIRST"
-        );
+        );*/
 
       
       
@@ -312,6 +376,17 @@ function createTelemetryGenerator(schema, deviceState) {
           payload,
           path,
           deviceState.ledColor
+        );
+
+        state.lastSent[path] = now;
+      }
+
+      else if (path === "system.status.operatingProfile") {
+
+        setDeepValue(
+          payload,
+          path,
+          deviceState.operatingProfile?.mode || "NORMAL"
         );
 
         state.lastSent[path] = now;
@@ -436,6 +511,7 @@ function createTelemetryGenerator(schema, deviceState) {
     slowRecovery();
     maybeToggleBoolean();
     maybeShiftBaseline();
+    applyOperatingProfile();
     applyClamp();
 
     if (Math.random() < 0.1) {

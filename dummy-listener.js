@@ -2,7 +2,7 @@ const mqtt = require('mqtt');
 const fs = require('fs');
 
 const client = mqtt.connect('mqtt://localhost:1883');
-const LOG_FILE = 'dummy_traffic_delta_MODELF1.log';
+const LOG_FILE = 'dummy_traffic_full_MODELF1.log';
 
 
 const stream = fs.createWriteStream(LOG_FILE, { flags: 'a' });

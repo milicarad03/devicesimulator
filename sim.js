@@ -84,20 +84,18 @@ if (!fs.existsSync(CONFIG_FILE)) {
   handleEarlyError(`Configuration file missing: ${CONFIG_FILE}`);
   process.exit(1);
 }
-let deviceState = { led: false, ledColor:"GREEN", mode: "AUTO" };
+let deviceState = { led: false, ledColor:"GREEN", mode: "AUTO",operatingProfile: null };
 const config = JSON.parse(fs.readFileSync(CONFIG_FILE, "utf8"));
 const { createTelemetryGenerator } = require("./telemetry-generator3");
 const telemetryGenerator = createTelemetryGenerator(schema, deviceState);
 const MAX_LOG_SIZE = 5 * 1024 * 1024;
 
-//const INTERVAL_MS = config.intervalMs || 5000;
+
 const ACTIVE_INTERVAL = config.intervalMs || 5000;
-//const IDLE_INTERVAL = config.heartbeatMs || 3600000;
+
 const IDLE_INTERVAL = config.heartbeatMs || 120000;
 const DEVICE_CERT_DIR = path.join(__dirname, "certs", DEVICE_FOLDER);
 logger.debug(`Using local certificates target directory: ${DEVICE_CERT_DIR}`);
-////
-//const schemaConfig = schema.properties.schemaId["x-reporting"];
 
 const FACTORY_DEVICE_KEY_PATH = path.join(DEVICE_CERT_DIR, "factory-device.key");
 const FACTORY_DEVICE_CERT_PATH = path.join(DEVICE_CERT_DIR, "factory-device.crt");
@@ -115,17 +113,13 @@ let RESPONSE_TOPIC = null;
 
 let client = null;
 let telemetryTimer = null;
+let operatingProfileTimer=null;
 
 let logCheckCounter = 0;
-const supportsLed =
-  !!schema.commands?.SET_LED;
+const supportsLed = !!schema.commands?.SET_LED;
 
-const supportsLedColor =
-  !!schema.commands?.SET_LED_COLOR;
+const supportsLedColor = !!schema.commands?.SET_LED_COLOR;
 
-
-//let deviceState = { led: false, mode: "AUTO" };
-//let deviceState = { led: false, ledColor:"GREEN", mode: "AUTO" };
 let isTelemetryActive = false;
 
 const allowedColors = schema.commands?.SET_LED_COLOR?.payload?.properties?.color?.enum || [];
@@ -287,9 +281,6 @@ function connectMqtt() {
 
     logger.info("Publishing lifecycle status flag [ONLINE] to platform state management...");
     client.publish(STATUS_TOPIC, JSON.stringify({ deviceId: DEVICE_ID, timestamp: nowIso(), status: "online" }), { qos: 1, retain: true });
-
-    //telemetryTimer = setInterval(sendTelemetry, INTERVAL_MS);
-    //switchTelemetryInterval(IDLE_INTERVAL);
     switchTelemetryInterval(idleTick);
   });
 
@@ -352,6 +343,42 @@ function connectMqtt() {
         sendCommandResponse( commandObj.command, true, { state: deviceState });
         return;
       }
+      if (commandObj.command === "SET_OPERATING_PROFILE") {
+
+          const durationMinutes = commandObj.payload.schedule.durationMinutes;
+          deviceState.operatingProfile = { mode: commandObj.payload.mode, pressure: commandObj.payload.pressure, safety: commandObj.payload.safety, schedule: commandObj.payload.schedule, activatedAt: nowIso()};
+
+          logger.info(`Operating profile activated: ${JSON.stringify( deviceState.operatingProfile)}` );
+
+          sendCommandResponse(commandObj.command, true, { profile: deviceState.operatingProfile });
+          if (operatingProfileTimer) {
+            clearTimeout(operatingProfileTimer);
+          }
+          operatingProfileTimer=setTimeout(() => {
+
+              logger.info(
+                `Operating profile expired. Returning device to NORMAL mode.`
+              );
+
+              deviceState.operatingProfile = {
+                mode: "NORMAL",
+                pressure: {
+                  target: 8
+                },
+                safety: {
+                  maxTemperature: 80,
+                  maxVibration: 3
+                },
+                schedule: {
+                  durationMinutes: 0
+                },
+                activatedAt: nowIso()
+              };
+
+            }, durationMinutes * 60 * 1000);
+
+          return;
+        }
 
       if (commandObj.command === "SET_MODE") {
         deviceState.mode = String(commandObj.payload?.value);
@@ -418,16 +445,13 @@ function trimLogFile() {
   }
 }
 function sendTelemetry() {
-//  if(!isTelemetryActive) return;
   try {
    // const generatedMessage = telemetryGenerator.generate();
    let generatedMessage;
     try {
-      //generatedMessage = telemetryGenerator.generate();
       generatedMessage = isTelemetryActive ? telemetryGenerator.generate() : telemetryGenerator.generateHeartbeat();
     } catch (genErr) {
       logger.error(`[TELEMETRY] Generator failed to produce data: ${genErr.message}`);
-      // Ovde vraćamo iz funkcije da ne bismo pokušali slanje "undefined" poruke
       return; 
     }
     if (!generatedMessage) {
@@ -488,6 +512,7 @@ function sendCommandResponse(command, success, extraData = {}) {
 
 process.on("SIGINT", () => {
   logger.warn("SIGINT interrupt received. Initiating clean termination teardown sequence...");
+  if (operatingProfileTimer) clearTimeout(operatingProfileTimer);
 
   if (telemetryTimer) clearInterval(telemetryTimer);
 
