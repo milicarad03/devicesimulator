@@ -277,6 +277,15 @@ function connectMqtt() {
       }
       logger.info(`Inbound Command engine processing topic linked: ${COMMAND_TOPIC}`);
     });
+    console.log(
+  "ACTIVE TICK =",
+  activeTick
+);
+
+console.log(
+  "IDLE TICK =",
+  idleTick
+);
     
 
     logger.info("Publishing lifecycle status flag [ONLINE] to platform state management...");
@@ -345,40 +354,44 @@ function connectMqtt() {
       }
       if (commandObj.command === "SET_OPERATING_PROFILE") {
 
-          const durationMinutes = commandObj.payload.schedule.durationMinutes;
-          deviceState.operatingProfile = { mode: commandObj.payload.mode, pressure: commandObj.payload.pressure, safety: commandObj.payload.safety, schedule: commandObj.payload.schedule, activatedAt: nowIso()};
+          const durationMinutes = Number(commandObj.payload.schedule.durationMinutes);
+          
+          if (isNaN(durationMinutes)) {
+              logger.error("Invalid durationMinutes provided.");
+              sendCommandResponse(commandObj.command, false, { error: "Invalid duration" });
+              return;
+          }
+
+          deviceState.operatingProfile = { 
+              mode: commandObj.payload.mode, 
+              pressure: commandObj.payload.pressure, 
+              safety: commandObj.payload.safety, 
+              schedule: commandObj.payload.schedule, 
+              activatedAt: nowIso()
+          };
 
           logger.info(`Operating profile activated: ${JSON.stringify( deviceState.operatingProfile)}` );
 
           sendCommandResponse(commandObj.command, true, { profile: deviceState.operatingProfile });
+          
           if (operatingProfileTimer) {
             clearTimeout(operatingProfileTimer);
           }
-          operatingProfileTimer=setTimeout(() => {
 
-              logger.info(
-                `Operating profile expired. Returning device to NORMAL mode.`
-              );
-
+          operatingProfileTimer = setTimeout(() => {
+              logger.info(`Operating profile expired (${durationMinutes} min). Returning device to NORMAL mode.`);
+              
               deviceState.operatingProfile = {
-                mode: "NORMAL",
-                pressure: {
-                  target: 8
-                },
-                safety: {
-                  maxTemperature: 80,
-                  maxVibration: 3
-                },
-                schedule: {
-                  durationMinutes: 0
-                },
-                activatedAt: nowIso()
+                  mode: "NORMAL",
+                  pressure: { target: 8 },
+                  safety: { maxTemperature: 80, maxVibration: 3 },
+                  schedule: { durationMinutes: 0 },
+                  activatedAt: nowIso()
               };
-
-            }, durationMinutes * 60 * 1000);
+          }, durationMinutes * 60 * 1000); 
 
           return;
-        }
+      }
 
       if (commandObj.command === "SET_MODE") {
         deviceState.mode = String(commandObj.payload?.value);

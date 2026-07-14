@@ -173,7 +173,11 @@
               "IDLE": null
             }},
             "operatingProfile": {"type": "string", "enum": [ "ECONOMY", "NORMAL", "BOOST"
-          ]}
+          ],"x-reporting": {
+              "ACTIVE": 6000,
+              "IDLE": null
+            }
+          }
 
           }
         }

@@ -235,6 +235,9 @@ function createTelemetryGenerator(schema, deviceState) {
     if (!profile) {
       return;
     }
+    const maxTemp = profile.safety?.maxTemperature;
+
+    const maxVibration = profile.safety?.maxVibration;
 
     switch (profile.mode) {
 
@@ -256,8 +259,14 @@ function createTelemetryGenerator(schema, deviceState) {
         }
 
         if (state["performance.stages.tempOut"] !== undefined) {
-          state["performance.stages.tempOut"] += 2;
+          const maxT = profile.safety.maxTemperature;
+          state["performance.stages.tempOut"] = randomBetween(maxT * 0.9, maxT);
         }
+        if (state["diagnostics.health.vibration"] !== undefined) {
+          const maxV = profile.safety.maxVibration;
+          state["diagnostics.health.vibration"] = randomBetween(maxV * 0.9, maxV);
+        }
+
 
         break;
 
