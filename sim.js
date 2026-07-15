@@ -278,14 +278,14 @@ function connectMqtt() {
       logger.info(`Inbound Command engine processing topic linked: ${COMMAND_TOPIC}`);
     });
     console.log(
-  "ACTIVE TICK =",
-  activeTick
-);
+      "ACTIVE TICK =",
+      activeTick
+    );
 
-console.log(
-  "IDLE TICK =",
-  idleTick
-);
+    console.log(
+      "IDLE TICK =",
+      idleTick
+    );
     
 
     logger.info("Publishing lifecycle status flag [ONLINE] to platform state management...");
