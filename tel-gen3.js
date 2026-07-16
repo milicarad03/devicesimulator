@@ -5,14 +5,19 @@ class GeneratorLogger {
     }
   }
 }
+
 const logger = new GeneratorLogger();
 
-function createFullTelemetryGenerator(schema) {
+function createTelemetryGenerator(schema, deviceState) {
+  if (!schema || typeof schema !== 'object') {
+    throw new Error("Invalid schema");
+  }
 
   const state = {
     stableCounter: 0,
     peakCounter: 0,
     baseline: {},
+    cycleCounter: 0,
    
   };
 
@@ -48,18 +53,21 @@ function createFullTelemetryGenerator(schema) {
   return "UNKNOWN";
 }
 
-  function parseSchema(subSchema, currentPath = "") {
+  function parseSchema(subSchema, currentPath = "", requiredFields = []) {
     if (!subSchema || typeof subSchema !== "object") return;
 
     if (subSchema.type === "object" && subSchema.properties) {
       Object.keys(subSchema.properties).forEach((key) => {
         if (key === "schemaId") return;
         const nextPath = currentPath ? `${currentPath}.${key}` : key;
-        parseSchema(subSchema.properties[key], nextPath);
+        parseSchema(subSchema.properties[key], nextPath, subSchema.required || []);
       });
     } else {
   
-      fieldDefinitions[currentPath] = subSchema;
+      //fieldDefinitions[currentPath] = subSchema;
+      fieldDefinitions[currentPath] = {
+        ...subSchema,
+      };
 
       if (subSchema.type === "number" || subSchema.type === "integer") {
         const min = subSchema.minimum ?? 0;
@@ -87,6 +95,7 @@ function createFullTelemetryGenerator(schema) {
   function round(value) {
     return Number(value.toFixed(1));
   }
+
 
   function applyClamp() {
     Object.keys(fieldDefinitions).forEach((path) => {
@@ -156,7 +165,6 @@ function createFullTelemetryGenerator(schema) {
         const max = fieldDefinitions[path].maximum ?? 100;
         const range = max - min;
 
-        //state.baseline[path] += randomBetween(-0.02 * range, 0.02 * range);
         let shift = randomBetween(-0.02 * range, 0.02 * range);
         
         if (path.includes("temp") || path.includes("temperature")) {
@@ -180,35 +188,141 @@ function createFullTelemetryGenerator(schema) {
     current[parts[parts.length - 1]] = value;
   }
 
+  function applyOperatingProfile() {
+    const profile = deviceState.operatingProfile;
+
+    if (!profile) {
+      return;
+    }
+    const maxTemp = profile.safety?.maxTemperature;
+
+    const maxVibration = profile.safety?.maxVibration;
+
+    switch (profile.mode) {
+
+      case "BOOST":
+        if (state["performance.output.flow"] !== undefined) {
+          state["performance.output.flow"] *= 1.15;
+        }
+
+        if (state["performance.electrical.load"] !== undefined) {
+          state["performance.electrical.load"] *= 1.10;
+        }
+
+        if (state["performance.electrical.kw"] !== undefined) {
+          state["performance.electrical.kw"] *= 1.10;
+        }
+
+        if (state["performance.stages.p2"] !== undefined) {
+          state["performance.stages.p2"] = profile.pressure.target;
+        }
+
+        if (state["performance.stages.tempOut"] !== undefined) {
+          const maxT = profile.safety.maxTemperature;
+          state["performance.stages.tempOut"] = randomBetween(maxT * 0.9, maxT);
+        }
+        if (state["diagnostics.health.vibration"] !== undefined) {
+          const maxV = profile.safety.maxVibration;
+          state["diagnostics.health.vibration"] = randomBetween(maxV * 0.9, maxV);
+        }
+
+
+        break;
+
+      case "ECONOMY":
+        if (state["performance.output.flow"] !== undefined) {
+          state["performance.output.flow"] *= 0.85;
+        }
+
+        if (state["performance.electrical.load"] !== undefined) {
+          state["performance.electrical.load"] *= 0.80;
+        }
+
+        if (state["performance.electrical.kw"] !== undefined) {
+          state["performance.electrical.kw"] *= 0.80;
+        }
+
+        if (state["performance.stages.p2"] !== undefined) {
+          state["performance.stages.p2"] = profile.pressure.target;
+        }
+
+        break;
+
+      case "NORMAL":
+        if (state["performance.stages.p2"] !== undefined) {
+          state["performance.stages.p2"] = profile.pressure.target;
+        }
+
+        break;
+
+      default:
+        break;
+    }
+
+    applyClamp();
+  }
  
   function build() {
     const payload = {};
-    const schemaId = schema.properties?.schemaId?.const;
-    if (schemaId) {
+   // const schemaId = schema.properties?.schemaId?.const;
+   /* if (schemaId) {
       payload.schemaId = schemaId;
-    }
+    }*/
+   
+
+   //const activeFields = fields;
+
+    const now = Date.now();
 
     Object.keys(fieldDefinitions).forEach((path) => {
-
-
-      const isRequired = path.includes("status") || path === "schemaId";
-
-    
+   
       const def = fieldDefinitions[path];
+      const isRequired = def.required === true;
+    
+  
+      if (path.endsWith("ledState")) {
+          setDeepValue(
+              payload,
+              path,
+              deviceState.led
+          );
 
-      if (def.enum) {
+         
+      }else  if (path.endsWith("ledColor")) {
+        setDeepValue(
+          payload,
+          path,
+          deviceState.ledColor
+        );
+
+      
+      }
+
+      else if (path === "system.status.operatingProfile") {
+
+        setDeepValue(
+          payload,
+          path,
+          deviceState.operatingProfile?.mode || "NORMAL"
+        );
+
+     
+      }else if (def.enum) {
         const randomEnum = def.enum[Math.floor(Math.random() * def.enum.length)];
         setDeepValue(payload, path, randomEnum);
+    
       } else if (def.type === "array") {
        
         const itemsEnum = def.items?.enum;
         const mockArray = itemsEnum && Math.random() > 0.8 ? [itemsEnum[Math.floor(Math.random() * itemsEnum.length)]] : [];
         setDeepValue(payload, path, mockArray);
 
+  
+        
+
+
     } else if (def.type === "number" || def.type === "integer") {
         let val = state[path];
-
-        
         if (def.multipleOf) {
           val = Math.round(val / def.multipleOf) * def.multipleOf;
         }
@@ -222,42 +336,74 @@ function createFullTelemetryGenerator(schema) {
         state[path] = val; 
 
       
-        //const finalValue = def.type === "integer" ? Math.round(val) : Number(val.toFixed(1));
         const finalValue = def.type === "integer" 
         ? Math.round(val) 
         : Math.round(val * 10) / 10;
         
         
         setDeepValue(payload, path, finalValue);
+
+   
       }else if (def.type === "boolean") {
         setDeepValue(payload, path, state[path]);
+      
       } else if (def.type === "string") {
 
       if (def.pattern) {
           setDeepValue(payload, path, generateFromPattern(def.pattern));
+
+         
+
         } else if (path.toLowerCase().includes("firmware") || path.toLowerCase().includes("version")) {
+          
           setDeepValue(payload, path, "v1.0.0-release");
+      
         } else if (path.toLowerCase().includes("serial")) {
           setDeepValue(payload, path, "INV-2026-XAE412");
+       
+
         }else if (path.includes("errorCode")) {
           setDeepValue(payload, path, "0x0000");
+       
         }else {
           setDeepValue(payload, path, "OPERATIONAL");
+          
+
         }
       }
     });
 
+    
+    if (Object.keys(payload).length === 0) {
+      return null;
+    }
+
+    const schemaId = schema.properties?.schemaId?.const;
+    if (schemaId) {
+      payload.schemaId = schemaId;
+    }
+
     return payload;
   }
+  
 
+  
 
   function generate() {
+    state.cycleCounter++; 
+
+    
+    const isFiveMinuteMark = state.cycleCounter >= 300; 
+
+    if (isFiveMinuteMark) {
+      state.cycleCounter = 0; 
+      return build(); 
+    }
 
     if (state.stableCounter > 0) {
       state.stableCounter--;
-      return build(false);
+      return build();
     }
-
     if (state.peakCounter === 0 && Math.random() < 0.25) {
       state.peakCounter = Math.floor(randomBetween(5, 10));
       logger.debug(`Peak spike event triggered! Wave duration: ${state.peakCounter} cycles.`);
@@ -273,6 +419,7 @@ function createFullTelemetryGenerator(schema) {
     slowRecovery();
     maybeToggleBoolean();
     maybeShiftBaseline();
+    applyOperatingProfile();
     applyClamp();
 
     if (Math.random() < 0.1) {
@@ -288,5 +435,5 @@ function createFullTelemetryGenerator(schema) {
 }
 
 module.exports = {
-  createFullTelemetryGenerator,
+  createTelemetryGenerator,
 };

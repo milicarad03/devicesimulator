@@ -254,10 +254,7 @@ const activeTick =
 const idleTick =
   telemetryGenerator.getOptimalTick("IDLE");
 
-function supportsFeature(feature) {
-  return feature in fieldDefinitions;
-}
-//supportsFeature("status.ledColor");
+
 
 function connectMqtt() {
   if (!DEVICE_ID) throw new Error("Initialization fault: MQTT startup aborted due to undefined parameters.");
@@ -487,17 +484,6 @@ function sendTelemetry() {
       size: sizeInBytes,
       timestamp: nowIso()
     };
-   /*
-    if (fs.existsSync(STATS_FILE)) {
-      const stats = fs.statSync(STATS_FILE);
-      if (stats.size > MAX_LOG_SIZE) {
-        
-        fs.truncateSync(STATS_FILE, 0); 
-        logger.warn("Log fajl je dostigao limit, resetovan.");
-        
-      }
-    }
-*/
     fs.appendFileSync(STATS_FILE, JSON.stringify(logEntry) + "\n");
 
     logCheckCounter++;

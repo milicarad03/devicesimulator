@@ -86,14 +86,14 @@ if (!fs.existsSync(CONFIG_FILE)) {
 }
 let deviceState = { led: false, ledColor:"GREEN", mode: "AUTO",operatingProfile: null };
 const config = JSON.parse(fs.readFileSync(CONFIG_FILE, "utf8"));
-const { createTelemetryGenerator } = require("./tel-gen3");
+const { createTelemetryGenerator } = require("./tel-gen3-delta");
 const telemetryGenerator = createTelemetryGenerator(schema, deviceState);
 const MAX_LOG_SIZE = 5 * 1024 * 1024;
 
 
 const ACTIVE_INTERVAL = config.intervalMs || 5000;
 
-
+const IDLE_INTERVAL = config.heartbeatMs || 120000;
 const DEVICE_CERT_DIR = path.join(__dirname, "certs", DEVICE_FOLDER);
 logger.debug(`Using local certificates target directory: ${DEVICE_CERT_DIR}`);
 
@@ -104,7 +104,7 @@ const OPERATIONAL_DEVICE_CSR_PATH = path.join(DEVICE_CERT_DIR, "operational-devi
 const FACTORY_PROOF_PATH = path.join(DEVICE_CERT_DIR, "factory-proof.sig");
 const OPERATIONAL_DEVICE_CERT_PATH = path.join(DEVICE_CERT_DIR, "operational-device.crt");
 const OPERATIONAL_CA_CERT_PATH = path.join(DEVICE_CERT_DIR, "operational-ca.crt");
-const STATS_FILE = path.join(__dirname, "telemetry_stats_full1.log");
+const STATS_FILE = path.join(__dirname, "telemetry_stats_delta1.log");
 let DEVICE_ID = null;
 let TELEMETRY_TOPIC = null;
 let STATUS_TOPIC = null;
@@ -248,6 +248,7 @@ async function registerDevice() {
     throw err;
   }
 }
+const activeTick = config.intervalMs || 5000;
 
 
 function connectMqtt() {
@@ -259,7 +260,8 @@ function connectMqtt() {
 
   client.on("connect", () => {
     logger.info("Network transport channel established to target MQTT Broker.");
-   
+    telemetryGenerator.setForceFull(true);
+
     client.subscribe(COMMAND_TOPIC, (err) => {
       if (err) {
         logger.error(`Subscription sequence rejected for command channel ${COMMAND_TOPIC}: ${err.message}`);
@@ -267,14 +269,14 @@ function connectMqtt() {
       }
       logger.info(`Inbound Command engine processing topic linked: ${COMMAND_TOPIC}`);
     });
-    
+    console.log(
+      "ACTIVE TICK =",
+      activeTick
+    );
 
     logger.info("Publishing lifecycle status flag [ONLINE] to platform state management...");
     client.publish(STATUS_TOPIC, JSON.stringify({ deviceId: DEVICE_ID, timestamp: nowIso(), status: "online" }), { qos: 1, retain: true });
-    telemetryTimer = setInterval(
-      sendTelemetry,
-      ACTIVE_INTERVAL
-    );
+    switchTelemetryInterval(activeTick);
   });
 
   client.on("message", (topic, payload) => {
@@ -284,7 +286,8 @@ function connectMqtt() {
       logger.info(`Inbound transaction processing command request token: ${commandObj.command}`);
       logger.debug(`Raw dynamic command parameters payload: ${payload.toString()}`);
       
-   
+     
+
       if (commandObj.command === "SET_LED") {
 
       if (!supportsLed) { 
@@ -428,7 +431,7 @@ function sendTelemetry() {
    // const generatedMessage = telemetryGenerator.generate();
    let generatedMessage;
     try {
-      generatedMessage =  telemetryGenerator.generate();
+      generatedMessage = telemetryGenerator.generate();
     } catch (genErr) {
       logger.error(`[TELEMETRY] Generator failed to produce data: ${genErr.message}`);
       return; 
@@ -449,7 +452,7 @@ function sendTelemetry() {
     const sizeInBytes = Buffer.byteLength(payloadString, 'utf8');
     const logEntry = {
       deviceId: DEVICE_ID,
-      type: "FULL",
+      type: "DELTA",
       size: sizeInBytes,
       timestamp: nowIso()
     };
@@ -494,9 +497,18 @@ process.on("SIGINT", () => {
   });
 });
 
+function switchTelemetryInterval(intervalMs) {
+  if (telemetryTimer) {
+    clearInterval(telemetryTimer);
+  }
 
+  telemetryTimer = setInterval(
+    sendTelemetry,
+    intervalMs
+  );
+}
 async function main() {
-
+ 
   try {
     await registerDevice();
     connectMqtt();

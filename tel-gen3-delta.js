@@ -448,11 +448,7 @@ function createTelemetryGenerator(schema, deviceState) {
 
     return payload;
   }
-  
-  function generateHeartbeat() {
-    return build("heartbeat");
-  }
-
+ 
   function setForceFull(val) {
     nextIsFull = val;
   }
@@ -503,7 +499,7 @@ function createTelemetryGenerator(schema, deviceState) {
   }
 
   return {
-    generate,generateHeartbeat,setForceFull, getMinimumInterval, getOptimalTick
+    generate,setForceFull, getMinimumInterval, getOptimalTick
   };
 }
 
