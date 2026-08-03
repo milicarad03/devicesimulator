@@ -113,6 +113,7 @@ let RESPONSE_TOPIC = null;
 
 let client = null;
 let telemetryTimer = null;
+let historicalBufferTimer = null;
 let operatingProfileTimer=null;
 
 let logCheckCounter = 0;
@@ -123,7 +124,28 @@ const supportsLedColor = !!schema.commands?.SET_LED_COLOR;
 let isTelemetryActive = false;
 
 const allowedColors = schema.commands?.SET_LED_COLOR?.payload?.properties?.color?.enum || [];
+const historicalBufferInterval = schema.properties?.historicalTelemetry?.["x-buffering"]?.interval ?? 5000;
 
+function startHistoricalBuffering() {
+
+  if (historicalBufferTimer) {
+    clearInterval(historicalBufferTimer);
+  }
+
+  historicalBufferTimer = setInterval(() => {
+
+    telemetryGenerator.addHistoricalSample();
+
+  }, historicalBufferInterval);
+}
+
+function stopHistoricalBuffering() {
+
+  if (historicalBufferTimer) {
+    clearInterval(historicalBufferTimer);
+    historicalBufferTimer = null;
+  }
+}
 function nowIso() { return new Date().toISOString(); }
 
 function ensureDirectoryExists(dirPath) {
@@ -287,6 +309,9 @@ function connectMqtt() {
 
     logger.info("Publishing lifecycle status flag [ONLINE] to platform state management...");
     client.publish(STATUS_TOPIC, JSON.stringify({ deviceId: DEVICE_ID, timestamp: nowIso(), status: "online" }), { qos: 1, retain: true });
+    isTelemetryActive = false;
+    startHistoricalBuffering();
+    
     switchTelemetryInterval(idleTick);
   });
 
@@ -302,11 +327,13 @@ function connectMqtt() {
         
         if (state === 'ACTIVE') {
           isTelemetryActive = true;
+          stopHistoricalBuffering();
           switchTelemetryInterval(activeTick);
           logger.info("Telemetry STREAM ENABLED.");
           sendCommandResponse(commandObj.command, true, { status: "ACTIVE" });
         } else if (state === 'IDLE') {
           isTelemetryActive = false;
+          startHistoricalBuffering();
           switchTelemetryInterval(idleTick);
           logger.info("Telemetry STREAM DISABLED.");
           sendCommandResponse(commandObj.command, true, { status: "IDLE" });
@@ -402,8 +429,16 @@ function connectMqtt() {
           );
 
           if (telemetryTimer) {
-          clearInterval(telemetryTimer);
-        }
+            clearInterval(telemetryTimer);
+          }
+          if (historicalBufferTimer) {
+            clearInterval(historicalBufferTimer);
+            historicalBufferTimer = null;
+          }
+          if (operatingProfileTimer) {
+            clearTimeout(operatingProfileTimer);
+            operatingProfileTimer = null;
+          }
 
         if (client) {
           client.publish(
@@ -514,6 +549,8 @@ process.on("SIGINT", () => {
   if (operatingProfileTimer) clearTimeout(operatingProfileTimer);
 
   if (telemetryTimer) clearInterval(telemetryTimer);
+  if (historicalBufferTimer) clearInterval(historicalBufferTimer);
+  
 
   if (!client) process.exit(0);
 

@@ -4,6 +4,27 @@
   "description": "Šema za validaciju dolaznih poruka sa simulatora Model A",
   "type": "object",
 
+  "commands": {
+
+
+    "SET_STATE": {
+      "payload": {
+        "type": "object",
+        "required": ["state"],
+        "properties": {
+          "state": {
+            "type": "string",
+            "enum": [
+              "ACTIVE",
+              "IDLE"
+            ]
+          }
+        },
+          "additionalProperties": false
+      }
+    }
+  },
+
   "properties": {
     "schemaId": { 
       "type": "string",
@@ -53,7 +74,53 @@
         }
       },
       "additionalProperties": false
+    },
+    
+   "historicalTelemetry": {
+    "type": "array",
+    "maxItems": 24,
+    "items": {
+      "type": "object",
+      "properties": {
+        "timestamp": {
+          "type": "string"
+        },
+        "temperature": {
+          "type": "number",
+          "minimum": -50,
+          "maximum": 100
+        },
+        "humidity": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "pressure": {
+          "type": "number",
+          "minimum": 300,
+          "maximum": 1200
+        },
+        "led": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "timestamp",
+        "temperature",
+        "humidity",
+        "pressure",
+        "led"
+      ],
+      "additionalProperties": false
+    },
+    "x-buffering": {
+      "interval": 5000
+    },
+    "x-reporting": {
+      "ACTIVE": null,
+      "IDLE": 120000
     }
+  }
   },
   "additionalProperties": false
 }

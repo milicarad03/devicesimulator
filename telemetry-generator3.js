@@ -19,8 +19,15 @@ function createTelemetryGenerator(schema, deviceState) {
     baseline: {},
     cycleCounter: 0,
     lastSent: {},
+    historicalTelemetry:[],
+    lastHistoricalFlush: Date.now(),
+    lastHistoricalSample: Date.now()
   };
-
+  const supportsHistoricalTelemetry = !!schema.properties?.historicalTelemetry;
+  const historicalTelemetryMaxItems =schema.properties?.historicalTelemetry?.maxItems ?? 720;
+  const historicalFlushInterval = schema.properties?.historicalTelemetry?.["x-reporting"]?.IDLE ?? 3600000;
+  const historicalBufferInterval = schema.properties?.historicalTelemetry?.["x-buffering"]?.interval ?? 5000;
+  
   const fieldDefinitions = {};
 
   function generateFromPattern(pattern) {
@@ -90,6 +97,8 @@ function createTelemetryGenerator(schema, deviceState) {
   }
 
   parseSchema(schema);
+  console.log("FIELD DEFINITIONS:");
+  console.log(Object.keys(fieldDefinitions));
 
   function clamp(value, min, max) {
     return Math.min(Math.max(value, min), max);
@@ -228,7 +237,83 @@ function createTelemetryGenerator(schema, deviceState) {
     }
     current[parts[parts.length - 1]] = value;
   }
+  /*function addHistoricalSample() {
+    
+    if (!supportsHistoricalTelemetry) return;
+    
+    if (state["telemetry.temperature"] === undefined) return;
+  
+    state.historicalTelemetry.push({
+      timestamp: new Date().toISOString(),
 
+      temperature:
+        state["telemetry.temperature"],
+
+      humidity:
+        state["telemetry.humidity"],
+
+      pressure:
+        state["telemetry.pressure"]
+    });
+
+    if (state.historicalTelemetry.length > historicalTelemetryMaxItems) {
+      state.historicalTelemetry.shift();
+    }
+  }
+*/
+function updateDeviceState() {
+
+  if (state.peakCounter === 0 && Math.random() < 0.25) {
+    state.peakCounter = Math.floor(randomBetween(5, 10));
+
+    logger.debug(
+      `Peak spike event triggered! Wave duration: ${state.peakCounter} cycles.`
+    );
+  }
+
+  if (state.peakCounter > 0) {
+    peakFluctuation();
+    state.peakCounter--;
+  } else {
+    normalFluctuation();
+  }
+
+  slowRecovery();
+  maybeToggleBoolean();
+  maybeShiftBaseline();
+  applyOperatingProfile();
+  applyClamp();
+
+  if (Math.random() < 0.1) {
+    state.stableCounter = Math.floor(randomBetween(1, 2));
+  }
+}
+
+function addHistoricalSample() {
+
+  if (!supportsHistoricalTelemetry) return;
+  updateDeviceState();
+  const sample = { timestamp: new Date().toISOString()};
+
+  Object.keys(fieldDefinitions).forEach(path => {
+
+    if (path === "historicalTelemetry") return;
+  
+    if (state[path] === undefined) return;
+    
+    const key = path.replace("telemetry.", "");
+
+    sample[key] = state[path];
+    
+    //setDeepValue(sample, path, state[path]);
+  });
+
+  state.historicalTelemetry.push(sample);
+
+  if (state.historicalTelemetry.length > historicalTelemetryMaxItems) {
+    state.historicalTelemetry.shift();
+  }
+}
   function applyOperatingProfile() {
     const profile = deviceState.operatingProfile;
 
@@ -324,6 +409,30 @@ function createTelemetryGenerator(schema, deviceState) {
     Object.keys(fieldDefinitions).forEach((path) => {
    
       const def = fieldDefinitions[path];
+
+
+      if (path === "historicalTelemetry") {
+
+        const shouldFlush =
+          Date.now() - state.lastHistoricalFlush >= historicalFlushInterval;
+
+        if (shouldFlush && state.historicalTelemetry.length > 0) {
+
+          logger.debug( `[HISTORY] Flushing ${state.historicalTelemetry.length} samples`);
+
+          setDeepValue(
+            payload,
+            path,
+            [...state.historicalTelemetry]
+          );
+
+          state.historicalTelemetry = [];
+          state.lastHistoricalFlush = Date.now();
+          state.lastSent[path] = now;
+        }
+
+        return;
+      }
       const isRequired = def.required === true;
       const reportingMode = isHeartbeat ? "IDLE" : "ACTIVE";
       if(!isFull && !isRequired){
@@ -473,7 +582,7 @@ function createTelemetryGenerator(schema, deviceState) {
       return build("delta");
     }
 
-    if (state.peakCounter === 0 && Math.random() < 0.25) {
+   /* if (state.peakCounter === 0 && Math.random() < 0.25) {
       state.peakCounter = Math.floor(randomBetween(5, 10));
       logger.debug(`Peak spike event triggered! Wave duration: ${state.peakCounter} cycles.`);
     }
@@ -494,6 +603,8 @@ function createTelemetryGenerator(schema, deviceState) {
     if (Math.random() < 0.1) {
       state.stableCounter = Math.floor(randomBetween(1, 2));
     }
+      */
+     updateDeviceState();
     if(nextIsFull){
       nextIsFull=false;
       return build("full");
@@ -503,7 +614,7 @@ function createTelemetryGenerator(schema, deviceState) {
   }
 
   return {
-    generate,generateHeartbeat,setForceFull, getMinimumInterval, getOptimalTick
+    generate,generateHeartbeat,addHistoricalSample,setForceFull, getMinimumInterval, getOptimalTick
   };
 }
 
