@@ -131,6 +131,7 @@ function startHistoricalBuffering() {
   if (historicalBufferTimer) {
     clearInterval(historicalBufferTimer);
   }
+  telemetryGenerator.addHistoricalSample();
 
   historicalBufferTimer = setInterval(() => {
 

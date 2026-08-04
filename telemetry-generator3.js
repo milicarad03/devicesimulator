@@ -303,7 +303,14 @@ function addHistoricalSample() {
     
     const key = path.replace("telemetry.", "");
 
-    sample[key] = state[path];
+    //sample[key] = state[path];
+    let value = state[path];
+
+    if (typeof value === "number") {
+      value = round(value);
+    }
+
+    sample[key] = value;
     
     //setDeepValue(sample, path, state[path]);
   });

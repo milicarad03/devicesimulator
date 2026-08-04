@@ -396,3 +396,12 @@
 {"deviceId":"sn-100","type":"DELTA","size":54,"timestamp":"2026-08-03T10:24:45.072Z"}
 {"deviceId":"sn-100","type":"DELTA","size":47,"timestamp":"2026-08-03T10:24:48.076Z"}
 {"deviceId":"sn-100","type":"DELTA","size":3285,"timestamp":"2026-08-03T10:44:56.817Z"}
+{"deviceId":"sn-100","type":"DELTA","size":3369,"timestamp":"2026-08-04T06:59:18.302Z"}
+{"deviceId":"sn-100","type":"DELTA","size":3515,"timestamp":"2026-08-04T07:05:45.292Z"}
+{"deviceId":"sn-100","type":"DELTA","size":99,"timestamp":"2026-08-04T07:17:55.286Z"}
+{"deviceId":"sn-100","type":"DELTA","size":51,"timestamp":"2026-08-04T07:17:58.287Z"}
+{"deviceId":"sn-100","type":"DELTA","size":2577,"timestamp":"2026-08-04T07:21:53.774Z"}
+{"deviceId":"sn-100","type":"DELTA","size":2575,"timestamp":"2026-08-04T09:47:27.316Z"}
+{"deviceId":"sn-100","type":"DELTA","size":2583,"timestamp":"2026-08-04T09:49:27.317Z"}
+{"deviceId":"sn-100","type":"DELTA","size":2566,"timestamp":"2026-08-04T09:51:27.323Z"}
+{"deviceId":"sn-100","type":"DELTA","size":2572,"timestamp":"2026-08-04T10:16:08.574Z"}
