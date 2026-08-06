@@ -124,7 +124,8 @@ const supportsLedColor = !!schema.commands?.SET_LED_COLOR;
 let isTelemetryActive = false;
 
 const allowedColors = schema.commands?.SET_LED_COLOR?.payload?.properties?.color?.enum || [];
-const historicalBufferInterval = schema.properties?.historicalTelemetry?.["x-buffering"]?.interval ?? 5000;
+//const historicalBufferInterval = schema.properties?.historicalTelemetry?.["x-buffering"]?.interval ?? 5000;
+const historicalBufferInterval = telemetryGenerator.getOptimalHistoricalBufferTick();
 
 function startHistoricalBuffering() {
 

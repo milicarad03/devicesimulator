@@ -1,0 +1,145 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "DeviceDashboard Telemetry Schema",
+  "description": "Šema za validaciju dolaznih poruka sa simulatora Model A",
+  "type": "object",
+  "required": [
+    "schemaId",
+    "telemetry"
+    ],
+  "commands": {
+    "SET_STATE": {
+      "payload": {
+        "type": "object",
+        "required": ["state"],
+        "properties": {
+          "state": {
+            "type": "string",
+            "enum": ["ACTIVE", "IDLE"]
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "properties": {
+    "schemaId": { 
+      "type": "string",
+      "const": "modelA",
+      "x-reporting": {
+        "ACTIVE": 5000,
+        "IDLE": 120000
+      }
+    },
+    "telemetry": {
+  "type": "object",
+
+  "properties": {
+    "temperature": {
+      "type": "array",
+      "maxItems": 24,
+      "items": {
+        "type": "array",
+        "prefixItems": [
+          {
+            "type": "number",
+            "minimum": -50,
+            "maximum": 100
+          },
+          {
+            "type": "string",
+            "format": "date-time"
+          }
+        ],
+        "items": false,
+        "minItems": 2,
+        "maxItems": 2
+      },
+      "x-buffering": {
+        "interval": 5000
+      }
+    },
+
+    "humidity": {
+      "type": "array",
+      "maxItems": 24,
+      "items": {
+        "type": "array",
+        "prefixItems": [
+          {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100
+          },
+          {
+            "type": "string",
+            "format": "date-time"
+          }
+        ],
+        "items": false,
+        "minItems": 2,
+        "maxItems": 2
+      },
+      "x-buffering": {
+        "interval": 10000
+      }
+    },
+
+    "pressure": {
+      "type": "array",
+      "maxItems": 24,
+      "items": {
+        "type": "array",
+        "prefixItems": [
+          {
+            "type": "number",
+            "minimum": 300,
+            "maximum": 1200
+          },
+          {
+            "type": "string",
+            "format": "date-time"
+          }
+        ],
+        "items": false,
+        "minItems": 2,
+        "maxItems": 2
+      },
+      "x-buffering": {
+        "interval": 5000
+      }
+    },
+
+    "led": {
+      "type": "array",
+      "maxItems": 24,
+      "items": {
+        "type": "array",
+        "prefixItems": [
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "string",
+            "format": "date-time"
+          }
+        ],
+        "items": false,
+        "minItems": 2,
+        "maxItems": 2
+      },
+      "x-buffering": {
+        "interval": 15000
+      }
+    }
+  },
+
+  "additionalProperties": false,
+
+  "x-reporting": {
+    "ACTIVE": 5000,
+    "IDLE": 120000
+  }
+    }
+}
+}

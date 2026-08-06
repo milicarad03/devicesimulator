@@ -1357,3 +1357,18 @@ ReferenceError: requiredFields is not defined
     at parseSchema (/home/rmilica/devicesimulator/telemetry-generator3.js:60:41)
 [2026-07-10 12:06:35] [ERROR] [TELEMETRY] Generator failed to produce data: Cannot access 'isRequired' before initialization
 [2026-07-10 12:06:38] [ERROR] [TELEMETRY] Generator failed to produce data: Cannot access 'isRequired' before initialization
+[2026-08-05 08:55:09] [ERROR] Simulator terminated by server. Reason: INVALID_TELEMETRY_SCHEMA
+[2026-08-05 08:56:38] [ERROR] Simulator terminated by server. Reason: INVALID_TELEMETRY_SCHEMA
+[2026-08-05 12:26:20] [ERROR] Simulator terminated by server. Reason: INVALID_TELEMETRY_SCHEMA
+[2026-08-05 12:26:36] [ERROR] uncaughtException: Unexpected end of JSON input
+SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>)
+    at Object.<anonymous> (/home/rmilica/devicesimulator/sim.js:78:21)
+    at Module._compile (node:internal/modules/cjs/loader:1812:14)
+    at Object..js (node:internal/modules/cjs/loader:1943:10)
+    at Module.load (node:internal/modules/cjs/loader:1533:32)
+    at Module._load (node:internal/modules/cjs/loader:1335:12)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)
+    at node:internal/main/run_main_module:33:47
+[2026-08-06 08:58:21] [ERROR] Simulator terminated by server. Reason: INVALID_TELEMETRY_SCHEMA

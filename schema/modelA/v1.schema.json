@@ -3,10 +3,7 @@
   "title": "DeviceDashboard Telemetry Schema",
   "description": "Šema za validaciju dolaznih poruka sa simulatora Model A",
   "type": "object",
-
   "commands": {
-
-
     "SET_STATE": {
       "payload": {
         "type": "object",
@@ -14,113 +11,145 @@
         "properties": {
           "state": {
             "type": "string",
-            "enum": [
-              "ACTIVE",
-              "IDLE"
-            ]
+            "enum": ["ACTIVE", "IDLE"]
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+     "SET_LED": {
+      "payload": {
+        "type": "object",
+        "required": ["value"],
+        "properties": {
+          "value": {
+            "type": "boolean"
           }
         },
           "additionalProperties": false
       }
     }
   },
-
   "properties": {
     "schemaId": { 
       "type": "string",
       "const": "modelA",
-       "x-reporting": {
+      "x-reporting": {
         "ACTIVE": 5000,
         "IDLE": 120000
       }
     },
     "telemetry": {
       "type": "object",
-      
       "properties": {
         "temperature": {
           "type": "number",
           "minimum": -50,
           "maximum": 100,
-           "x-reporting": {
-            "ACTIVE": 4000,
-            "IDLE": null
-          }
+          "x-reporting": { "ACTIVE": 4000, "IDLE": null }
         },
         "humidity": {
           "type": "number",
           "minimum": 0,
           "maximum": 100,
-           "x-reporting": {
-            "ACTIVE": 3000,
-            "IDLE": null
-          }
+          "x-reporting": { "ACTIVE": 3000, "IDLE": null }
         },
         "pressure": {
           "type": "number",
           "minimum": 300,
           "maximum": 1200,
-          "x-reporting": {
-            "ACTIVE": 4000,
-            "IDLE": null
-          }
+          "x-reporting": { "ACTIVE": 4000, "IDLE": null }
         },
         "led": {
           "type": "boolean",
-           "x-reporting": {
-            "ACTIVE": 4000,
-            "IDLE": 120000
-          }
+          "x-reporting": { "ACTIVE": 4000, "IDLE": 120000 }
         }
       },
       "additionalProperties": false
     },
-    
-   "historicalTelemetry": {
-    "type": "array",
-    "maxItems": 24,
-    "items": {
+    "historicalTelemetry": {
       "type": "object",
       "properties": {
-        "timestamp": {
-          "type": "string"
-        },
         "temperature": {
-          "type": "number",
-          "minimum": -50,
-          "maximum": 100
+          "type": "array",
+          "maxItems": 24,
+
+          "items": {
+            "type": "array",
+
+            "prefixItems": [
+              {
+                "type": "number",
+                "minimum": -50,
+                "maximum": 100
+              },
+              {
+                "type": "string"
+              }
+            ],
+
+            "items": false,
+            "minItems": 2,
+            "maxItems": 2
+          },
+
+          "x-buffering": {
+            "interval": 5000
+          }
         },
         "humidity": {
-          "type": "number",
-          "minimum": 0,
-          "maximum": 100
+          "type": "array",
+          "maxItems": 24,
+          "items": {
+            "type": "array",
+          "prefixItems": [
+            { "type": "number", "minimum": 0, "maximum": 100 },
+            { "type": "string" }
+          ],
+          "items": false,
+            "minItems": 2,
+            "maxItems": 2
+        },
+          "x-buffering": { "interval": 10000 }
         },
         "pressure": {
-          "type": "number",
-          "minimum": 300,
-          "maximum": 1200
+          "type": "array",
+          "maxItems": 24,
+          "items": {
+          "type": "array",
+          "prefixItems": [
+            { "type": "number", "minimum": 300, "maximum": 1200 },
+            { "type": "string" }
+          ],
+          "items": false,
+           "minItems": 2,
+            "maxItems": 2
+        },
+          "x-buffering": { "interval": 5000 }
         },
         "led": {
-          "type": "boolean"
+          "type": "array",
+          "maxItems": 24,
+          "items": {
+          "type": "array",
+          "prefixItems": [
+            { "type": "boolean" },
+            { "type": "string" }
+          ],
+          "items": false,
+           "minItems": 2,
+            "maxItems": 2
+        },
+          "x-buffering": { "interval": 15000 }
         }
       },
-      "required": [
-        "timestamp",
-        "temperature",
-        "humidity",
-        "pressure",
-        "led"
-      ],
-      "additionalProperties": false
-    },
-    "x-buffering": {
-      "interval": 5000
-    },
-    "x-reporting": {
-      "ACTIVE": null,
-      "IDLE": 120000
+      "required": ["temperature", "humidity", "pressure", "led"],
+      "additionalProperties": false,
+      "x-reporting": {
+        "ACTIVE": null,
+        "IDLE": 120000
+      }
     }
-  }
   },
   "additionalProperties": false
 }

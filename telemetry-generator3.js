@@ -19,16 +19,19 @@ function createTelemetryGenerator(schema, deviceState) {
     baseline: {},
     cycleCounter: 0,
     lastSent: {},
-    historicalTelemetry:[],
+   // historicalTelemetry:[],
+    historicalTelemetry: {},
+    historicalLastSample: {},
     lastHistoricalFlush: Date.now(),
     lastHistoricalSample: Date.now()
   };
   const supportsHistoricalTelemetry = !!schema.properties?.historicalTelemetry;
-  const historicalTelemetryMaxItems =schema.properties?.historicalTelemetry?.maxItems ?? 720;
+ // const historicalTelemetryMaxItems =schema.properties?.historicalTelemetry?.maxItems ?? 720;
   const historicalFlushInterval = schema.properties?.historicalTelemetry?.["x-reporting"]?.IDLE ?? 3600000;
-  const historicalBufferInterval = schema.properties?.historicalTelemetry?.["x-buffering"]?.interval ?? 5000;
+  //const historicalBufferInterval = schema.properties?.historicalTelemetry?.["x-buffering"]?.interval ?? 5000;
   
   const fieldDefinitions = {};
+  const historicalBuffers = {};
 
   function generateFromPattern(pattern) {
 
@@ -62,6 +65,9 @@ function createTelemetryGenerator(schema, deviceState) {
 
   function parseSchema(subSchema, currentPath = "", requiredFields = []) {
     if (!subSchema || typeof subSchema !== "object") return;
+    if (currentPath.startsWith("historicalTelemetry")) {
+      return;
+    }
 
     if (subSchema.type === "object" && subSchema.properties) {
       Object.keys(subSchema.properties).forEach((key) => {
@@ -97,6 +103,17 @@ function createTelemetryGenerator(schema, deviceState) {
   }
 
   parseSchema(schema);
+  const historicalProps =
+  schema.properties?.historicalTelemetry?.properties || {};
+
+ Object.entries(historicalProps).forEach(([field, def]) => {
+
+    historicalBuffers[field] =
+      def["x-buffering"]?.interval ?? 5000;
+
+    state.historicalTelemetry[field] = [];
+    state.historicalLastSample[field] = 0;
+  });
   console.log("FIELD DEFINITIONS:");
   console.log(Object.keys(fieldDefinitions));
 
@@ -145,6 +162,24 @@ function createTelemetryGenerator(schema, deviceState) {
     });
 
     return min === Infinity ? 1000 : min;
+  }
+  function getOptimalHistoricalBufferTick() {
+
+    const intervals = Object.values(
+      schema.properties?.historicalTelemetry?.properties || {}
+    )
+      .map(def => def["x-buffering"]?.interval)
+      .filter(i => typeof i === "number" && i > 0);
+
+    if (intervals.length === 0) {
+      return 5000;
+    }
+
+    const gcd = intervals.reduce(
+      (acc, curr) => calculateNZD(acc, curr)
+    );
+
+    return Math.max(gcd, 100);
   }
 
   function applyClamp() {
@@ -237,30 +272,7 @@ function createTelemetryGenerator(schema, deviceState) {
     }
     current[parts[parts.length - 1]] = value;
   }
-  /*function addHistoricalSample() {
-    
-    if (!supportsHistoricalTelemetry) return;
-    
-    if (state["telemetry.temperature"] === undefined) return;
   
-    state.historicalTelemetry.push({
-      timestamp: new Date().toISOString(),
-
-      temperature:
-        state["telemetry.temperature"],
-
-      humidity:
-        state["telemetry.humidity"],
-
-      pressure:
-        state["telemetry.pressure"]
-    });
-
-    if (state.historicalTelemetry.length > historicalTelemetryMaxItems) {
-      state.historicalTelemetry.shift();
-    }
-  }
-*/
 function updateDeviceState() {
 
   if (state.peakCounter === 0 && Math.random() < 0.25) {
@@ -289,7 +301,7 @@ function updateDeviceState() {
   }
 }
 
-function addHistoricalSample() {
+/*function addHistoricalSample() {
 
   if (!supportsHistoricalTelemetry) return;
   updateDeviceState();
@@ -320,6 +332,59 @@ function addHistoricalSample() {
   if (state.historicalTelemetry.length > historicalTelemetryMaxItems) {
     state.historicalTelemetry.shift();
   }
+}*/
+function addHistoricalSample() {
+
+  if (!supportsHistoricalTelemetry) {
+    return;
+  }
+
+  updateDeviceState();
+
+  const now = Date.now();
+  const iso = new Date(now).toISOString();
+
+  Object.keys(historicalBuffers).forEach(field => {
+
+    const path = `telemetry.${field}`;
+    const interval = historicalBuffers[field];
+
+    const last =
+      state.historicalLastSample[field] ?? 0;
+
+    if (now - last < interval) {
+      return;
+    }
+
+    let value = state[path];
+
+    if (typeof value === "number") {
+      value = round(value);
+    }
+
+    if (!state.historicalTelemetry[field]) {
+      state.historicalTelemetry[field] = [];
+    }
+
+    state.historicalTelemetry[field].push([
+      value,
+      iso
+    ]);
+
+    const maxItems =
+      schema.properties.historicalTelemetry.properties[field]
+        ?.maxItems ?? 24;
+
+    if (
+      state.historicalTelemetry[field].length >
+      maxItems
+    ) {
+      state.historicalTelemetry[field].shift();
+    }
+
+    state.historicalLastSample[field] = now;
+
+  });
 }
   function applyOperatingProfile() {
     const profile = deviceState.operatingProfile;
@@ -412,34 +477,46 @@ function addHistoricalSample() {
    //const activeFields = fields;
 
     const now = Date.now();
+    if (supportsHistoricalTelemetry) {
+
+  const shouldFlush =
+    now - state.lastHistoricalFlush >= historicalFlushInterval;
+
+  const hasData =
+    Object.values(state.historicalTelemetry)
+      .some(arr => arr.length > 0);
+
+  if (shouldFlush && hasData) {
+
+    const historicalPayload = {};
+
+    Object.keys(state.historicalTelemetry)
+      .forEach(field => {
+
+        if (state.historicalTelemetry[field].length > 0) {
+
+          historicalPayload[field] = [
+            ...state.historicalTelemetry[field]
+          ];
+
+          state.historicalTelemetry[field] = [];
+        }
+      });
+
+    payload.historicalTelemetry =
+      historicalPayload;
+
+    logger.debug(
+      `[HISTORY] Flushing historical telemetry buffers`
+    );
+
+    state.lastHistoricalFlush = now;
+  }
+}
 
     Object.keys(fieldDefinitions).forEach((path) => {
    
       const def = fieldDefinitions[path];
-
-
-      if (path === "historicalTelemetry") {
-
-        const shouldFlush =
-          Date.now() - state.lastHistoricalFlush >= historicalFlushInterval;
-
-        if (shouldFlush && state.historicalTelemetry.length > 0) {
-
-          logger.debug( `[HISTORY] Flushing ${state.historicalTelemetry.length} samples`);
-
-          setDeepValue(
-            payload,
-            path,
-            [...state.historicalTelemetry]
-          );
-
-          state.historicalTelemetry = [];
-          state.lastHistoricalFlush = Date.now();
-          state.lastSent[path] = now;
-        }
-
-        return;
-      }
       const isRequired = def.required === true;
       const reportingMode = isHeartbeat ? "IDLE" : "ACTIVE";
       if(!isFull && !isRequired){
@@ -621,7 +698,7 @@ function addHistoricalSample() {
   }
 
   return {
-    generate,generateHeartbeat,addHistoricalSample,setForceFull, getMinimumInterval, getOptimalTick
+    generate,generateHeartbeat,addHistoricalSample,setForceFull, getMinimumInterval, getOptimalTick, getOptimalHistoricalBufferTick
   };
 }
 

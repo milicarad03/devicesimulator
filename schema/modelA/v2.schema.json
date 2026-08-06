@@ -1,0 +1,126 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "DeviceDashboard Telemetry Schema",
+  "description": "Šema za validaciju dolaznih poruka sa simulatora Model A",
+  "type": "object",
+
+  "commands": {
+
+
+    "SET_STATE": {
+      "payload": {
+        "type": "object",
+        "required": ["state"],
+        "properties": {
+          "state": {
+            "type": "string",
+            "enum": [
+              "ACTIVE",
+              "IDLE"
+            ]
+          }
+        },
+          "additionalProperties": false
+      }
+    }
+  },
+
+  "properties": {
+    "schemaId": { 
+      "type": "string",
+      "const": "modelA",
+       "x-reporting": {
+        "ACTIVE": 5000,
+        "IDLE": 120000
+      }
+    },
+    "telemetry": {
+      "type": "object",
+      
+      "properties": {
+        "temperature": {
+          "type": "number",
+          "minimum": -50,
+          "maximum": 100,
+           "x-reporting": {
+            "ACTIVE": 4000,
+            "IDLE": null
+          }
+        },
+        "humidity": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100,
+           "x-reporting": {
+            "ACTIVE": 3000,
+            "IDLE": null
+          }
+        },
+        "pressure": {
+          "type": "number",
+          "minimum": 300,
+          "maximum": 1200,
+          "x-reporting": {
+            "ACTIVE": 4000,
+            "IDLE": null
+          }
+        },
+        "led": {
+          "type": "boolean",
+           "x-reporting": {
+            "ACTIVE": 4000,
+            "IDLE": 120000
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    
+   "historicalTelemetry": {
+    "type": "array",
+    "maxItems": 24,
+    "items": {
+      "type": "object",
+      "properties": {
+        "timestamp": {
+          "type": "string"
+        },
+        "temperature": {
+          "type": "number",
+          "minimum": -50,
+          "maximum": 100
+        },
+        "humidity": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "pressure": {
+          "type": "number",
+          "minimum": 300,
+          "maximum": 1200
+        },
+        "led": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "timestamp",
+        "temperature",
+        "humidity",
+        "pressure",
+        "led"
+      ],
+      "additionalProperties": false
+    },
+    "x-buffering": {
+      "interval": 5000
+    },
+    "x-reporting": {
+      "ACTIVE": null,
+      "IDLE": 120000
+    }
+  }
+  },
+  "additionalProperties": false
+}
