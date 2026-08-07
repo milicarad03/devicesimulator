@@ -147,6 +147,74 @@
         }
       },
       "additionalProperties": false
+    },
+     "historicalTelemetry": {
+      "type": "object",
+      "properties": {
+        "temp": {
+          "type": "array",
+          "maxItems": 24,
+
+          "items": {
+            "type": "array",
+
+            "prefixItems": [
+              {
+                "type": "number",
+                "minimum": -50,
+                "maximum": 100
+              },
+              {
+                "type": "string"
+              }
+            ],
+
+            "items": false,
+            "minItems": 2,
+            "maxItems": 2
+          },
+
+          "x-buffering": {
+            "interval": 5000
+          }
+        },
+        "hum": {
+          "type": "array",
+          "maxItems": 24,
+          "items": {
+            "type": "array",
+          "prefixItems": [
+            { "type": "number", "minimum": 0, "maximum": 100 },
+            { "type": "string" }
+          ],
+          "items": false,
+            "minItems": 2,
+            "maxItems": 2
+        },
+          "x-buffering": { "interval": 10000 }
+        },
+        "press": {
+          "type": "array",
+          "maxItems": 24,
+          "items": {
+          "type": "array",
+          "prefixItems": [
+            { "type": "number", "minimum": 300, "maximum": 1200 },
+            { "type": "string" }
+          ],
+          "items": false,
+           "minItems": 2,
+            "maxItems": 2
+        },
+          "x-buffering": { "interval": 5000 }
+        }
+      },
+      "required": ["temp", "hum", "press"],
+      "additionalProperties": false,
+      "x-reporting": {
+        "ACTIVE": null,
+        "IDLE": 120000
+      }
     }
   },
   "additionalProperties": false

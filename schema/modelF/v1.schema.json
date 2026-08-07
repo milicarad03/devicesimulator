@@ -297,6 +297,226 @@
           }
         }
       }
+    },
+    "historicalTelemetry": {
+      "type": "object",
+      "properties": {
+
+        "oil_level": {
+          "type": "array",
+          "maxItems": 24,
+          "items": {
+            "type": "array",
+            "prefixItems": [
+              { "type": "number", "minimum": 0, "maximum": 100 },
+              { "type": "string" }
+            ],
+            "items": false,
+            "minItems": 2,
+            "maxItems": 2
+          },
+          "x-buffering": { "interval": 10000 }
+        },
+
+        "vibration": {
+          "type": "array",
+          "maxItems": 24,
+          "items": {
+            "type": "array",
+            "prefixItems": [
+              { "type": "number", "minimum": 0, "maximum": 25 },
+              { "type": "string" }
+            ],
+            "items": false,
+            "minItems": 2,
+            "maxItems": 2
+          },
+          "x-buffering": { "interval": 15000 }
+        },
+
+        "p1": {
+          "type": "array",
+          "maxItems": 24,
+          "items": {
+            "type": "array",
+            "prefixItems": [
+              { "type": "number", "minimum": 0, "maximum": 8.0 },
+              { "type": "string" }
+            ],
+            "items": false,
+            "minItems": 2,
+            "maxItems": 2
+          },
+          "x-buffering": { "interval": 15000 }
+        },
+
+        "p2": {
+          "type": "array",
+          "maxItems": 24,
+          "items": {
+            "type": "array",
+            "prefixItems": [
+              { "type": "number", "minimum": 0, "maximum": 16.0 },
+              { "type": "string" }
+            ],
+            "items": false,
+            "minItems": 2,
+            "maxItems": 2
+          },
+          "x-buffering": { "interval": 5000 }
+        },
+
+        "tempIn": {
+          "type": "array",
+          "maxItems": 24,
+          "items": {
+            "type": "array",
+            "prefixItems": [
+              { "type": "number", "minimum": 10, "maximum": 50 },
+              { "type": "string" }
+            ],
+            "items": false,
+            "minItems": 2,
+            "maxItems": 2
+          },
+          "x-buffering": { "interval": 10000 }
+        },
+
+        "tempOut": {
+          "type": "array",
+          "maxItems": 24,
+          "items": {
+            "type": "array",
+            "prefixItems": [
+              { "type": "number", "minimum": 40, "maximum": 120 },
+              { "type": "string" }
+            ],
+            "items": false,
+            "minItems": 2,
+            "maxItems": 2
+          },
+          "x-buffering": { "interval": 10000 }
+        },
+
+        "load": {
+          "type": "array",
+          "maxItems": 24,
+          "items": {
+            "type": "array",
+            "prefixItems": [
+              { "type": "number", "minimum": 0, "maximum": 100 },
+              { "type": "string" }
+            ],
+            "items": false,
+            "minItems": 2,
+            "maxItems": 2
+          },
+          "x-buffering": { "interval": 10000 }
+        },
+
+        "kw": {
+          "type": "array",
+          "maxItems": 24,
+          "items": {
+            "type": "array",
+            "prefixItems": [
+              { "type": "number", "minimum": 0, "maximum": 250 },
+              { "type": "string" }
+            ],
+            "items": false,
+            "minItems": 2,
+            "maxItems": 2
+          },
+          "x-buffering": { "interval": 20000 }
+        },
+
+        "voltage": {
+          "type": "array",
+          "maxItems": 24,
+          "items": {
+            "type": "array",
+            "prefixItems": [
+              { "type": "number", "minimum": 380, "maximum": 440 },
+              { "type": "string" }
+            ],
+            "items": false,
+            "minItems": 2,
+            "maxItems": 2
+          },
+          "x-buffering": { "interval": 17000 }
+        },
+
+        "pf": {
+          "type": "array",
+          "maxItems": 24,
+          "items": {
+            "type": "array",
+            "prefixItems": [
+              { "type": "number", "minimum": 0.7, "maximum": 1.0 },
+              { "type": "string" }
+            ],
+            "items": false,
+            "minItems": 2,
+            "maxItems": 2
+          },
+          "x-buffering": { "interval": 5000 }
+        },
+
+        "flow": {
+          "type": "array",
+          "maxItems": 24,
+          "items": {
+            "type": "array",
+            "prefixItems": [
+              { "type": "number", "minimum": 0, "maximum": 50.0 },
+              { "type": "string" }
+            ],
+            "items": false,
+            "minItems": 2,
+            "maxItems": 2
+          },
+          "x-buffering": { "interval": 10000 }
+        },
+
+        "total_runtime": {
+          "type": "array",
+          "maxItems": 24,
+          "items": {
+            "type": "array",
+            "prefixItems": [
+              { "type": "integer", "minimum": 0 },
+              { "type": "string" }
+            ],
+            "items": false,
+            "minItems": 2,
+            "maxItems": 2
+          },
+          "x-buffering": { "interval": 15000 }
+        },
+
+        "energy_kwh": {
+          "type": "array",
+          "maxItems": 24,
+          "items": {
+            "type": "array",
+            "prefixItems": [
+              { "type": "number", "minimum": 0 },
+              { "type": "string" }
+            ],
+            "items": false,
+            "minItems": 2,
+            "maxItems": 2
+          },
+          "x-buffering": { "interval": 10000 }
+        }
+      },
+
+      "additionalProperties": false,
+
+      "x-reporting": {
+        "ACTIVE": null,
+        "IDLE": 120000
+      }
     }
   }
 }

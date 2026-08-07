@@ -1,23 +1,13 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "DeviceDashboard Telemetry Schema",
-  "description": "Šema za validaciju dolaznih poruka sa simulatora Model A",
+  "title": "ModelB Telemetry Schema",
   "type": "object",
+  "required": ["schemaId"],
+
   "commands": {
-    "SET_STATE": {
-      "payload": {
-        "type": "object",
-        "required": ["state"],
-        "properties": {
-          "state": {
-            "type": "string",
-            "enum": ["ACTIVE", "IDLE"]
-          }
-        },
-        "additionalProperties": false
-      }
-    },
-     "SET_LED": {
+    "SET_LED": {
+      "x-state-path": "status.ledState",
+      "x-payload-field": "value",
       "payload": {
         "type": "object",
         "required": ["value"],
@@ -28,49 +18,120 @@
         },
           "additionalProperties": false
       }
-    }
-  },
-  "properties": {
-    "schemaId": { 
-      "type": "string",
-      "const": "modelA",
-      "x-reporting": {
-        "ACTIVE": 5000,
-        "IDLE": 120000
+    },
+
+    "SET_LED_COLOR": {
+      "x-state-path": "status.ledColor",
+      "x-payload-field": "color",
+      "payload": {
+        "type": "object",
+        "required": ["color"],
+        "properties": {
+          "color": {
+            "type": "string",
+            "enum": [
+              "RED",
+              "GREEN",
+              "BLUE",
+              "YELLOW",
+              "WHITE"
+            ]
+          }
+        },
+          "additionalProperties": false
       }
     },
-    "telemetry": {
+
+    "SET_STATE": {
+      "payload": {
+        "type": "object",
+        "required": ["state"],
+        "properties": {
+          "state": {
+            "type": "string",
+            "enum": [
+              "ACTIVE",
+              "IDLE"
+            ]
+          }
+        },
+          "additionalProperties": false
+      }
+    },
+    "SET_MODE": {
+      "x-state-path": "mode",
+      "x-payload-field": "value",
+      "payload": {
+        "type": "object",
+        "required": ["value"],
+        "properties": {
+          "value": {
+            "type": "string",
+            "enum": [
+              "AUTO",
+              "RUNNING",
+              "SERVICE"
+            ]
+          }
+        },
+          "additionalProperties": false
+      }
+    }
+  },
+
+  "properties": {
+    "schemaId": {
+      "type": "string",
+      "const": "modelB"
+    },
+
+    "data": {
       "type": "object",
+  
       "properties": {
-        "temperature": {
+        "temp": {
           "type": "number",
           "minimum": -50,
-          "maximum": 100,
-          "x-reporting": { "ACTIVE": 4000, "IDLE": null }
+          "maximum": 100
         },
-        "humidity": {
+        "hum": {
           "type": "number",
           "minimum": 0,
-          "maximum": 100,
-          "x-reporting": { "ACTIVE": 3000, "IDLE": null }
+          "maximum": 100
         },
-        "pressure": {
+        "press": {
           "type": "number",
           "minimum": 300,
-          "maximum": 1200,
-          "x-reporting": { "ACTIVE": 4000, "IDLE": null }
-        },
-        "led": {
-          "type": "boolean",
-          "x-reporting": { "ACTIVE": 4000, "IDLE": 120000 }
+          "maximum": 1200
         }
       },
       "additionalProperties": false
     },
-    "historicalTelemetry": {
+
+    "status": {
+      "type": "object",
+     
+      "properties": {
+        "ledState": {
+          "type": "boolean"
+        },
+        "ledColor": {
+          "type": "string",
+          "enum": [
+            "RED",
+            "GREEN",
+            "BLUE",
+            "YELLOW",
+            "WHITE"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+     "historicalTelemetry": {
       "type": "object",
       "properties": {
-        "temperature": {
+        "temp": {
           "type": "array",
           "maxItems": 24,
 
@@ -97,7 +158,7 @@
             "interval": 5000
           }
         },
-        "humidity": {
+        "hum": {
           "type": "array",
           "maxItems": 24,
           "items": {
@@ -112,7 +173,7 @@
         },
           "x-buffering": { "interval": 10000 }
         },
-        "pressure": {
+        "press": {
           "type": "array",
           "maxItems": 24,
           "items": {
@@ -128,7 +189,7 @@
           "x-buffering": { "interval": 5000 }
         }
       },
-      "required": ["temperature", "humidity", "pressure"],
+      "required": ["temp", "hum", "press"],
       "additionalProperties": false,
       "x-reporting": {
         "ACTIVE": null,

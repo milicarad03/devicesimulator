@@ -22,6 +22,7 @@ function createTelemetryGenerator(schema, deviceState) {
    // historicalTelemetry:[],
     historicalTelemetry: {},
     historicalLastSample: {},
+    
     lastHistoricalFlush: Date.now(),
     lastHistoricalSample: Date.now()
   };
@@ -32,6 +33,7 @@ function createTelemetryGenerator(schema, deviceState) {
   
   const fieldDefinitions = {};
   const historicalBuffers = {};
+  const historicalToLivePath = {};
 
   function generateFromPattern(pattern) {
 
@@ -103,17 +105,31 @@ function createTelemetryGenerator(schema, deviceState) {
   }
 
   parseSchema(schema);
-  const historicalProps =
-  schema.properties?.historicalTelemetry?.properties || {};
+ const historicalProps =schema.properties?.historicalTelemetry?.properties || {};
 
- Object.entries(historicalProps).forEach(([field, def]) => {
+  Object.entries(historicalProps).forEach(([field, def]) => {
 
     historicalBuffers[field] =
       def["x-buffering"]?.interval ?? 5000;
 
     state.historicalTelemetry[field] = [];
+
     state.historicalLastSample[field] = 0;
+
+    const matchingPath =
+      Object.keys(fieldDefinitions).find(
+        path => path.endsWith(`.${field}`)
+      );
+
+    if (matchingPath) {
+      historicalToLivePath[field] = matchingPath;
+    }
   });
+  console.log("HISTORICAL BUFFERS");
+  console.log(historicalBuffers);
+
+  console.log("HISTORICAL MAP");
+  console.log(historicalToLivePath);
   console.log("FIELD DEFINITIONS:");
   console.log(Object.keys(fieldDefinitions));
 
@@ -195,8 +211,19 @@ function createTelemetryGenerator(schema, deviceState) {
   }
 
   function maybeToggleBoolean() {
-    Object.keys(fieldDefinitions).forEach((path) => {
-      if (fieldDefinitions[path].type === "boolean" && Math.random() < 0.05) {
+    Object.keys(fieldDefinitions).forEach(path => {
+
+      if (
+        path === "telemetry.led" ||
+        path.endsWith("ledState")
+      ) {
+        return;
+      }
+
+      if (
+        fieldDefinitions[path].type === "boolean" &&
+        Math.random() < 0.05
+      ) {
         state[path] = !state[path];
       }
     });
@@ -346,7 +373,10 @@ function addHistoricalSample() {
 
   Object.keys(historicalBuffers).forEach(field => {
 
-    const path = `telemetry.${field}`;
+    const path = historicalToLivePath[field];
+    if (!path) {
+      return;
+    }
     const interval = historicalBuffers[field];
 
     const last =
@@ -358,8 +388,18 @@ function addHistoricalSample() {
 
     let value = state[path];
 
-    if (typeof value === "number") {
+   /* if (typeof value === "number") {
       value = round(value);
+    }*/
+   const liveDefinition = fieldDefinitions[path];
+   if (liveDefinition?.type === "integer") {
+
+    value = Math.round(value);
+
+    } else {
+
+    value = round(value);
+
     }
 
     if (!state.historicalTelemetry[field]) {
@@ -599,8 +639,15 @@ function addHistoricalSample() {
 
         state.lastSent[path] = now;
       }else if (def.type === "boolean") {
-        setDeepValue(payload, path, state[path]);
+
+        if (path === "telemetry.led") {
+          setDeepValue(payload, path, deviceState.led);
+        } else {
+          setDeepValue(payload, path, state[path]);
+        }
+
         state.lastSent[path] = now;
+
       } else if (def.type === "string") {
 
       if (def.pattern) {
