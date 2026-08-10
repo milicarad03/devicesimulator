@@ -1,0 +1,206 @@
+{
+  "type": "object",
+  "title": "ModelB Telemetry Schema",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "commands": {
+    "SET_LED": {
+      "payload": {
+        "type": "object",
+        "required": [
+          "value"
+        ],
+        "properties": {
+          "value": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "x-state-path": "status.ledState",
+      "x-payload-field": "value"
+    },
+    "SET_MODE": {
+      "payload": {
+        "type": "object",
+        "required": [
+          "value"
+        ],
+        "properties": {
+          "value": {
+            "enum": [
+              "AUTO",
+              "RUNNING",
+              "SERVICE"
+            ],
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "x-state-path": "mode",
+      "x-payload-field": "value"
+    },
+    "SET_STATE": {
+      "payload": {
+        "type": "object",
+        "required": [
+          "state"
+        ],
+        "properties": {
+          "state": {
+            "enum": [
+              "ACTIVE",
+              "IDLE"
+            ],
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "SET_LED_COLOR": {
+      "payload": {
+        "type": "object",
+        "required": [
+          "color"
+        ],
+        "properties": {
+          "color": {
+            "enum": [
+              "RED",
+              "GREEN",
+              "BLUE",
+              "YELLOW",
+              "WHITE"
+            ],
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "x-state-path": "status.ledColor",
+      "x-payload-field": "color"
+    }
+  },
+  "required": [
+    "schemaId"
+  ],
+  "properties": {
+    "data": {
+      "type": "object",
+      "properties": {
+        "hum": {
+          "type": "number",
+          "maximum": 100,
+          "minimum": 0
+        },
+        "temp": {
+          "type": "number",
+          "maximum": 100,
+          "minimum": -50
+        },
+        "press": {
+          "type": "number",
+          "maximum": 1200,
+          "minimum": 300
+        }
+      },
+      "additionalProperties": false
+    },
+    "status": {
+      "type": "object",
+      "properties": {
+        "ledColor": {
+          "enum": [
+            "RED",
+            "GREEN",
+            "BLUE",
+            "YELLOW",
+            "WHITE"
+          ],
+          "type": "string"
+        },
+        "ledState": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    },
+    "schemaId": {
+      "type": "string",
+      "const": "modelB"
+    },
+    "historicalTelemetry": {
+      "type": "object",
+      "required": [
+        "temp",
+        "hum",
+        "press"
+      ],
+      "properties": {
+        "hum": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": false,
+            "maxItems": 2,
+            "minItems": 2,
+            "prefixItems": [
+              {
+                "type": "number",
+                "maximum": 100,
+                "minimum": 0
+              },
+              {
+                "type": "string"
+              }
+            ]
+          },
+          "maxItems": 24
+        },
+        "temp": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": false,
+            "maxItems": 2,
+            "minItems": 2,
+            "prefixItems": [
+              {
+                "type": "number",
+                "maximum": 100,
+                "minimum": -50
+              },
+              {
+                "type": "string"
+              }
+            ]
+          },
+          "maxItems": 24
+        },
+        "press": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": false,
+            "maxItems": 2,
+            "minItems": 2,
+            "prefixItems": [
+              {
+                "type": "number",
+                "maximum": 1200,
+                "minimum": 300
+              },
+              {
+                "type": "string"
+              }
+            ]
+          },
+          "maxItems": 24
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

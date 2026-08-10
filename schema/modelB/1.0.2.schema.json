@@ -1,0 +1,58 @@
+{
+  "type": "object",
+  "required": [
+    "schemaId"
+  ],
+  "properties": {
+    "device": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "object",
+          "properties": {
+            "led": {
+              "type": "boolean"
+            },
+            "mode": {
+              "type": "string"
+            }
+          }
+        },
+        "battery": {
+          "type": "object",
+          "properties": {
+            "level": {
+              "type": "number"
+            },
+            "charging": {
+              "type": "boolean"
+            }
+          }
+        }
+      }
+    },
+    "metrics": {
+      "type": "object",
+      "properties": {
+        "environment": {
+          "type": "object",
+          "properties": {
+            "humidity": {
+              "type": "number"
+            },
+            "pressure": {
+              "type": "number"
+            },
+            "temperature": {
+              "type": "number"
+            }
+          }
+        }
+      }
+    },
+    "schemaId": {
+      "type": "string",
+      "const": "modelB"
+    }
+  }
+}

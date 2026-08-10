@@ -1,6 +1,6 @@
 const fs = require("fs");
 const path = require("path");
-const { execFileSync } = require("child_process");
+const { execFileSync} = require("child_process");
 const mqtt = require("mqtt");
 const winston = require("winston");
 
@@ -80,6 +80,17 @@ const BROKER_URL = "mqtt://localhost:1883";
 const REGISTRATION_URL = "http://localhost:3000/device-certificates/register";
 const CONFIG_FILE = "./device-data1.json";
 
+const STAGED_UPDATE_DIR = path.join(
+  __dirname,
+  "staged",
+  DEVICE_FOLDER
+);
+
+const STAGED_UPDATE_FILE = path.join(
+  STAGED_UPDATE_DIR,
+  "model-update.json"
+);
+
 if (!fs.existsSync(CONFIG_FILE)) {
   handleEarlyError(`Configuration file missing: ${CONFIG_FILE}`);
   process.exit(1);
@@ -115,6 +126,10 @@ let client = null;
 let telemetryTimer = null;
 let historicalBufferTimer = null;
 let operatingProfileTimer=null;
+let stagedModelUpdate = null;
+let isRestarting = false;
+let isShuttingDown = false;
+
 
 let logCheckCounter = 0;
 const supportsLed = !!schema.commands?.SET_LED;
@@ -298,17 +313,9 @@ function connectMqtt() {
       }
       logger.info(`Inbound Command engine processing topic linked: ${COMMAND_TOPIC}`);
     });
-    console.log(
-      "ACTIVE TICK =",
-      activeTick
-    );
-
-    console.log(
-      "IDLE TICK =",
-      idleTick
-    );
-    
-
+    console.log( "ACTIVE TICK =", activeTick);
+    console.log("IDLE TICK =", idleTick);
+  
     logger.info("Publishing lifecycle status flag [ONLINE] to platform state management...");
     client.publish(STATUS_TOPIC, JSON.stringify({ deviceId: DEVICE_ID, timestamp: nowIso(), status: "online" }), { qos: 1, retain: true });
     isTelemetryActive = false;
@@ -324,6 +331,296 @@ function connectMqtt() {
       logger.info(`Inbound transaction processing command request token: ${commandObj.command}`);
       logger.debug(`Raw dynamic command parameters payload: ${payload.toString()}`);
       
+      if ( commandObj.command === "STAGE_MODEL_VERSION") {
+        const {
+          model,
+          version,
+          schema,
+          mapping,
+          correlationId,
+        } = commandObj.payload || {};
+
+        logger.info(`[MODEL UPDATE] Received stage request for ${model}:${version}` );
+
+        if (!model || !version || !schema || !mapping || !correlationId) {
+          logger.error( "[MODEL UPDATE] Missing required stage data." );
+
+          sendCommandResponse(
+            commandObj.command,
+            false,
+            {
+              correlationId,
+              error:
+                "INVALID_MODEL_VERSION_PACKAGE",
+            }
+          );
+          return;
+        }
+
+        const schemaId = schema?.properties?.schemaId?.const;
+
+        if (schemaId !== model) {
+          logger.error(`[MODEL UPDATE] Schema ID mismatch. model=${model}, schemaId=${schemaId}`);
+
+        sendCommandResponse(
+          commandObj.command,
+          false,
+          {
+            correlationId,
+            error:
+              "SCHEMA_MODEL_MISMATCH",
+          }
+        );
+
+        return;
+      }
+      try {
+        ensureDirectoryExists(STAGED_UPDATE_DIR);
+
+        const stagedPackage = {
+          model,
+          version,
+          schema,
+          mapping,
+          stagedAt: nowIso(),
+        };
+
+        fs.writeFileSync(
+          STAGED_UPDATE_FILE,
+          JSON.stringify(
+            stagedPackage,
+            null,
+            2
+          ),
+          "utf8"
+        );
+
+        stagedModelUpdate = stagedPackage;
+
+        logger.info(`[MODEL UPDATE] Staged package persisted to ${STAGED_UPDATE_FILE}`);
+      } catch (error) {
+        logger.error(`[MODEL UPDATE] Failed to persist staged package: ${error.message}`);
+
+        sendCommandResponse(
+          commandObj.command,
+          false,
+          {
+            correlationId,
+            error:
+              "MODEL_VERSION_STAGE_PERSIST_FAILED",
+          }
+        );
+
+        return;
+      }
+
+      logger.info(`[MODEL UPDATE] Successfully staged ${model}:${version}`);
+        sendCommandResponse(
+          commandObj.command,
+          true,
+          {
+            correlationId,
+            model,
+            version,
+            staged: true,
+          }
+        );
+
+        return;
+      }
+      if (commandObj.command === "RESTART_WITH_MODEL_VERSION") {
+
+        if (isRestarting) {
+          logger.warn("[MODEL UPDATE] Restart already in progress. Ignoring duplicate restart request.");
+          return;
+        }
+
+        const {model, version, correlationId} = commandObj.payload || {};
+        if (!model || !version || !correlationId) {
+          sendCommandResponse(
+            commandObj.command,
+            false,
+            {
+              correlationId,
+              error: "INVALID_RESTART_REQUEST",
+            }
+          );
+
+          return;
+        }
+
+        if (MODEL_ARG === model && VERSION_ARG === version) {
+          logger.warn( `[MODEL UPDATE] Simulator already running ${model}:${version}. Restart skipped.`);
+
+          sendCommandResponse(
+            commandObj.command,
+            true,
+            {
+              correlationId,
+              model,
+              version,
+              alreadyRunning: true,
+            }
+          );
+          return;
+        }
+
+        logger.info( `[MODEL UPDATE] Restart requested for ${model}:${version}` );
+
+
+        if (!fs.existsSync(STAGED_UPDATE_FILE)) {
+          logger.error( "[MODEL UPDATE] No staged model package found.");
+
+          sendCommandResponse(
+            commandObj.command,
+            false,
+            {
+              correlationId,
+              error: "NO_STAGED_MODEL_VERSION",
+            }
+          );
+          return;
+        }
+
+        let stagedPackage;
+
+        try {
+          stagedPackage = JSON.parse(
+            fs.readFileSync(
+              STAGED_UPDATE_FILE,
+              "utf8"
+            )
+          );
+        } catch (error) {
+          logger.error( `[MODEL UPDATE] Failed reading staged package: ${error.message}`);
+
+          sendCommandResponse(
+            commandObj.command,
+            false,
+            {
+              correlationId,
+              error: "STAGED_PACKAGE_READ_FAILED",
+            }
+          );
+
+          return;
+        }
+
+        if ( stagedPackage.model !== model || stagedPackage.version !== version) {
+          logger.error( `[MODEL UPDATE] Restart target does not match staged package. staged=${stagedPackage.model}:${stagedPackage.version}, requested=${model}:${version}`);
+
+          sendCommandResponse(
+            commandObj.command,
+            false,
+            {
+              correlationId,
+              error: "STAGED_VERSION_MISMATCH",
+            }
+          );
+
+          return;
+        }
+
+        const targetSchemaDir = path.join( __dirname, "schema",  model);
+
+        const targetSchemaFile = path.join( targetSchemaDir, `${version}.schema.json`);
+
+        try {
+          ensureDirectoryExists(targetSchemaDir);
+
+          fs.writeFileSync(
+            targetSchemaFile,
+            JSON.stringify(
+              stagedPackage.schema,
+              null,
+              2
+            ),
+            "utf8"
+          );
+
+          logger.info(`[MODEL UPDATE] Activated schema written to ${targetSchemaFile}` );
+        } catch (error) {
+          logger.error(`[MODEL UPDATE] Failed activating staged schema: ${error.message}` );
+
+          sendCommandResponse(
+            commandObj.command,
+            false,
+            {
+              correlationId,
+              error: "MODEL_VERSION_ACTIVATION_FAILED",
+            }
+          );
+
+          return;
+        }
+        isRestarting = true;
+
+        sendCommandResponse(
+          commandObj.command,
+          true,
+          {
+            correlationId,
+            model,
+            version,
+            restartRequired: true,
+          }
+        );
+
+        logger.info(`[MODEL UPDATE] Model version ${model}:${version} activated. Simulator will shut down for manual restart.`);
+
+        setTimeout(() => {
+          logger.info(`[MODEL UPDATE] Simulator shutting down for model version change.` );
+
+          logger.info(
+            `[MODEL UPDATE] Start device again with: node sim.js ${DEVICE_ARG} ${model} ${version}`
+          );
+
+          if (telemetryTimer) {
+            clearInterval(telemetryTimer);
+            telemetryTimer = null;
+          }
+
+          if (historicalBufferTimer) {
+            clearInterval(historicalBufferTimer);
+            historicalBufferTimer = null;
+          }
+
+          if (operatingProfileTimer) {
+            clearTimeout(operatingProfileTimer);
+            operatingProfileTimer = null;
+          }
+
+          const shutdown = () => {
+            if (client) {
+              client.end(true);
+            }
+
+            process.exit(0);
+          };
+
+          if (client?.connected) {
+            client.publish(
+              STATUS_TOPIC,
+              JSON.stringify({
+                deviceId: DEVICE_ID,
+                timestamp: nowIso(),
+                status: "offline",
+              }),
+              {
+                qos: 1,
+                retain: true,
+              },
+              shutdown
+            );
+          } else {
+            shutdown();
+          }
+        }, 500);
+
+        return;
+      }
+
+
       if (commandObj.command === "SET_STATE") {
         const state = commandObj.payload?.state; 
         
@@ -547,6 +844,11 @@ function sendCommandResponse(command, success, extraData = {}) {
 }
 
 process.on("SIGINT", () => {
+  if (isShuttingDown) {
+  return;
+}
+
+isShuttingDown = true;
   logger.warn("SIGINT interrupt received. Initiating clean termination teardown sequence...");
   if (operatingProfileTimer) clearTimeout(operatingProfileTimer);
 

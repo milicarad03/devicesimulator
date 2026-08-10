@@ -327,39 +327,6 @@ function updateDeviceState() {
     state.stableCounter = Math.floor(randomBetween(1, 2));
   }
 }
-
-/*function addHistoricalSample() {
-
-  if (!supportsHistoricalTelemetry) return;
-  updateDeviceState();
-  const sample = { timestamp: new Date().toISOString()};
-
-  Object.keys(fieldDefinitions).forEach(path => {
-
-    if (path === "historicalTelemetry") return;
-  
-    if (state[path] === undefined) return;
-    
-    const key = path.replace("telemetry.", "");
-
-    //sample[key] = state[path];
-    let value = state[path];
-
-    if (typeof value === "number") {
-      value = round(value);
-    }
-
-    sample[key] = value;
-    
-    //setDeepValue(sample, path, state[path]);
-  });
-
-  state.historicalTelemetry.push(sample);
-
-  if (state.historicalTelemetry.length > historicalTelemetryMaxItems) {
-    state.historicalTelemetry.shift();
-  }
-}*/
 function addHistoricalSample() {
 
   if (!supportsHistoricalTelemetry) {
@@ -557,23 +524,39 @@ function addHistoricalSample() {
     Object.keys(fieldDefinitions).forEach((path) => {
    
       const def = fieldDefinitions[path];
-      const isRequired = def.required === true;
-      const reportingMode = isHeartbeat ? "IDLE" : "ACTIVE";
-      if(!isFull && !isRequired){
-        const interval = def.reporting[reportingMode];
-    
-        if (interval == null) {
-          return;
-        }
-        if (state.lastSent[path] && (now - state.lastSent[path] < interval)) {
-            return; 
-        }
-      }
-    
+     // const isRequired = def.required === true;
+     const reportingMode =
+      isHeartbeat
+        ? "IDLE"
+        : "ACTIVE";
 
-      if (!isFull && !isRequired && !activeFields.includes(path) && !isHeartbeat) {
+    if (!isFull) {
+      const interval =
+        def.reporting?.[
+          reportingMode
+        ];
+
+      if (interval == null) {
         return;
       }
+
+      if (
+        state.lastSent[path] &&
+        now -
+          state.lastSent[path] <
+          interval
+      ) {
+        return;
+      }
+    }
+      if (
+    !isFull &&
+    !isHeartbeat &&
+    !activeFields.includes(path)
+  ) {
+    return;
+  }
+    
       if (path.endsWith("ledState")) {
           setDeepValue(
               payload,
@@ -712,29 +695,6 @@ function addHistoricalSample() {
       state.stableCounter--;
       return build("delta");
     }
-
-   /* if (state.peakCounter === 0 && Math.random() < 0.25) {
-      state.peakCounter = Math.floor(randomBetween(5, 10));
-      logger.debug(`Peak spike event triggered! Wave duration: ${state.peakCounter} cycles.`);
-    }
-
-    if (state.peakCounter > 0) {
-      peakFluctuation();
-      state.peakCounter--;
-    } else {
-      normalFluctuation();
-    }
-
-    slowRecovery();
-    maybeToggleBoolean();
-    maybeShiftBaseline();
-    applyOperatingProfile();
-    applyClamp();
-
-    if (Math.random() < 0.1) {
-      state.stableCounter = Math.floor(randomBetween(1, 2));
-    }
-      */
      updateDeviceState();
     if(nextIsFull){
       nextIsFull=false;
