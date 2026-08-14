@@ -1,0 +1,147 @@
+{
+  "type": "object",
+  "title": "DeviceDashboard Telemetry Schema",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "commands": {
+    "SET_LED": {
+      "payload": {
+        "type": "object",
+        "required": [
+          "value"
+        ],
+        "properties": {
+          "value": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "x-state-path": "telemetry.led",
+      "x-payload-field": "value"
+    },
+    "SET_STATE": {
+      "payload": {
+        "type": "object",
+        "required": [
+          "state"
+        ],
+        "properties": {
+          "state": {
+            "enum": [
+              "ACTIVE",
+              "IDLE"
+            ],
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "schemaId"
+  ],
+  "properties": {
+    "schemaId": {
+      "type": "string",
+      "const": "modelA"
+    },
+    "telemetry": {
+      "type": "object",
+      "properties": {
+        "led": {
+          "type": "boolean"
+        },
+        "humidity": {
+          "type": "number",
+          "maximum": 100,
+          "minimum": 0
+        },
+        "pressure": {
+          "type": "number",
+          "maximum": 1200,
+          "minimum": 300
+        },
+        "temperature": {
+          "type": "number",
+          "maximum": 100,
+          "minimum": -50
+        }
+      },
+      "additionalProperties": false
+    },
+    "historicalTelemetry": {
+      "type": "object",
+      "required": [
+        "temperature",
+        "humidity",
+        "pressure"
+      ],
+      "properties": {
+        "humidity": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": false,
+            "maxItems": 2,
+            "minItems": 2,
+            "prefixItems": [
+              {
+                "type": "number",
+                "maximum": 100,
+                "minimum": 0
+              },
+              {
+                "type": "string"
+              }
+            ]
+          },
+          "maxItems": 24
+        },
+        "pressure": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": false,
+            "maxItems": 2,
+            "minItems": 2,
+            "prefixItems": [
+              {
+                "type": "number",
+                "maximum": 1200,
+                "minimum": 300
+              },
+              {
+                "type": "string"
+              }
+            ]
+          },
+          "maxItems": 24
+        },
+        "temperature": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": false,
+            "maxItems": 2,
+            "minItems": 2,
+            "prefixItems": [
+              {
+                "type": "number",
+                "maximum": 100,
+                "minimum": -50
+              },
+              {
+                "type": "string"
+              }
+            ]
+          },
+          "maxItems": 24
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "description": "Šema za validaciju dolaznih poruka sa simulatora Model A",
+  "additionalProperties": false
+}
