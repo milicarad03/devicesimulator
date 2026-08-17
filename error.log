@@ -1374,3 +1374,4 @@ SyntaxError: Unexpected end of JSON input
 [2026-08-06 08:58:21] [ERROR] Simulator terminated by server. Reason: INVALID_TELEMETRY_SCHEMA
 [2026-08-07 12:35:54] [ERROR] Simulator terminated by server. Reason: INVALID_TELEMETRY_SCHEMA
 [2026-08-07 13:03:13] [ERROR] Simulator terminated by server. Reason: INVALID_TELEMETRY_SCHEMA
+[2026-08-17 09:11:25] [ERROR] Simulator terminated by server. Reason: INVALID_TELEMETRY_SCHEMA

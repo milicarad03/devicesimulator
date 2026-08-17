@@ -95,7 +95,7 @@ if (!fs.existsSync(CONFIG_FILE)) {
   handleEarlyError(`Configuration file missing: ${CONFIG_FILE}`);
   process.exit(1);
 }
-let deviceState = { led: false, ledColor:"GREEN", mode: "AUTO",operatingProfile: null };
+let deviceState = { led: false, ledColor:"GREEN", mode: "AUTO",operatingProfile: null,targetPressure: 8 };
 const config = JSON.parse(fs.readFileSync(CONFIG_FILE, "utf8"));
 const { createTelemetryGenerator } = require("./telemetry-generator3");
 const telemetryGenerator = createTelemetryGenerator(schema, deviceState);
@@ -722,6 +722,53 @@ function connectMqtt() {
         sendCommandResponse(commandObj.command, true, { state: deviceState });
         return;
       }
+      if (commandObj.command === "SET_TARGET_PRESSURE") {
+
+      const value = Number(
+        commandObj.payload?.value
+      );
+
+      if (
+        Number.isNaN(value) ||
+        value < 2 ||
+        value > 16
+      ) {
+        sendCommandResponse(
+          commandObj.command,
+          false,
+          {
+            error:
+              "INVALID_TARGET_PRESSURE"
+          }
+        );
+
+        return;
+      }
+
+      if (
+        !deviceState.targetPressure
+      ) {
+        deviceState.targetPressure =
+          value;
+      } else {
+        deviceState.targetPressure =
+          value;
+      }
+
+      logger.info(
+        `Target pressure updated to ${value}`
+      );
+
+      sendCommandResponse(
+        commandObj.command,
+        true,
+        {
+          value,
+        }
+      );
+
+      return;
+    }
       if (commandObj.command === "STOP_DEVICE") {
           logger.error(
             `Simulator terminated by server. Reason: ${commandObj.reason}`

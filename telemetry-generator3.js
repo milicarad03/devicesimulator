@@ -326,6 +326,20 @@ function updateDeviceState() {
   if (Math.random() < 0.1) {
     state.stableCounter = Math.floor(randomBetween(1, 2));
   }
+  if (
+  deviceState.operatingProfile
+) {
+  state["performance.stages.p2"] =
+    deviceState.operatingProfile
+      .pressure.target;
+} else if (
+  deviceState.targetPressure !==
+  undefined
+) {
+  state["performance.stages.p2"] =
+    deviceState.targetPressure;
+}
+  
 }
 function addHistoricalSample() {
 
@@ -394,6 +408,7 @@ function addHistoricalSample() {
   });
 }
   function applyOperatingProfile() {
+
     const profile = deviceState.operatingProfile;
 
     if (!profile) {
@@ -455,7 +470,7 @@ function addHistoricalSample() {
 
       case "NORMAL":
         if (state["performance.stages.p2"] !== undefined) {
-          state["performance.stages.p2"] = profile.pressure.target;
+          state["performance.stages.p2"] = profile.pressure.target
         }
 
         break;

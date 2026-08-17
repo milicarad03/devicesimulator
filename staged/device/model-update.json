@@ -1,6 +1,6 @@
 {
   "model": "modelA",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "schema": {
     "type": "object",
     "title": "DeviceDashboard Telemetry Schema",
@@ -194,6 +194,16 @@
               "bind": "led",
               "title": "LED State",
               "component": "value-card"
+            },
+            {
+              "id": "visible-test",
+              "bind": "temperature",
+              "title": "VISIBLE ONLY WHEN LED IS ON",
+              "component": "value-card",
+              "visibleWhen": {
+                "bind": "led",
+                "equals": true
+              }
             }
           ],
           "title": "SENSOR OVERVIEW",
@@ -238,5 +248,5 @@
       ]
     }
   },
-  "stagedAt": "2026-08-14T11:12:54.207Z"
+  "stagedAt": "2026-08-17T07:45:42.647Z"
 }

@@ -1,6 +1,6 @@
 {
   "model": "modelB",
-  "version": "3.1.1",
+  "version": "4.1.1",
   "schema": {
     "type": "object",
     "title": "IndustrialAirCompressorTelemetry",
@@ -55,6 +55,22 @@
                 "STAGNANT"
               ],
               "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "SET_TARGET_PRESSURE": {
+        "payload": {
+          "type": "object",
+          "required": [
+            "value"
+          ],
+          "properties": {
+            "value": {
+              "type": "number",
+              "maximum": 16,
+              "minimum": 2
             }
           },
           "additionalProperties": false
@@ -804,8 +820,26 @@
             {
               "id": "power",
               "bind": "powerDraw",
+              "unit": "kW",
               "title": "Power Draw",
               "component": "value-card"
+            },
+            {
+              "id": "oil-level",
+              "bind": "oilLevel",
+              "unit": "%",
+              "title": "Oil Level",
+              "component": "oil-gauge"
+            },
+            {
+              "id": "oil-warning",
+              "bind": "oilLevel",
+              "title": "LOW OIL WARNING",
+              "component": "value-card",
+              "visibleWhen": {
+                "bind": "opMode",
+                "equals": "FAULT"
+              }
             }
           ],
           "title": "COMPRESSOR OVERVIEW",
@@ -827,13 +861,59 @@
               "title": "Uptime Table",
               "colSpan": 2,
               "component": "table"
+            },
+            {
+              "id": "power-chart",
+              "bind": "powerDraw",
+              "unit": "kW",
+              "title": "Power Draw History",
+              "colSpan": 2,
+              "component": "line-chart"
+            },
+            {
+              "id": "power-table",
+              "bind": "powerDraw",
+              "unit": "kW",
+              "title": "Power Draw Table",
+              "colSpan": 2,
+              "component": "table"
             }
           ],
           "title": "TELEMETRY HISTORY",
           "columns": 4
+        },
+        {
+          "id": "controls",
+          "items": [
+            {
+              "id": "target-pressure",
+              "max": 16,
+              "min": 2,
+              "step": 1,
+              "title": "Target Pressure",
+              "command": "SET_TARGET_PRESSURE",
+              "component": "numeric-input",
+              "commandField": "value"
+            }
+          ],
+          "title": "COMPRESSOR CONTROLS",
+          "columns": 4
+        },
+        {
+          "id": "complex controls",
+          "items": [
+            {
+              "id": "operating-profile",
+              "title": "Operating Profile",
+              "command": "SET_OPERATING_PROFILE",
+              "component": "command-form"
+            }
+          ],
+          "title": "COMPRESSOR CONTROLS",
+          "columns": 2
         }
       ]
     }
   },
-  "stagedAt": "2026-08-14T10:56:24.491Z"
+  "stagedAt": "2026-08-17T11:11:18.454Z"
 }
