@@ -443,7 +443,16 @@ function addHistoricalSample() {
         }
         if (state["diagnostics.health.vibration"] !== undefined) {
           const maxV = profile.safety.maxVibration;
-          state["diagnostics.health.vibration"] = randomBetween(maxV * 0.9, maxV);
+
+          state["diagnostics.health.vibration"] =
+            randomBetween(maxV * 0.9, maxV);
+
+          console.log(
+            "BOOST vibration value:",
+            state["diagnostics.health.vibration"],
+            "LIMIT:",
+            maxV,
+          );
         }
 
 
@@ -465,12 +474,38 @@ function addHistoricalSample() {
         if (state["performance.stages.p2"] !== undefined) {
           state["performance.stages.p2"] = profile.pressure.target;
         }
+        if (state["performance.stages.tempOut"] !== undefined) {
+          const maxT = profile.safety.maxTemperature;
+
+          state["performance.stages.tempOut"] =
+            randomBetween(maxT * 0.4, maxT * 0.6);
+        }
+
+        if (state["diagnostics.health.vibration"] !== undefined) {
+          const maxV = profile.safety.maxVibration;
+
+          state["diagnostics.health.vibration"] =
+            randomBetween(maxV * 0.2, maxV * 0.4);
+        }
 
         break;
 
       case "NORMAL":
         if (state["performance.stages.p2"] !== undefined) {
           state["performance.stages.p2"] = profile.pressure.target
+        }
+        if (state["performance.stages.tempOut"] !== undefined) {
+          const maxT = profile.safety.maxTemperature;
+
+          state["performance.stages.tempOut"] =
+            randomBetween(maxT * 0.6, maxT * 0.8);
+        }
+
+        if (state["diagnostics.health.vibration"] !== undefined) {
+          const maxV = profile.safety.maxVibration;
+
+          state["diagnostics.health.vibration"] =
+            randomBetween(maxV * 0.5, maxV * 0.7);
         }
 
         break;

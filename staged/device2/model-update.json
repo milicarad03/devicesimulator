@@ -1,6 +1,6 @@
 {
   "model": "modelB",
-  "version": "4.1.1",
+  "version": "5.0.2",
   "schema": {
     "type": "object",
     "title": "IndustrialAirCompressorTelemetry",
@@ -792,6 +792,18 @@
       "totalRuntime": {
         "path": "performance.output.total_runtime",
         "historyPath": "historicalTelemetry.total_runtime"
+      },
+      "vibrationMax": {
+        "path": "historicalTelemetry.vibration",
+        "operation": "max"
+      },
+      "vibrationMin": {
+        "path": "historicalTelemetry.vibration",
+        "operation": "min"
+      },
+      "vibrationHistory": {
+        "path": "historicalTelemetry.vibration",
+        "operation": "array"
       }
     },
     "dashboard": {
@@ -911,9 +923,35 @@
           ],
           "title": "COMPRESSOR CONTROLS",
           "columns": 2
+        },
+        {
+          "id": "mapping-demo",
+          "items": [
+            {
+              "id": "vibration-min",
+              "bind": "vibrationMin",
+              "title": "Minimum Vibration",
+              "component": "value-card"
+            },
+            {
+              "id": "vibration-max",
+              "bind": "vibrationMax",
+              "title": "Maximum Vibration",
+              "component": "value-card"
+            },
+            {
+              "id": "vibration-history",
+              "bind": "vibrationHistory",
+              "title": "Vibration Samples",
+              "colSpan": 3,
+              "component": "table"
+            }
+          ],
+          "title": "MAPPING OPERATIONS",
+          "columns": 3
         }
       ]
     }
   },
-  "stagedAt": "2026-08-17T11:11:18.454Z"
+  "stagedAt": "2026-08-18T10:05:01.938Z"
 }
