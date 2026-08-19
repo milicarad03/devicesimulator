@@ -534,7 +534,7 @@ function addHistoricalSample() {
    //const activeFields = fields;
 
     const now = Date.now();
-    if (supportsHistoricalTelemetry) {
+    if (supportsHistoricalTelemetry && isHeartbeat) {
 
   const shouldFlush =
     now - state.lastHistoricalFlush >= historicalFlushInterval;
