@@ -40,6 +40,9 @@ function createTelemetryGenerator(schema, deviceState) {
   if (pattern === "^CP-[0-9]{5}-X$") {
     return `CP-${Math.floor(10000 + Math.random() * 90000)}-X`;
   }
+  if (pattern === "^SP-[0-9]{5}-X$") {
+    return `SP-${Math.floor(10000 + Math.random() * 90000)}-X`;
+  }
 
   if (pattern === "^ERR-[0-9]{3}$") {
     return `ERR-${Math.floor(100 + Math.random() * 900)}`;
@@ -215,7 +218,8 @@ function createTelemetryGenerator(schema, deviceState) {
 
       if (
         path === "telemetry.led" ||
-        path.endsWith("ledState")
+        path.endsWith("ledState") ||
+        path === "system.status.pumpEnabled"
       ) {
         return;
       }
@@ -231,6 +235,12 @@ function createTelemetryGenerator(schema, deviceState) {
 
   function normalFluctuation() {
     Object.keys(fieldDefinitions).forEach((path) => {
+      if (
+        path === "system.status.targetFlow" ||
+        path === "metrics.flowRate"
+        ) {
+        return;
+      }
       if (fieldDefinitions[path].type !== "number" && fieldDefinitions[path].type !== "integer") return;
 
       const min = fieldDefinitions[path].minimum ?? 0;
@@ -247,6 +257,12 @@ function createTelemetryGenerator(schema, deviceState) {
 
   function peakFluctuation() {
     Object.keys(fieldDefinitions).forEach((path) => {
+      if (
+        path === "system.status.targetFlow" ||
+        path === "metrics.flowRate"
+        ) {
+        return;
+      }
       if (fieldDefinitions[path].type !== "number" && fieldDefinitions[path].type !== "integer") return;
       if (path.includes("maintenance") || path.includes("Runtime")) return;
       if (Math.random() > 0.3) return;
@@ -263,6 +279,12 @@ function createTelemetryGenerator(schema, deviceState) {
 
   function slowRecovery() {
     Object.keys(fieldDefinitions).forEach((path) => {
+          if (
+        path === "system.status.targetFlow" ||
+        path === "metrics.flowRate"
+        ) {
+        return;
+      }
       if (fieldDefinitions[path].type !== "number" && fieldDefinitions[path].type !== "integer") return;
       state[path] += (state.baseline[path] - state[path]) * 0.05;
     });
@@ -301,6 +323,39 @@ function createTelemetryGenerator(schema, deviceState) {
   }
   
 function updateDeviceState() {
+  if (
+    deviceState.targetFlow !== undefined &&
+    state["system.status.targetFlow"] !== undefined
+  ) {
+   
+    state["system.status.targetFlow"] =
+      deviceState.targetFlow;
+
+    state.baseline["system.status.targetFlow"] =
+      deviceState.targetFlow;
+     
+  }
+
+  if (
+    deviceState.pumpEnabled !== undefined &&
+    state["system.status.pumpEnabled"] !== undefined
+  ) {
+    state["system.status.pumpEnabled"] =
+      deviceState.pumpEnabled;
+  }
+  if (state["metrics.flowRate"] !== undefined) {
+
+    const desiredFlow =
+      deviceState.pumpEnabled
+        ? deviceState.targetFlow
+        : 0;
+
+    state["metrics.flowRate"] +=
+      (
+        desiredFlow -
+        state["metrics.flowRate"]
+      ) * 0.15;
+  }
 
   if (state.peakCounter === 0 && Math.random() < 0.25) {
     state.peakCounter = Math.floor(randomBetween(5, 10));

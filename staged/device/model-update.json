@@ -1,6 +1,6 @@
 {
   "model": "modelA",
-  "version": "2.0.3",
+  "version": "2.0.5",
   "schema": {
     "type": "object",
     "title": "DeviceDashboard Telemetry Schema",
@@ -47,28 +47,48 @@
     "properties": {
       "schemaId": {
         "type": "string",
-        "const": "modelA"
+        "const": "modelA",
+        "x-reporting": {
+          "IDLE": 120000,
+          "ACTIVE": 6000
+        }
       },
       "telemetry": {
         "type": "object",
         "properties": {
           "led": {
-            "type": "boolean"
+            "type": "boolean",
+            "x-reporting": {
+              "IDLE": 120000,
+              "ACTIVE": 7000
+            }
           },
           "humidity": {
             "type": "number",
             "maximum": 100,
-            "minimum": 0
+            "minimum": 0,
+            "x-reporting": {
+              "IDLE": null,
+              "ACTIVE": 10000
+            }
           },
           "pressure": {
             "type": "number",
             "maximum": 1200,
-            "minimum": 300
+            "minimum": 300,
+            "x-reporting": {
+              "IDLE": null,
+              "ACTIVE": 6000
+            }
           },
           "temperature": {
             "type": "number",
             "maximum": 100,
-            "minimum": -50
+            "minimum": -50,
+            "x-reporting": {
+              "IDLE": null,
+              "ACTIVE": 6000
+            }
           }
         },
         "additionalProperties": false
@@ -99,7 +119,10 @@
                 }
               ]
             },
-            "maxItems": 24
+            "maxItems": 24,
+            "x-buffering": {
+              "interval": 17000
+            }
           },
           "pressure": {
             "type": "array",
@@ -119,7 +142,10 @@
                 }
               ]
             },
-            "maxItems": 24
+            "maxItems": 24,
+            "x-buffering": {
+              "interval": 10000
+            }
           },
           "temperature": {
             "type": "array",
@@ -139,8 +165,15 @@
                 }
               ]
             },
-            "maxItems": 24
+            "maxItems": 24,
+            "x-buffering": {
+              "interval": 15000
+            }
           }
+        },
+        "x-reporting": {
+          "IDLE": 120000,
+          "ACTIVE": null
         },
         "additionalProperties": false
       }
@@ -248,5 +281,5 @@
       ]
     }
   },
-  "stagedAt": "2026-08-17T07:45:42.647Z"
+  "stagedAt": "2026-08-20T08:02:55.725Z"
 }

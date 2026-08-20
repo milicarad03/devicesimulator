@@ -95,7 +95,16 @@ if (!fs.existsSync(CONFIG_FILE)) {
   handleEarlyError(`Configuration file missing: ${CONFIG_FILE}`);
   process.exit(1);
 }
-let deviceState = { led: false, ledColor:"GREEN", mode: "AUTO",operatingProfile: null,targetPressure: 8 };
+let deviceState = {
+  led: false,
+  ledColor: "GREEN",
+  mode: "AUTO",
+  operatingProfile: null,
+  targetPressure: 8,
+
+  pumpEnabled: false,
+  targetFlow: 100
+};
 const config = JSON.parse(fs.readFileSync(CONFIG_FILE, "utf8"));
 const { createTelemetryGenerator } = require("./telemetry-generator3");
 const telemetryGenerator = createTelemetryGenerator(schema, deviceState);
@@ -652,6 +661,68 @@ function connectMqtt() {
         deviceState.led = Boolean(commandObj.payload?.value);
         logger.info(`Execution side effect applied -> Hardware Component state led: ${deviceState.led}`);
         sendCommandResponse(commandObj.command, true, { state: deviceState });
+        return;
+      }
+      if (commandObj.command === "SET_PUMP_STATE") {
+
+        deviceState.pumpEnabled =
+          Boolean(
+            commandObj.payload?.enabled
+          );
+
+        logger.info(
+          `Pump state changed: ${deviceState.pumpEnabled}`
+        );
+
+        sendCommandResponse(
+          commandObj.command,
+          true,
+          {
+            pumpEnabled:
+              deviceState.pumpEnabled
+          }
+        );
+
+        return;
+      }
+      if (commandObj.command === "SET_FLOW_TARGET") {
+
+        const target = Number(
+          commandObj.payload?.target
+        );
+
+        if (
+          Number.isNaN(target) ||
+          target < 0 ||
+          target > 500
+        ) {
+          sendCommandResponse(
+            commandObj.command,
+            false,
+            {
+              error:
+                "INVALID_TARGET_FLOW"
+            }
+          );
+
+          return;
+        }
+
+        deviceState.targetFlow =
+          target;
+
+        logger.info(
+          `Target flow updated: ${target}`
+        );
+
+        sendCommandResponse(
+          commandObj.command,
+          true,
+          {
+            targetFlow: target
+          }
+        );
+
         return;
       }
       if (commandObj.command === "SET_LED_COLOR") {
