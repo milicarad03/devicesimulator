@@ -1412,3 +1412,17 @@
 {"deviceId":"device-2","type":"DELTA","size":5614,"timestamp":"2026-08-21T09:46:16.293Z"}
 {"deviceId":"sp-100","type":"DELTA","size":169,"timestamp":"2026-08-21T09:46:19.456Z"}
 {"deviceId":"sn-100","type":"DELTA","size":1243,"timestamp":"2026-08-21T09:46:41.851Z"}
+{"deviceId":"sp-100","type":"DELTA","size":270,"timestamp":"2026-08-24T07:05:44.839Z"}
+{"deviceId":"sp-100","type":"DELTA","size":194,"timestamp":"2026-08-24T07:05:54.842Z"}
+{"deviceId":"sp-100","type":"DELTA","size":102,"timestamp":"2026-08-24T07:05:59.846Z"}
+{"deviceId":"sp-100","type":"DELTA","size":149,"timestamp":"2026-08-24T07:06:04.852Z"}
+{"deviceId":"sp-100","type":"DELTA","size":194,"timestamp":"2026-08-24T07:06:09.853Z"}
+{"deviceId":"sp-100","type":"DELTA","size":180,"timestamp":"2026-08-24T07:06:14.860Z"}
+{"deviceId":"sp-100","type":"DELTA","size":268,"timestamp":"2026-08-24T09:06:44.407Z"}
+{"deviceId":"sp-100","type":"DELTA","size":197,"timestamp":"2026-08-24T09:06:59.416Z"}
+{"deviceId":"sp-100","type":"DELTA","size":270,"timestamp":"2026-08-24T10:17:36.931Z"}
+{"deviceId":"sp-100","type":"DELTA","size":52,"timestamp":"2026-08-24T10:17:41.931Z"}
+{"deviceId":"sp-100","type":"DELTA","size":147,"timestamp":"2026-08-24T10:17:46.935Z"}
+{"deviceId":"sp-100","type":"DELTA","size":175,"timestamp":"2026-08-24T10:17:51.941Z"}
+{"deviceId":"sp-100","type":"DELTA","size":187,"timestamp":"2026-08-24T10:17:56.943Z"}
+{"deviceId":"sp-100","type":"DELTA","size":205,"timestamp":"2026-08-24T10:18:01.945Z"}

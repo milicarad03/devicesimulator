@@ -4,6 +4,10 @@ const { execFileSync} = require("child_process");
 const mqtt = require("mqtt");
 const winston = require("winston");
 
+const ERROR_LOG_FILE =
+  process.env.SIMULATOR_ERROR_LOG_FILE ||
+  path.join(__dirname, "error.log");
+
 // ==========================================
 // WINSTON LOGGER CONFIGURATION
 // ==========================================
@@ -23,7 +27,7 @@ const logger = winston.createLogger({
     }),
     
     new winston.transports.File({
-      filename: path.join(__dirname, "error.log"),
+      filename: ERROR_LOG_FILE,
       level: "error", 
       options: { flags: "a" },
       handleExceptions: true,
@@ -43,7 +47,7 @@ function handleEarlyError(message) {
   const timestamp = new Date().toLocaleString();
   try {
     fs.appendFileSync(
-      path.join(__dirname, "error.log"), 
+      ERROR_LOG_FILE,
       `[${timestamp}] [ERROR] ${message}\n`, 
       "utf8"
     );
@@ -76,8 +80,11 @@ if (!fs.existsSync(SCHEMA_FILE)) {
 logger.info(`Using schema profile: ${SCHEMA_FILE}`);
 
 const schema = JSON.parse(fs.readFileSync(SCHEMA_FILE, "utf8"));
-const BROKER_URL = "mqtt://localhost:1883";
-const REGISTRATION_URL = "http://localhost:3000/device-certificates/register";
+const BROKER_URL =
+  process.env.MQTT_BROKER_URL || "mqtt://localhost:1883";
+const REGISTRATION_URL =
+  process.env.REGISTRATION_URL ||
+  "http://localhost:3000/device-certificates/register";
 const CONFIG_FILE = "./device-data1.json";
 
 const STAGED_UPDATE_DIR = path.join(
@@ -124,7 +131,9 @@ const OPERATIONAL_DEVICE_CSR_PATH = path.join(DEVICE_CERT_DIR, "operational-devi
 const FACTORY_PROOF_PATH = path.join(DEVICE_CERT_DIR, "factory-proof.sig");
 const OPERATIONAL_DEVICE_CERT_PATH = path.join(DEVICE_CERT_DIR, "operational-device.crt");
 const OPERATIONAL_CA_CERT_PATH = path.join(DEVICE_CERT_DIR, "operational-ca.crt");
-const STATS_FILE = path.join(__dirname, "telemetry_stats_delta1.log");
+const STATS_FILE =
+  process.env.TELEMETRY_STATS_FILE ||
+  path.join(__dirname, "telemetry_stats_delta1.log");
 let DEVICE_ID = null;
 let TELEMETRY_TOPIC = null;
 let STATUS_TOPIC = null;
