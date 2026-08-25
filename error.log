@@ -1402,3 +1402,6 @@ ReferenceError: path is not defined
     at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
 [2026-08-20 12:27:59] [ERROR] Simulator terminated by server. Reason: INVALID_TELEMETRY_SCHEMA
 [2026-08-20 12:30:23] [ERROR] Simulator terminated by server. Reason: INVALID_TELEMETRY_SCHEMA
+[2026-08-25 13:26:41] [ERROR] Critical failure during bootstrap registration chain execution: fetch failed
+[2026-08-25 13:47:48] [ERROR] Simulator terminated by server. Reason: INVALID_TELEMETRY_SCHEMA
+[2026-08-25 13:50:30] [ERROR] Simulator terminated by server. Reason: INVALID_TELEMETRY_SCHEMA

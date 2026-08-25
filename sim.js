@@ -62,6 +62,11 @@ global.simulatorLogger = logger;
 const DEVICE_ARG = process.argv[2];
 const MODEL_ARG = process.argv[3];
 const VERSION_ARG = process.argv[4];
+const DEVICE_ATTRIBUTES = {
+  serialNumber: DEVICE_ARG || "sp-100",
+  firmware: VERSION_ARG || "5.0.2",
+  hardwareModel: MODEL_ARG || "modelC"
+};
 
 if (!DEVICE_ARG || !MODEL_ARG || !VERSION_ARG) {
   handleEarlyError("Usage: node sim.js <device> <model> <version>");
@@ -114,7 +119,9 @@ let deviceState = {
 };
 const config = JSON.parse(fs.readFileSync(CONFIG_FILE, "utf8"));
 const { createTelemetryGenerator } = require("./telemetry-generator3");
-const telemetryGenerator = createTelemetryGenerator(schema, deviceState);
+
+// Prosleđujemo atribute u generator
+const telemetryGenerator = createTelemetryGenerator(schema, deviceState, DEVICE_ATTRIBUTES);
 const MAX_LOG_SIZE = 5 * 1024 * 1024;
 
 
@@ -139,6 +146,7 @@ let TELEMETRY_TOPIC = null;
 let STATUS_TOPIC = null;
 let COMMAND_TOPIC = null;
 let RESPONSE_TOPIC = null;
+let ATTRIBUTES_TOPIC = null;
 
 let client = null;
 let telemetryTimer = null;
@@ -228,6 +236,7 @@ function setupTopics(deviceId) {
   STATUS_TOPIC = `iot/devices/${DEVICE_ID}/status`;
   COMMAND_TOPIC = `iot/devices/${DEVICE_ID}/commands`;
   RESPONSE_TOPIC = `iot/devices/${DEVICE_ID}/response`;
+  ATTRIBUTES_TOPIC = `iot/devices/${DEVICE_ID}/attributes`;
 
   logger.info(`Device identity loaded from CSR specification: ${DEVICE_ID}`);
   logger.debug(`[TOPIC CONFIG] Telemetry topic outbound target: ${TELEMETRY_TOPIC}`);
@@ -336,6 +345,22 @@ function connectMqtt() {
   
     logger.info("Publishing lifecycle status flag [ONLINE] to platform state management...");
     client.publish(STATUS_TOPIC, JSON.stringify({ deviceId: DEVICE_ID, timestamp: nowIso(), status: "online" }), { qos: 1, retain: true });
+   // --- SLANJE INICIJALNIH ATRIBUTA UREĐAJA ---
+    const deviceAttributes = {
+      serialNumber: DEVICE_ID,
+      firmware: VERSION_ARG,
+      hardwareModel: MODEL_ARG
+    };
+
+    logger.info(`Publishing initial device attributes: ${JSON.stringify(deviceAttributes)}`);
+    client.publish(
+      ATTRIBUTES_TOPIC,
+      JSON.stringify(deviceAttributes),
+      { qos: 1, retain: true }
+    );
+    // -------------------------------------------
+   
+   
     isTelemetryActive = false;
     startHistoricalBuffering();
     

@@ -1,6 +1,6 @@
 {
   "model": "modelC",
-  "version": "1.0.7",
+  "version": "1.1.2",
   "schema": {
     "type": "object",
     "title": "SmartPumpTelemetry",
@@ -168,6 +168,25 @@
           "ACTIVE": 5000
         }
       },
+      "attributes": {
+        "type": "object",
+        "required": [
+          "serialNumber",
+          "firmware",
+          "hardwareModel"
+        ],
+        "properties": {
+          "firmware": {
+            "type": "string"
+          },
+          "serialNumber": {
+            "type": "string"
+          },
+          "hardwareModel": {
+            "type": "string"
+          }
+        }
+      },
       "historicalTelemetry": {
         "type": "object",
         "properties": {
@@ -231,7 +250,7 @@
         "path": "system.status.alarm"
       },
       "firmware": {
-        "path": "system.identity.firmware"
+        "path": "attributes.firmware"
       },
       "flowRate": {
         "path": "metrics.flowRate",
@@ -248,7 +267,10 @@
         "path": "system.status.pumpEnabled"
       },
       "serialNumber": {
-        "path": "system.identity.serial"
+        "path": "attributes.serialNumber"
+      },
+      "hardwareModel": {
+        "path": "attributes.hardwareModel"
       },
       "inletPressure": {
         "path": "metrics.inletPressure"
@@ -283,6 +305,24 @@
           "id": "overview",
           "items": [
             {
+              "id": "serial-number",
+              "bind": "serialNumber",
+              "title": "Serial Number",
+              "component": "value-card"
+            },
+            {
+              "id": "hardware-model",
+              "bind": "hardwareModel",
+              "title": "Hardware Model",
+              "component": "value-card"
+            },
+            {
+              "id": "firmware",
+              "bind": "firmware",
+              "title": "Firmware",
+              "component": "value-card"
+            },
+            {
               "id": "flow-rate",
               "bind": "flowRate",
               "unit": "l/min",
@@ -308,12 +348,6 @@
               "bind": "energyUsage",
               "unit": "kWh",
               "title": "Energy Usage",
-              "component": "value-card"
-            },
-            {
-              "id": "firmware",
-              "bind": "firmware",
-              "title": "Firmware",
               "component": "value-card"
             },
             {
@@ -395,5 +429,5 @@
       ]
     }
   },
-  "stagedAt": "2026-08-20T10:57:46.137Z"
+  "stagedAt": "2026-08-25T11:50:17.799Z"
 }

@@ -16,6 +16,7 @@ const TOPICS = {
   response: `iot/devices/${DEVICE_ID}/response`,
   status: `iot/devices/${DEVICE_ID}/status`,
   telemetry: `iot/devices/${DEVICE_ID}/telemetry`,
+  attributes: `iot/devices/${DEVICE_ID}/attributes`,
 };
 
 const STATS_FILE = path.join(
@@ -76,7 +77,7 @@ describe("Device simulator MQTT lifecycle (e2e)", () => {
   const subscribeToSimulatorTopics = () =>
     new Promise((resolve, reject) => {
       mqttClient.subscribe(
-        [TOPICS.status, TOPICS.telemetry, TOPICS.response],
+        [TOPICS.status, TOPICS.telemetry, TOPICS.response, TOPICS.attributes],
         { qos: 1 },
         (error) => {
           if (error) {
@@ -289,7 +290,17 @@ describe("Device simulator MQTT lifecycle (e2e)", () => {
 
     expect(onlineStatus.deviceId).toBe(DEVICE_ID);
     expect(simulatorProcess.exitCode).toBeNull();
+  
+    const initialAttributes = await waitForMessage(
+      TOPICS.attributes,
+      (payload) => payload.serialNumber === DEVICE_ID,
+    );
 
+    expect(initialAttributes).toEqual({
+      serialNumber: DEVICE_ID,
+      firmware: VERSION,
+      hardwareModel: MODEL,
+    });
     await delay(100);
 
     const activeResponsePromise = waitForMessage(
