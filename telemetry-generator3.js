@@ -8,14 +8,13 @@ class GeneratorLogger {
 
 const logger = new GeneratorLogger();
 
-function createTelemetryGenerator(schema, deviceState, deviceAttributes = {}) {
+function createTelemetryGenerator(schema, deviceState) {
   if (!schema || typeof schema !== 'object') {
     throw new Error("Invalid schema");
   }
 
   let nextIsFull = true;
-  let attributesSent = false;
-  
+
   const state = {
     stableCounter: 0,
     peakCounter: 0,
@@ -64,7 +63,11 @@ function createTelemetryGenerator(schema, deviceState, deviceAttributes = {}) {
 
   function parseSchema(subSchema, currentPath = "", requiredFields = []) {
     if (!subSchema || typeof subSchema !== "object") return;
-    if (currentPath.startsWith("historicalTelemetry")) {
+    if (
+      currentPath.startsWith("historicalTelemetry") ||
+      currentPath === "attributes" ||
+      currentPath.startsWith("attributes.")
+    ) {
       return;
     }
 
@@ -350,7 +353,7 @@ function createTelemetryGenerator(schema, deviceState, deviceAttributes = {}) {
 
       let value = state[path];
       const liveDefinition = fieldDefinitions[path];
-      
+
       if (liveDefinition?.type === "integer") {
         value = Math.round(value);
       } else {
@@ -406,12 +409,6 @@ function createTelemetryGenerator(schema, deviceState, deviceAttributes = {}) {
     Object.keys(fieldDefinitions).forEach((path) => {
       const def = fieldDefinitions[path];
 
-      if (path.startsWith("attributes.")) {
-        if (attributesSent && !isFull) {
-          return;
-        }
-      }
-
       const reportingMode = isHeartbeat ? "IDLE" : "ACTIVE";
 
       if (!isFull) {
@@ -454,26 +451,14 @@ function createTelemetryGenerator(schema, deviceState, deviceAttributes = {}) {
         setDeepValue(payload, path, state[path]);
         state.lastSent[path] = now;
       } else if (def.type === "string") {
-        // SAMO ZA TOP-LEVEL ATTRIBUTES KORISTIMO STVARNE ARGUMENTE IZ KOMANDNE LINIJE (deviceAttributes)
-        if (path.startsWith("attributes.")) {
-          if (path === "attributes.firmware") {
-            setDeepValue(payload, path, deviceAttributes.firmware || "v1.0.0-release");
-          } else if (path === "attributes.serialNumber") {
-            setDeepValue(payload, path, deviceAttributes.serialNumber || "INV-2026-XAE412");
-          } else if (path === "attributes.hardwareModel") {
-            setDeepValue(payload, path, deviceAttributes.hardwareModel || "OPERATIONAL");
-          }
+        if (def.pattern) {
+          setDeepValue(payload, path, generateFromPattern(def.pattern));
+        } else if (path.toLowerCase().includes("firmware") || path.toLowerCase().includes("version")) {
+          setDeepValue(payload, path, `v1.${Math.floor(Math.random() * 10)}.${Math.floor(Math.random() * 10)}`);
+        } else if (path.toLowerCase().includes("serial")) {
+          setDeepValue(payload, path, `SP-${Math.floor(10000 + Math.random() * 90000)}-X`);
         } else {
-          // ZA SYSTEM.IDENTITY I OSTALO KORISTIMO ŠABLONE ILI NASUMIČNE VREDNOSTI (IGNORIŠEMO deviceAttributes)
-          if (def.pattern) {
-            setDeepValue(payload, path, generateFromPattern(def.pattern));
-          } else if (path.toLowerCase().includes("firmware") || path.toLowerCase().includes("version")) {
-            setDeepValue(payload, path, `v1.${Math.floor(Math.random() * 10)}.${Math.floor(Math.random() * 10)}`);
-          } else if (path.toLowerCase().includes("serial")) {
-            setDeepValue(payload, path, `SP-${Math.floor(10000 + Math.random() * 90000)}-X`);
-          } else {
-            setDeepValue(payload, path, "OPERATIONAL");
-          }
+          setDeepValue(payload, path, "OPERATIONAL");
         }
         state.lastSent[path] = now;
       }
@@ -487,10 +472,6 @@ function createTelemetryGenerator(schema, deviceState, deviceAttributes = {}) {
     if (schemaId) {
       payload.schemaId = schemaId;
     }
-    if (payload.attributes) {
-      attributesSent = true;
-    }
-
     return payload;
   }
 

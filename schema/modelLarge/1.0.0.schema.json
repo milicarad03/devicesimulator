@@ -1,0 +1,144 @@
+{
+  "type": "object",
+  "title": "LargeSmartDeviceTelemetry",
+  "required": [
+    "schemaId"
+  ],
+  "properties": {
+    "schemaId": {
+      "type": "string",
+      "const": "modelLarge",
+      "x-reporting": {
+        "IDLE": 120000,
+        "ACTIVE": 5000
+      }
+    },
+    "attributes": {
+      "type": "object",
+      "required": [
+        "serialNumber",
+        "firmware",
+        "hardwareModel",
+        "location"
+      ],
+      "properties": {
+        "serialNumber": { "type": "string" },
+        "firmware": { "type": "string" },
+        "hardwareModel": { "type": "string" },
+        "location": { "type": "string" }
+      }
+    },
+    "system": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "object",
+          "properties": {
+            "pumpEnabled": { "type": "boolean" },
+            "targetFlow": { "type": "number", "minimum": 0, "maximum": 500 },
+            "operatingMode": { "type": "string", "enum": ["AUTO", "MANUAL", "ECO"] },
+            "alarmActive": { "type": "boolean" }
+          }
+        }
+      }
+    },
+    "metrics": {
+      "type": "object",
+      "properties": {
+        "flowRate": { "type": "number", "minimum": 0, "maximum": 500 },
+        "inletPressure": { "type": "number", "minimum": 0, "maximum": 20 },
+        "outletPressure": { "type": "number", "minimum": 0, "maximum": 20 },
+        "motorTemperature": { "type": "number", "minimum": 0, "maximum": 120 },
+        "vibrationLevel": { "type": "number", "minimum": 0, "maximum": 10 },
+        "noiseLevel": { "type": "number", "minimum": 0, "maximum": 100 },
+        "powerConsumption": { "type": "number", "minimum": 0, "maximum": 50 },
+        "efficiency": { "type": "number", "minimum": 0, "maximum": 100 },
+        "voltage": { "type": "number", "minimum": 200, "maximum": 250 },
+        "current": { "type": "number", "minimum": 0, "maximum": 50 },
+        "runTime": { "type": "number", "minimum": 0 },
+        "cycleCount": { "type": "number", "minimum": 0 },
+        "maintenancePercentage": { "type": "number", "minimum": 0, "maximum": 100 },
+        "errorCode": { "type": "number" },
+        "warningCount": { "type": "number", "minimum": 0 },
+        "deviceHealth": { "type": "string", "enum": ["OPTIMAL", "WARNING", "CRITICAL"] }
+      }
+    },
+    "historicalTelemetry": {
+      "type": "object",
+      "properties": {
+        "flowRate": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 2,
+            "prefixItems": [{ "type": "number" }, { "type": "string" }]
+          },
+          "maxItems": 24
+        },
+        "powerConsumption": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 2,
+            "prefixItems": [{ "type": "number" }, { "type": "string" }]
+          },
+          "maxItems": 24
+        },
+        "motorTemperature": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 2,
+            "prefixItems": [{ "type": "number" }, { "type": "string" }]
+          },
+          "maxItems": 24
+        }
+      }
+    }
+  },
+  "commands": {
+    "SET_STATE": {
+      "payload": {
+        "type": "object",
+        "required": ["state"],
+        "properties": {
+          "state": { "type": "string", "enum": ["ACTIVE", "IDLE"] }
+        },
+        "additionalProperties": false
+      }
+    },
+    "SET_PUMP_STATE": {
+      "payload": {
+        "type": "object",
+        "required": ["enabled"],
+        "properties": {
+          "enabled": { "type": "boolean" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "SET_FLOW_TARGET": {
+      "payload": {
+        "type": "object",
+        "required": ["target"],
+        "properties": {
+          "target": { "type": "number", "minimum": 0, "maximum": 500 }
+        },
+        "additionalProperties": false
+      }
+    },
+    "SET_OPERATING_MODE": {
+      "payload": {
+        "type": "object",
+        "required": ["mode"],
+        "properties": {
+          "mode": { "type": "string", "enum": ["AUTO", "MANUAL", "ECO"] }
+        },
+        "additionalProperties": false
+      }
+    }
+  }
+}

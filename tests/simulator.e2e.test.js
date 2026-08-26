@@ -9,7 +9,7 @@ const PROJECT_DIR = path.resolve(__dirname, "..");
 const BROKER_URL = "mqtt://localhost:1883";
 const DEVICE_ID = `simulator-e2e-${process.pid}-${Date.now()}`;
 const MODEL = "modelC";
-const VERSION = "1.0.7";
+const VERSION = "1.1.3";
 
 const TOPICS = {
   commands: `iot/devices/${DEVICE_ID}/commands`,
@@ -247,6 +247,10 @@ describe("Device simulator MQTT lifecycle (e2e)", () => {
         qos: 1,
         retain: true,
       });
+      await publish(TOPICS.attributes, "", {
+        qos: 1,
+        retain: true,
+      });
     }
 
     await closeMqttClient();
@@ -290,7 +294,7 @@ describe("Device simulator MQTT lifecycle (e2e)", () => {
 
     expect(onlineStatus.deviceId).toBe(DEVICE_ID);
     expect(simulatorProcess.exitCode).toBeNull();
-  
+
     const initialAttributes = await waitForMessage(
       TOPICS.attributes,
       (payload) => payload.serialNumber === DEVICE_ID,
@@ -337,6 +341,7 @@ describe("Device simulator MQTT lifecycle (e2e)", () => {
         schemaId: MODEL,
       }),
     );
+    expect(telemetry).not.toHaveProperty("attributes");
 
     const idleResponsePromise = waitForMessage(
       TOPICS.response,

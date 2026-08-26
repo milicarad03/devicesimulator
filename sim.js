@@ -85,6 +85,11 @@ if (!fs.existsSync(SCHEMA_FILE)) {
 logger.info(`Using schema profile: ${SCHEMA_FILE}`);
 
 const schema = JSON.parse(fs.readFileSync(SCHEMA_FILE, "utf8"));
+const supportsAttributes = Boolean(
+  schema?.properties?.attributes &&
+    typeof schema.properties.attributes === "object" &&
+    !Array.isArray(schema.properties.attributes)
+);
 const BROKER_URL =
   process.env.MQTT_BROKER_URL || "mqtt://localhost:1883";
 const REGISTRATION_URL =
@@ -120,8 +125,7 @@ let deviceState = {
 const config = JSON.parse(fs.readFileSync(CONFIG_FILE, "utf8"));
 const { createTelemetryGenerator } = require("./telemetry-generator3");
 
-// Prosleđujemo atribute u generator
-const telemetryGenerator = createTelemetryGenerator(schema, deviceState, DEVICE_ATTRIBUTES);
+const telemetryGenerator = createTelemetryGenerator(schema, deviceState);
 const MAX_LOG_SIZE = 5 * 1024 * 1024;
 
 
@@ -345,22 +349,19 @@ function connectMqtt() {
   
     logger.info("Publishing lifecycle status flag [ONLINE] to platform state management...");
     client.publish(STATUS_TOPIC, JSON.stringify({ deviceId: DEVICE_ID, timestamp: nowIso(), status: "online" }), { qos: 1, retain: true });
-   // --- SLANJE INICIJALNIH ATRIBUTA UREĐAJA ---
-    const deviceAttributes = {
-      serialNumber: DEVICE_ID,
-      firmware: VERSION_ARG,
-      hardwareModel: MODEL_ARG
-    };
+    if (supportsAttributes) {
+      logger.info(`Publishing device attributes snapshot: ${JSON.stringify(DEVICE_ATTRIBUTES)}`);
+      client.publish(
+        ATTRIBUTES_TOPIC,
+        JSON.stringify(DEVICE_ATTRIBUTES),
+        { qos: 1, retain: true }
+      );
+    } else {
+      logger.debug(
+        `Model ${MODEL_ARG}:${VERSION_ARG} has no attributes schema. Attribute publication skipped.`
+      );
+    }
 
-    logger.info(`Publishing initial device attributes: ${JSON.stringify(deviceAttributes)}`);
-    client.publish(
-      ATTRIBUTES_TOPIC,
-      JSON.stringify(deviceAttributes),
-      { qos: 1, retain: true }
-    );
-    // -------------------------------------------
-   
-   
     isTelemetryActive = false;
     startHistoricalBuffering();
     
@@ -995,27 +996,94 @@ function sendCommandResponse(command, success, extraData = {}) {
   logger.debug(`Dispatched verification notification status response back to cloud link: ${JSON.stringify(response)}`);
 }
 
-process.on("SIGINT", () => {
-  if (isShuttingDown) {
-  return;
+function clearRuntimeTimers() {
+  if (operatingProfileTimer) {
+    clearTimeout(operatingProfileTimer);
+    operatingProfileTimer = null;
+  }
+
+  if (telemetryTimer) {
+    clearInterval(telemetryTimer);
+    telemetryTimer = null;
+  }
+
+  if (historicalBufferTimer) {
+    clearInterval(historicalBufferTimer);
+    historicalBufferTimer = null;
+  }
 }
 
-isShuttingDown = true;
-  logger.warn("SIGINT interrupt received. Initiating clean termination teardown sequence...");
-  if (operatingProfileTimer) clearTimeout(operatingProfileTimer);
+function shutdownSimulator(signalName) {
+  if (isShuttingDown) {
+    return;
+  }
 
-  if (telemetryTimer) clearInterval(telemetryTimer);
-  if (historicalBufferTimer) clearInterval(historicalBufferTimer);
-  
+  isShuttingDown = true;
+  logger.warn(
+    `${signalName} received. Initiating clean termination teardown sequence...`
+  );
+  clearRuntimeTimers();
 
-  if (!client) process.exit(0);
+  let fallbackTimer = null;
+  let finished = false;
+
+  const finish = () => {
+    if (finished) {
+      return;
+    }
+
+    finished = true;
+    if (fallbackTimer) {
+      clearTimeout(fallbackTimer);
+    }
+    process.exit(0);
+  };
+
+  fallbackTimer = setTimeout(() => {
+    logger.warn(
+      "MQTT shutdown callback timed out. Closing transport forcefully."
+    );
+    client?.end(true);
+    finish();
+  }, 2_000);
+
+  if (!client?.connected) {
+    client?.end(true);
+    finish();
+    return;
+  }
 
   logger.info("Sending offline lifecycle message to platform state controller...");
-  client.publish(STATUS_TOPIC, JSON.stringify({ deviceId: DEVICE_ID, timestamp: nowIso(), status: "offline" }), { qos: 1, retain: true }, () => {
-    logger.info("Disconnecting MQTT transport interface client link... Goodbye.");
-    client.end();
-    process.exit(0);
-  });
+
+  try {
+    client.publish(
+      STATUS_TOPIC,
+      JSON.stringify({
+        deviceId: DEVICE_ID,
+        timestamp: nowIso(),
+        status: "offline",
+      }),
+      { qos: 1, retain: true },
+      () => {
+        logger.info(
+          "Disconnecting MQTT transport interface client link... Goodbye."
+        );
+        client.end(false, {}, finish);
+      }
+    );
+  } catch (error) {
+    logger.error(`Shutdown status publication failed: ${error.message}`);
+    client.end(true);
+    finish();
+  }
+}
+
+process.on("SIGINT", () => {
+  shutdownSimulator("SIGINT");
+});
+
+process.on("SIGTERM", () => {
+  shutdownSimulator("SIGTERM");
 });
 
 function switchTelemetryInterval(intervalMs) {

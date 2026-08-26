@@ -1,0 +1,122 @@
+{
+  "fields": {
+    "serialNumber": { "path": "attributes.serialNumber" },
+    "firmware": { "path": "attributes.firmware" },
+    "hardwareModel": { "path": "attributes.hardwareModel" },
+    "location": { "path": "attributes.location" },
+    "pumpEnabled": { "path": "system.status.pumpEnabled" },
+    "targetFlow": { "path": "system.status.targetFlow" },
+    "operatingMode": { "path": "system.status.operatingMode" },
+    "alarmActive": { "path": "system.status.alarmActive" },
+    "flowRate": { "path": "metrics.flowRate", "historyPath": "historicalTelemetry.flowRate" },
+    "inletPressure": { "path": "metrics.inletPressure" },
+    "outletPressure": { "path": "metrics.outletPressure" },
+    "motorTemperature": { "path": "metrics.motorTemperature", "historyPath": "historicalTelemetry.motorTemperature" },
+    "vibrationLevel": { "path": "metrics.vibrationLevel" },
+    "noiseLevel": { "path": "metrics.noiseLevel" },
+    "powerConsumption": { "path": "metrics.powerConsumption", "historyPath": "historicalTelemetry.powerConsumption" },
+    "efficiency": { "path": "metrics.efficiency" },
+    "voltage": { "path": "metrics.voltage" },
+    "current": { "path": "metrics.current" },
+    "runTime": { "path": "metrics.runTime" },
+    "cycleCount": { "path": "metrics.cycleCount" },
+    "maintenancePercentage": { "path": "metrics.maintenancePercentage" },
+    "errorCode": { "path": "metrics.errorCode" },
+    "warningCount": { "path": "metrics.warningCount" },
+    "deviceHealth": { "path": "metrics.deviceHealth" }
+  },
+  "dashboard": {
+    "sections": [
+      {
+        "id": "alerts-section",
+        "title": "SYSTEM ALERTS",
+        "columns": 2,
+        "items": [
+          {
+            "id": "alarm-card",
+            "component": "value-card",
+            "bind": "alarmActive",
+            "title": "CRITICAL ALARM",
+            "visibleWhen": { "bind": "alarmActive", "equals": true }
+          },
+          {
+            "id": "device-health",
+            "component": "value-card",
+            "bind": "deviceHealth",
+            "title": "Device Health Status"
+          }
+        ]
+      },
+      {
+        "id": "device-info",
+        "title": "DEVICE INFORMATION",
+        "columns": 4,
+        "items": [
+          { "id": "serial-number", "component": "value-card", "bind": "serialNumber", "title": "Serial Number" },
+          { "id": "hardware-model", "component": "value-card", "bind": "hardwareModel", "title": "Hardware Model" },
+          { "id": "firmware", "component": "value-card", "bind": "firmware", "title": "Firmware" },
+          { "id": "location", "component": "value-card", "bind": "location", "title": "Installation Location" }
+        ]
+      },
+      {
+        "id": "live-status",
+        "title": "LIVE STATUS & CONTROLS",
+        "columns": 4,
+        "items": [
+          { "id": "pump-switch", "component": "switch", "bind": "pumpEnabled", "title": "Pump Power", "command": "SET_PUMP_STATE", "commandField": "enabled" },
+          { "id": "target-flow-input", "component": "numeric-input", "title": "Target Flow", "bind": "targetFlow", "command": "SET_FLOW_TARGET", "commandField": "target", "min": 0, "max": 500, "step": 5, "unit": "l/min" },
+          { "id": "operating-mode", "component": "value-card", "bind": "operatingMode", "title": "Operating Mode" },
+          { "id": "warning-count", "component": "value-card", "bind": "warningCount", "title": "Warning Count" }
+        ]
+      },
+      {
+        "id": "real-time-metrics",
+        "title": "REAL-TIME METRICS",
+        "columns": 4,
+        "items": [
+          { "id": "flow-rate", "component": "value-card", "bind": "flowRate", "title": "Flow Rate", "unit": "l/min" },
+          { "id": "inlet-pressure", "component": "value-card", "bind": "inletPressure", "title": "Inlet Pressure", "unit": "bar" },
+          { "id": "outlet-pressure", "component": "value-card", "bind": "outletPressure", "title": "Outlet Pressure", "unit": "bar" },
+          { "id": "motor-temp", "component": "value-card", "bind": "motorTemperature", "title": "Motor Temperature", "unit": "°C" },
+          { "id": "vibration", "component": "value-card", "bind": "vibrationLevel", "title": "Vibration Level", "unit": "mm/s" },
+          { "id": "noise", "component": "value-card", "bind": "noiseLevel", "title": "Noise Level", "unit": "dB" },
+          { "id": "efficiency", "component": "value-card", "bind": "efficiency", "title": "System Efficiency", "unit": "%" },
+          { "id": "power", "component": "value-card", "bind": "powerConsumption", "title": "Power Consumption", "unit": "kW" }
+        ]
+      },
+      {
+        "id": "electrical-parameters",
+        "title": "ELECTRICAL PARAMETERS",
+        "columns": 4,
+        "items": [
+          { "id": "voltage", "component": "value-card", "bind": "voltage", "title": "Line Voltage", "unit": "V" },
+          { "id": "current", "component": "value-card", "bind": "current", "title": "Line Current", "unit": "A" },
+          { "id": "runtime", "component": "value-card", "bind": "runTime", "title": "Total Run Time", "unit": "hrs" },
+          { "id": "cycles", "component": "value-card", "bind": "cycleCount", "title": "Cycle Count" }
+        ]
+      },
+      {
+        "id": "system-diagnostics",
+        "title": "SYSTEM DIAGNOSTICS",
+        "columns": 4,
+        "items": [
+          { "id": "maintenance", "component": "value-card", "bind": "maintenancePercentage", "title": "Maintenance Due", "unit": "%" },
+          { "id": "error-code", "component": "value-card", "bind": "errorCode", "title": "Last Error Code" }
+        ]
+      },
+      {
+        "id": "telemetry-analytics",
+        "title": "TELEMETRY ANALYTICS",
+        "columns": 4,
+        "items": [
+          { "id": "flow-chart", "component": "line-chart", "bind": "flowRate", "title": "Flow Rate History", "unit": "l/min", "colSpan": 2 },
+          { "id": "flow-table", "component": "table", "bind": "flowRate", "title": "Flow Rate Table", "unit": "l/min", "colSpan": 2 },
+          { "id": "power-chart", "component": "line-chart", "bind": "powerConsumption", "title": "Power Consumption History", "unit": "kW", "colSpan": 2 },
+          { "id": "power-table", "component": "table", "bind": "powerConsumption", "title": "Power Table", "unit": "kW", "colSpan": 2 },
+          { "id": "temp-chart", "component": "line-chart", "bind": "motorTemperature", "title": "Motor Temperature History", "unit": "°C", "colSpan": 2 },
+          { "id": "temp-table", "component": "table", "bind": "motorTemperature", "title": "Motor Temperature Table", "unit": "°C", "colSpan": 2 }
+        ]
+      }
+    ]
+  }
+}

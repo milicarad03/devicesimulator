@@ -1,6 +1,6 @@
 {
   "model": "modelC",
-  "version": "1.1.2",
+  "version": "1.1.4",
   "schema": {
     "type": "object",
     "title": "SmartPumpTelemetry",
@@ -429,5 +429,5 @@
       ]
     }
   },
-  "stagedAt": "2026-08-25T11:50:17.799Z"
+  "stagedAt": "2026-08-26T08:04:27.771Z"
 }

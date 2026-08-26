@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test":  "jest --detectOpenHandles --forceExit"
+    "test": "jest --detectOpenHandles --forceExit",
+    "sim:three": "node scripts/three-device-launcher.js",
+    "test:e2e:three": "jest --runInBand --detectOpenHandles --runTestsByPath tests/three-devices.e2e.test.js"
   },
   "keywords": [],
   "author": "",
