@@ -93,6 +93,8 @@ function createTelemetryGenerator(schema, deviceState) {
         state.baseline[currentPath] = start;
       } else if (subSchema.type === "boolean") {
         state[currentPath] = false;
+      } else if (subSchema.enum) {
+        state[currentPath] = subSchema.enum[0];
       }
     }
   }
@@ -206,7 +208,11 @@ function createTelemetryGenerator(schema, deviceState) {
     Object.keys(fieldDefinitions).forEach((path) => {
       if (
         path === "system.status.targetFlow" ||
-        path === "metrics.flowRate"
+        path === "metrics.flowRate" ||
+        path === "metrics.batteryLevel" ||
+        path === "performance.stages.p2" ||
+        path === "diagnostics.health.vibration" ||
+        path === "performance.stages.tempOut"
       ) {
         return;
       }
@@ -226,7 +232,10 @@ function createTelemetryGenerator(schema, deviceState) {
     Object.keys(fieldDefinitions).forEach((path) => {
       if (
         path === "system.status.targetFlow" ||
-        path === "metrics.flowRate"
+        path === "metrics.flowRate" ||
+        path === "performance.stages.p2" ||
+        path === "diagnostics.health.vibration" ||
+        path === "performance.stages.tempOut"
       ) {
         return;
       }
@@ -247,7 +256,10 @@ function createTelemetryGenerator(schema, deviceState) {
     Object.keys(fieldDefinitions).forEach((path) => {
       if (
         path === "system.status.targetFlow" ||
-        path === "metrics.flowRate"
+        path === "metrics.flowRate" ||
+        path === "performance.stages.p2" ||
+        path === "diagnostics.health.vibration" ||
+        path === "performance.stages.tempOut"
       ) {
         return;
       }
@@ -260,17 +272,20 @@ function createTelemetryGenerator(schema, deviceState) {
     if (Math.random() < 0.05) {
       Object.keys(fieldDefinitions).forEach((path) => {
         if (fieldDefinitions[path].type !== "number" && fieldDefinitions[path].type !== "integer") return;
+        if (
+          path === "performance.stages.p2" ||
+          path === "diagnostics.health.vibration" ||
+          path === "performance.stages.tempOut"
+        ) {
+          return;
+        }
 
         const min = fieldDefinitions[path].minimum ?? 0;
         const max = fieldDefinitions[path].maximum ?? 100;
         const range = max - min;
         let shift = randomBetween(-0.02 * range, 0.02 * range);
 
-        if (path.includes("temp") || path.includes("temperature")) {
-          state.baseline[path] = clamp(state.baseline[path] + shift, 10, 40);
-        } else {
-          state.baseline[path] += shift;
-        }
+        state.baseline[path] += shift;
       });
     }
   }
@@ -287,6 +302,30 @@ function createTelemetryGenerator(schema, deviceState) {
   }
 
   function updateDeviceState() {
+    // Podešavanje baseline-a i ciljnih vrednosti iz operativnog profila
+    if (deviceState.operatingProfile) {
+      const profile = deviceState.operatingProfile;
+      if (profile.pressure && typeof profile.pressure.target === 'number') {
+        state["performance.stages.p2"] = profile.pressure.target;
+      }
+      if (profile.safety) {
+        if (typeof profile.safety.maxVibration === 'number') {
+          const maxVib = profile.safety.maxVibration;
+          // Postavljamo baseline da drži vibracije u donjem/srednjem delu do maxVibration
+          if (!state.baseline["diagnostics.health.vibration"] || state.baseline["diagnostics.health.vibration"] > maxVib) {
+            state.baseline["diagnostics.health.vibration"] = maxVib * 0.75;
+          }
+        }
+        if (typeof profile.safety.maxTemperature === 'number') {
+          const maxTemp = profile.safety.maxTemperature;
+          // Postavljamo baseline da drži temperaturu u opsegu ispod maxTemperature
+          if (!state.baseline["performance.stages.tempOut"] || state.baseline["performance.stages.tempOut"] > maxTemp) {
+            state.baseline["performance.stages.tempOut"] = maxTemp * 0.8;
+          }
+        }
+      }
+    }
+
     if (
       deviceState.targetFlow !== undefined &&
       state["system.status.targetFlow"] !== undefined
@@ -300,6 +339,13 @@ function createTelemetryGenerator(schema, deviceState) {
       state["system.status.pumpEnabled"] !== undefined
     ) {
       state["system.status.pumpEnabled"] = deviceState.pumpEnabled;
+    }
+
+    if (state["metrics.batteryLevel"] !== undefined) {
+      state["metrics.batteryLevel"] -= 0.1;
+      if (state["metrics.batteryLevel"] <= 5) {
+        state["metrics.batteryLevel"] = 100;
+      }
     }
 
     if (state["metrics.flowRate"] !== undefined) {
@@ -408,7 +454,6 @@ function createTelemetryGenerator(schema, deviceState) {
 
     Object.keys(fieldDefinitions).forEach((path) => {
       const def = fieldDefinitions[path];
-
       const reportingMode = isHeartbeat ? "IDLE" : "ACTIVE";
 
       if (!isFull) {
@@ -425,9 +470,23 @@ function createTelemetryGenerator(schema, deviceState) {
         return;
       }
 
+      // DINAMIČKO POSTAVLJANJE GORNJIH GRANICA (MAXIMUM) IZ OPERATIVNOG PROFILA
+      if (deviceState.operatingProfile) {
+        const profile = deviceState.operatingProfile;
+        if (path === "performance.stages.p2" && profile.pressure?.target !== undefined) {
+          state[path] = profile.pressure.target; // P2 drži tačnu target vrednost
+        }
+        if (path === "diagnostics.health.vibration" && profile.safety?.maxVibration !== undefined) {
+          fieldDefinitions[path].maximum = profile.safety.maxVibration; // Dozvoljava oscilacije do maxVibration
+        }
+        if (path === "performance.stages.tempOut" && profile.safety?.maxTemperature !== undefined) {
+          fieldDefinitions[path].maximum = profile.safety.maxTemperature; // Dozvoljava oscilacije do maxTemperature
+        }
+      }
+
       if (def.enum) {
-        const randomEnum = def.enum[Math.floor(Math.random() * def.enum.length)];
-        setDeepValue(payload, path, randomEnum);
+        const val = state[path] !== undefined ? state[path] : def.enum[0];
+        setDeepValue(payload, path, val);
         state.lastSent[path] = now;
       } else if (def.type === "number" || def.type === "integer") {
         let val = state[path];
@@ -457,6 +516,9 @@ function createTelemetryGenerator(schema, deviceState) {
           setDeepValue(payload, path, `v1.${Math.floor(Math.random() * 10)}.${Math.floor(Math.random() * 10)}`);
         } else if (path.toLowerCase().includes("serial")) {
           setDeepValue(payload, path, `SP-${Math.floor(10000 + Math.random() * 90000)}-X`);
+        } else if (path.toLowerCase().includes("operatingprofile") || path.toLowerCase().includes("drivemode") || path.toLowerCase().includes("mode")) {
+          const activeMode = deviceState.operatingProfile?.mode || deviceState.mode || state[path] || "NORMAL";
+          setDeepValue(payload, path, activeMode);
         } else {
           setDeepValue(payload, path, "OPERATIONAL");
         }

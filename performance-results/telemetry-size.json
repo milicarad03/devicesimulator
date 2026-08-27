@@ -1,0 +1,68 @@
+{
+  "generatedAt": "2026-08-27T09:05:35.379Z",
+  "workingDirectory": "/home/rmilica/devicesimulator",
+  "comparisons": [
+    {
+      "name": "telemetry",
+      "files": {
+        "full": "/home/rmilica/devicesimulator/telemetry_stats_full1.log",
+        "delta": "/home/rmilica/devicesimulator/telemetry_stats_delta1.log"
+      },
+      "full": {
+        "samples": 408,
+        "totalBytes": 189165,
+        "minimumBytes": 447,
+        "maximumBytes": 471,
+        "averageBytes": 463.6397058823529,
+        "medianBytes": 464.5,
+        "p95Bytes": 469,
+        "skippedLines": 0
+      },
+      "delta": {
+        "samples": 1718,
+        "totalBytes": 484711,
+        "minimumBytes": 42,
+        "maximumBytes": 6038,
+        "averageBytes": 282.13678696158325,
+        "medianBytes": 161,
+        "p95Bytes": 467,
+        "skippedLines": 0
+      },
+      "savings": {
+        "averageBytes": 181.50291892076967,
+        "percentage": 39.147406190190594
+      }
+    },
+    {
+      "name": "dummy-traffic",
+      "files": {
+        "full": "/home/rmilica/devicesimulator/dummy_traffic_full_MODELF1.log",
+        "delta": "/home/rmilica/devicesimulator/dummy_traffic_delta_MODELF1.log"
+      },
+      "full": {
+        "samples": 408,
+        "totalBytes": 189165,
+        "minimumBytes": 447,
+        "maximumBytes": 471,
+        "averageBytes": 463.6397058823529,
+        "medianBytes": 464.5,
+        "p95Bytes": 469,
+        "skippedLines": 0
+      },
+      "delta": {
+        "samples": 308,
+        "totalBytes": 92801,
+        "minimumBytes": 59,
+        "maximumBytes": 470,
+        "averageBytes": 301.30194805194805,
+        "medianBytes": 307,
+        "p95Bytes": 467,
+        "skippedLines": 0
+      },
+      "savings": {
+        "averageBytes": 162.33775783040488,
+        "percentage": 35.013773792617656
+      }
+    }
+  ]
+}

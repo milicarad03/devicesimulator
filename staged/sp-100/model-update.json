@@ -1,6 +1,6 @@
 {
   "model": "modelC",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "schema": {
     "type": "object",
     "title": "SmartPumpTelemetry",
@@ -16,6 +16,26 @@
               "enum": [
                 "ACTIVE",
                 "IDLE"
+              ],
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "SET_DRIVE_MODE": {
+        "payload": {
+          "type": "object",
+          "required": [
+            "mode"
+          ],
+          "properties": {
+            "mode": {
+              "enum": [
+                "ECO",
+                "NORMAL",
+                "SPORT",
+                "RACE"
               ],
               "type": "string"
             }
@@ -66,6 +86,19 @@
             "properties": {
               "alarm": {
                 "type": "boolean",
+                "x-reporting": {
+                  "IDLE": 120000,
+                  "ACTIVE": 5000
+                }
+              },
+              "driveMode": {
+                "enum": [
+                  "ECO",
+                  "NORMAL",
+                  "SPORT",
+                  "RACE"
+                ],
+                "type": "string",
                 "x-reporting": {
                   "IDLE": 120000,
                   "ACTIVE": 5000
@@ -256,6 +289,9 @@
         "path": "metrics.flowRate",
         "historyPath": "historicalTelemetry.flowRate"
       },
+      "driveMode": {
+        "path": "system.status.driveMode"
+      },
       "targetFlow": {
         "path": "system.status.targetFlow"
       },
@@ -382,6 +418,13 @@
               "command": "SET_FLOW_TARGET",
               "component": "numeric-input",
               "commandField": "target"
+            },
+            {
+              "id": "pump-drive-mode",
+              "bind": "driveMode",
+              "title": "Drive Mode",
+              "command": "SET_DRIVE_MODE",
+              "component": "drive-mode-selector"
             }
           ],
           "title": "PUMP CONTROLS",
@@ -429,5 +472,5 @@
       ]
     }
   },
-  "stagedAt": "2026-08-26T08:04:27.771Z"
+  "stagedAt": "2026-08-27T09:30:26.497Z"
 }

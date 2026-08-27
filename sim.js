@@ -62,11 +62,6 @@ global.simulatorLogger = logger;
 const DEVICE_ARG = process.argv[2];
 const MODEL_ARG = process.argv[3];
 const VERSION_ARG = process.argv[4];
-const DEVICE_ATTRIBUTES = {
-  serialNumber: DEVICE_ARG || "sp-100",
-  firmware: VERSION_ARG || "5.0.2",
-  hardwareModel: MODEL_ARG || "modelC"
-};
 
 if (!DEVICE_ARG || !MODEL_ARG || !VERSION_ARG) {
   handleEarlyError("Usage: node sim.js <device> <model> <version>");
@@ -85,6 +80,21 @@ if (!fs.existsSync(SCHEMA_FILE)) {
 logger.info(`Using schema profile: ${SCHEMA_FILE}`);
 
 const schema = JSON.parse(fs.readFileSync(SCHEMA_FILE, "utf8"));
+
+
+const schemaIdFromSchema = schema?.properties?.schemaId?.const;
+
+
+const finalHardwareModel = (MODEL_ARG && MODEL_ARG.toLowerCase() === "n/a")
+  ? (schemaIdFromSchema || "modelC")
+  : MODEL_ARG;
+
+const DEVICE_ATTRIBUTES = {
+  serialNumber: DEVICE_ARG || DEVICE_ID,
+  firmware: VERSION_ARG || "5.0.2",
+  hardwareModel: finalHardwareModel
+};
+
 const supportsAttributes = Boolean(
   schema?.properties?.attributes &&
     typeof schema.properties.attributes === "object" &&
@@ -120,7 +130,8 @@ let deviceState = {
   targetPressure: 8,
 
   pumpEnabled: false,
-  targetFlow: 100
+  targetFlow: 100,
+  driveMode: "ECO"
 };
 const config = JSON.parse(fs.readFileSync(CONFIG_FILE, "utf8"));
 const { createTelemetryGenerator } = require("./telemetry-generator3");
@@ -236,6 +247,8 @@ function getCommonNameFromCsr(csrPath) {
 
 function setupTopics(deviceId) {
   DEVICE_ID = deviceId;
+  DEVICE_ATTRIBUTES.serialNumber = DEVICE_ID;
+
   TELEMETRY_TOPIC = `iot/devices/${DEVICE_ID}/telemetry`;
   STATUS_TOPIC = `iot/devices/${DEVICE_ID}/status`;
   COMMAND_TOPIC = `iot/devices/${DEVICE_ID}/commands`;
@@ -696,6 +709,32 @@ function connectMqtt() {
         deviceState.led = Boolean(commandObj.payload?.value);
         logger.info(`Execution side effect applied -> Hardware Component state led: ${deviceState.led}`);
         sendCommandResponse(commandObj.command, true, { state: deviceState });
+        return;
+      }
+      if (commandObj.command === "SET_DRIVE_MODE") {
+        const mode = commandObj.payload?.mode;
+
+        if (!mode) {
+          sendCommandResponse(
+            commandObj.command,
+            false,
+            { error: "INVALID_DRIVE_MODE" }
+          );
+          return;
+        }
+
+        deviceState.driveMode = mode;
+      
+        telemetryGenerator.setForceFull(true);
+
+        logger.info(`Drive mode updated: ${deviceState.driveMode}`);
+
+        sendCommandResponse(
+          commandObj.command,
+          true,
+          { driveMode: deviceState.driveMode }
+        );
+
         return;
       }
       if (commandObj.command === "SET_PUMP_STATE") {

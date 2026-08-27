@@ -6,7 +6,8 @@
   "scripts": {
     "test": "jest --detectOpenHandles --forceExit",
     "sim:three": "node scripts/three-device-launcher.js",
-    "test:e2e:three": "jest --runInBand --detectOpenHandles --runTestsByPath tests/three-devices.e2e.test.js"
+    "test:e2e:three": "jest --runInBand --detectOpenHandles --runTestsByPath tests/three-devices.e2e.test.js",
+    "performance:telemetry": "node analysis.js --output performance-results/telemetry-size.json"
   },
   "keywords": [],
   "author": "",
