@@ -1,6 +1,6 @@
 {
   "model": "modelB",
-  "version": "5.0.2",
+  "version": "5.0.4",
   "schema": {
     "type": "object",
     "title": "IndustrialAirCompressorTelemetry",
@@ -74,7 +74,15 @@
             }
           },
           "additionalProperties": false
-        }
+        },
+        "x-state-path": "performance.stages.p2",
+        "x-idempotency": {
+          "epsilon": 0.001,
+          "maxAgeMs": 15000,
+          "payloadPath": "value",
+          "stateBinding": "pressStage2"
+        },
+        "x-payload-field": "value"
       },
       "SET_OPERATIONAL_MODE": {
         "payload": {
@@ -132,7 +140,8 @@
                   "maximum": 120,
                   "minimum": 40
                 }
-              }
+              },
+              "additionalProperties": false
             },
             "pressure": {
               "type": "object",
@@ -145,7 +154,8 @@
                   "maximum": 16,
                   "minimum": 2
                 }
-              }
+              },
+              "additionalProperties": false
             },
             "schedule": {
               "type": "object",
@@ -158,7 +168,8 @@
                   "maximum": 1440,
                   "minimum": 1
                 }
-              }
+              },
+              "additionalProperties": false
             }
           },
           "additionalProperties": false
@@ -858,6 +869,27 @@
           "columns": 4
         },
         {
+          "id": "advanced-diagnostics",
+          "items": [
+            {
+              "id": "outlet-temp-gauge",
+              "max": 120,
+              "min": 40,
+              "bind": "tempOutlet",
+              "title": "Outlet Temperature",
+              "component": "temperature-thermometer"
+            },
+            {
+              "id": "vibration-signal",
+              "bind": "vibration",
+              "title": "Vibration Intensity",
+              "component": "signal-strength"
+            }
+          ],
+          "title": "ADVANCED SYSTEM DIAGNOSTICS",
+          "columns": 2
+        },
+        {
           "id": "history",
           "items": [
             {
@@ -889,6 +921,22 @@
               "title": "Power Draw Table",
               "colSpan": 2,
               "component": "table"
+            },
+            {
+              "id": "temp-out-chart",
+              "bind": "tempOutlet",
+              "unit": "°C",
+              "title": "Outlet Temp History",
+              "colSpan": 2,
+              "component": "line-chart"
+            },
+            {
+              "id": "pressure-stage2-chart",
+              "bind": "pressStage2",
+              "unit": "bar",
+              "title": "Pressure Stage 2 History",
+              "colSpan": 2,
+              "component": "line-chart"
             }
           ],
           "title": "TELEMETRY HISTORY",
@@ -901,6 +949,7 @@
               "id": "target-pressure",
               "max": 16,
               "min": 2,
+              "bind": "pressStage2",
               "step": 1,
               "title": "Target Pressure",
               "command": "SET_TARGET_PRESSURE",
@@ -921,7 +970,7 @@
               "component": "command-form"
             }
           ],
-          "title": "COMPRESSOR CONTROLS",
+          "title": "OPERATING PROFILE",
           "columns": 2
         },
         {
@@ -953,5 +1002,5 @@
       ]
     }
   },
-  "stagedAt": "2026-08-18T10:05:01.938Z"
+  "stagedAt": "2026-08-28T08:46:45.535Z"
 }

@@ -311,6 +311,7 @@ describe("Device simulator MQTT lifecycle (e2e)", () => {
       TOPICS.response,
       (payload) =>
         payload.command === "SET_STATE" &&
+        payload.correlationId === "active-correlation" &&
         payload.status === "ACTIVE" &&
         payload.success === true,
     );
@@ -320,12 +321,14 @@ describe("Device simulator MQTT lifecycle (e2e)", () => {
       JSON.stringify({
         command: "SET_STATE",
         payload: { state: "ACTIVE" },
+        correlationId: "active-correlation",
       }),
     );
 
     await expect(activeResponsePromise).resolves.toMatchObject({
       deviceId: DEVICE_ID,
       command: "SET_STATE",
+      correlationId: "active-correlation",
       status: "ACTIVE",
       success: true,
     });
@@ -343,10 +346,36 @@ describe("Device simulator MQTT lifecycle (e2e)", () => {
     );
     expect(telemetry).not.toHaveProperty("attributes");
 
+    const duplicateCommand = JSON.stringify({
+      command: "SET_PUMP_STATE",
+      payload: { enabled: true },
+      correlationId: "duplicate-correlation",
+    });
+    const pumpResponsePromise = waitForMessage(
+      TOPICS.response,
+      (payload) =>
+        payload.command === "SET_PUMP_STATE" &&
+        payload.correlationId === "duplicate-correlation",
+    );
+
+    await publish(TOPICS.commands, duplicateCommand);
+    await expect(pumpResponsePromise).resolves.toMatchObject({
+      success: true,
+      pumpEnabled: true,
+      correlationId: "duplicate-correlation",
+    });
+    await publish(TOPICS.commands, duplicateCommand);
+    await delay(100);
+
+    expect(simulatorOutput).toContain(
+      "acknowledged without repeating its side effect",
+    );
+
     const idleResponsePromise = waitForMessage(
       TOPICS.response,
       (payload) =>
         payload.command === "SET_STATE" &&
+        payload.correlationId === "idle-correlation" &&
         payload.status === "IDLE" &&
         payload.success === true,
     );
@@ -356,12 +385,14 @@ describe("Device simulator MQTT lifecycle (e2e)", () => {
       JSON.stringify({
         command: "SET_STATE",
         payload: { state: "IDLE" },
+        correlationId: "idle-correlation",
       }),
     );
 
     await expect(idleResponsePromise).resolves.toMatchObject({
       deviceId: DEVICE_ID,
       command: "SET_STATE",
+      correlationId: "idle-correlation",
       status: "IDLE",
       success: true,
     });

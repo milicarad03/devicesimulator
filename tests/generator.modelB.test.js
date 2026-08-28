@@ -1,5 +1,4 @@
 const { createTelemetryGenerator } = require("../telemetry-generator3");
-// Pretpostavljam da si sačuvala šemu u fajl
 const schema = require("../schema/modelB/v1.schema.json");
 
 describe("ModelB Telemetry Generator", () => {
@@ -8,6 +7,7 @@ describe("ModelB Telemetry Generator", () => {
   beforeEach(() => {
     generator = createTelemetryGenerator(schema);
   });
+
   afterEach(() => {
     generator = null;
   });
@@ -15,37 +15,39 @@ describe("ModelB Telemetry Generator", () => {
   it("should generate a valid ModelB object", () => {
     generator.setForceFull(true);
     const data = generator.generate();
-    
+
     expect(data.schemaId).toBe("modelB");
     expect(data.data).toBeDefined();
     expect(data.status).toBeDefined();
   });
+
   it("should generate values within defined ranges for data fields", () => {
-  generator.setForceFull(true);
+    generator.setForceFull(true);
 
-  for (let i = 0; i < 50; i++) {
-    const data = generator.generate();
+    for (let i = 0; i < 50; i++) {
+      const data = generator.generate();
 
-    if (data.data?.temp !== undefined) {
-      expect(data.data.temp).toBeGreaterThanOrEqual(-50);
-      expect(data.data.temp).toBeLessThanOrEqual(100);
+      if (data.data?.temp !== undefined) {
+        expect(data.data.temp).toBeGreaterThanOrEqual(-50);
+        expect(data.data.temp).toBeLessThanOrEqual(100);
+      }
+
+      if (data.data?.hum !== undefined) {
+        expect(data.data.hum).toBeGreaterThanOrEqual(0);
+        expect(data.data.hum).toBeLessThanOrEqual(100);
+      }
+
+      if (data.data?.press !== undefined) {
+        expect(data.data.press).toBeGreaterThanOrEqual(300);
+        expect(data.data.press).toBeLessThanOrEqual(1200);
+      }
     }
-
-    if (data.data?.hum !== undefined) {
-      expect(data.data.hum).toBeGreaterThanOrEqual(0);
-      expect(data.data.hum).toBeLessThanOrEqual(100);
-    }
-
-    if (data.data?.press !== undefined) {
-      expect(data.data.press).toBeGreaterThanOrEqual(300);
-      expect(data.data.press).toBeLessThanOrEqual(1200);
-    }
-  }
-});
+  });
 
   it("should generate boolean for ledState", () => {
     generator.setForceFull(true);
     const data = generator.generate();
+
     expect(typeof data.status.ledState).toBe("boolean");
   });
 
@@ -55,15 +57,17 @@ describe("ModelB Telemetry Generator", () => {
     const maxKeys = Object.keys(fullData).length;
 
     let foundPartial = false;
+
     for (let i = 0; i < 10; i++) {
       generator.setForceFull(false);
       const deltaData = generator.generate();
-  
+
       if (Object.keys(deltaData).length < maxKeys) {
         foundPartial = true;
         break;
       }
     }
+
     expect(foundPartial).toBe(true);
   });
 
@@ -73,38 +77,72 @@ describe("ModelB Telemetry Generator", () => {
     }
   });
 
-
   it("should throw error if invalid schema is provided", () => {
     expect(() => createTelemetryGenerator(null)).toThrow();
   });
 
-  it("should maintain required fields even in delta (partial) payload", () => {
+  it("should maintain schema-required fields even in delta (partial) payload", () => {
+    /*
+     * Prvo generišemo full payload da bismo nakon toga
+     * eksplicitno proveravali delta režim.
+     */
+    generator.setForceFull(true);
+    generator.generate();
+
     generator.setForceFull(false);
-    const delta = generator.generate();
-  
-   // expect(delta.data).toBeDefined();
-    expect(delta.status).toBeDefined();
+
+    let delta = null;
+
+    /*
+     * Delta generator može zbog reporting intervala vratiti
+     * parcijalan payload različitog sadržaja, zato pokušavamo
+     * nekoliko generacija dok ne dobijemo payload.
+     */
+    for (let i = 0; i < 20; i++) {
+      delta = generator.generate();
+
+      if (delta) {
+        break;
+      }
+    }
+
+    expect(delta).toBeDefined();
+    expect(delta).not.toBeNull();
+
+    /*
+     * U ModelB JSON Schema jedino je schemaId
+     * obavezan na najvišem nivou.
+     *
+     * data i status su opcioni u delta payload-u.
+     */
+    expect(delta.schemaId).toBe("modelB");
   });
 
   it("should never exceed defined boundaries after many fluctuations", () => {
     generator.setForceFull(true);
-  
-    for(let i = 0; i < 1000; i++) {
-        const data = generator.generate();
-        if (data.data?.temp !== undefined) {
+
+    for (let i = 0; i < 1000; i++) {
+      const data = generator.generate();
+
+      if (data.data?.temp !== undefined) {
         expect(data.data.temp).toBeGreaterThanOrEqual(-50);
         expect(data.data.temp).toBeLessThanOrEqual(100);
-        }
+      }
     }
   });
+
   it("should eventually generate data object", () => {
-  let hasData = false;
-  for(let i = 0; i < 20; i++) {
-    if (generator.generate().data) {
-      hasData = true;
-      break;
+    let hasData = false;
+
+    for (let i = 0; i < 20; i++) {
+      const generated = generator.generate();
+
+      if (generated?.data) {
+        hasData = true;
+        break;
+      }
     }
-  }
-  expect(hasData).toBe(true);
-});
+
+    expect(hasData).toBe(true);
+  });
 });

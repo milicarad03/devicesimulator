@@ -1,10 +1,32 @@
 {
   "model": "modelC",
-  "version": "1.1.5",
+  "version": "1.1.8",
   "schema": {
     "type": "object",
-    "title": "SmartPumpTelemetry",
+    "title": "DeviceDashboard Telemetry Schema",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
     "commands": {
+      "SET_LED": {
+        "payload": {
+          "type": "object",
+          "required": [
+            "value"
+          ],
+          "properties": {
+            "value": {
+              "type": "boolean"
+            }
+          },
+          "additionalProperties": false
+        },
+        "x-state-path": "telemetry.led",
+        "x-idempotency": {
+          "maxAgeMs": 15000,
+          "payloadPath": "value",
+          "stateBinding": "led"
+        },
+        "x-payload-field": "value"
+      },
       "SET_STATE": {
         "payload": {
           "type": "object",
@@ -22,208 +44,69 @@
           },
           "additionalProperties": false
         }
-      },
-      "SET_DRIVE_MODE": {
-        "payload": {
-          "type": "object",
-          "required": [
-            "mode"
-          ],
-          "properties": {
-            "mode": {
-              "enum": [
-                "ECO",
-                "NORMAL",
-                "SPORT",
-                "RACE"
-              ],
-              "type": "string"
-            }
-          },
-          "additionalProperties": false
-        }
-      },
-      "SET_PUMP_STATE": {
-        "payload": {
-          "type": "object",
-          "required": [
-            "enabled"
-          ],
-          "properties": {
-            "enabled": {
-              "type": "boolean"
-            }
-          },
-          "additionalProperties": false
-        }
-      },
-      "SET_FLOW_TARGET": {
-        "payload": {
-          "type": "object",
-          "required": [
-            "target"
-          ],
-          "properties": {
-            "target": {
-              "type": "number",
-              "maximum": 500,
-              "minimum": 0
-            }
-          },
-          "additionalProperties": false
-        }
       }
     },
     "required": [
       "schemaId"
     ],
     "properties": {
-      "system": {
-        "type": "object",
-        "properties": {
-          "status": {
-            "type": "object",
-            "properties": {
-              "alarm": {
-                "type": "boolean",
-                "x-reporting": {
-                  "IDLE": 120000,
-                  "ACTIVE": 5000
-                }
-              },
-              "driveMode": {
-                "enum": [
-                  "ECO",
-                  "NORMAL",
-                  "SPORT",
-                  "RACE"
-                ],
-                "type": "string",
-                "x-reporting": {
-                  "IDLE": 120000,
-                  "ACTIVE": 5000
-                }
-              },
-              "targetFlow": {
-                "type": "number",
-                "maximum": 500,
-                "minimum": 0,
-                "x-reporting": {
-                  "IDLE": 120000,
-                  "ACTIVE": 5000
-                }
-              },
-              "pumpEnabled": {
-                "type": "boolean",
-                "x-reporting": {
-                  "IDLE": 120000,
-                  "ACTIVE": 5000
-                }
-              }
-            }
-          },
-          "identity": {
-            "type": "object",
-            "properties": {
-              "serial": {
-                "type": "string",
-                "pattern": "^SP-[0-9]{5}-X$",
-                "x-reporting": {
-                  "IDLE": 120000,
-                  "ACTIVE": 5000
-                }
-              },
-              "firmware": {
-                "type": "string",
-                "x-reporting": {
-                  "IDLE": 120000,
-                  "ACTIVE": 5000
-                }
-              }
-            }
-          }
-        }
-      },
-      "metrics": {
-        "type": "object",
-        "properties": {
-          "flowRate": {
-            "type": "number",
-            "maximum": 500,
-            "minimum": 0,
-            "x-reporting": {
-              "IDLE": null,
-              "ACTIVE": 5000
-            }
-          },
-          "energyUsage": {
-            "type": "number",
-            "minimum": 0,
-            "x-reporting": {
-              "IDLE": null,
-              "ACTIVE": 5000
-            }
-          },
-          "inletPressure": {
-            "type": "number",
-            "maximum": 20,
-            "minimum": 0,
-            "x-reporting": {
-              "IDLE": null,
-              "ACTIVE": 5000
-            }
-          },
-          "outletPressure": {
-            "type": "number",
-            "maximum": 20,
-            "minimum": 0,
-            "x-reporting": {
-              "IDLE": null,
-              "ACTIVE": 5000
-            }
-          },
-          "motorTemperature": {
-            "type": "number",
-            "maximum": 120,
-            "minimum": 0,
-            "x-reporting": {
-              "IDLE": null,
-              "ACTIVE": 5000
-            }
-          }
-        }
-      },
       "schemaId": {
         "type": "string",
         "const": "modelC",
         "x-reporting": {
           "IDLE": 120000,
-          "ACTIVE": 5000
+          "ACTIVE": 6000
         }
       },
-      "attributes": {
+      "telemetry": {
         "type": "object",
-        "required": [
-          "serialNumber",
-          "firmware",
-          "hardwareModel"
-        ],
         "properties": {
-          "firmware": {
-            "type": "string"
+          "led": {
+            "type": "boolean",
+            "x-reporting": {
+              "IDLE": 120000,
+              "ACTIVE": 7000
+            }
           },
-          "serialNumber": {
-            "type": "string"
+          "humidity": {
+            "type": "number",
+            "maximum": 100,
+            "minimum": 0,
+            "x-reporting": {
+              "IDLE": null,
+              "ACTIVE": 10000
+            }
           },
-          "hardwareModel": {
-            "type": "string"
+          "pressure": {
+            "type": "number",
+            "maximum": 1200,
+            "minimum": 300,
+            "x-reporting": {
+              "IDLE": null,
+              "ACTIVE": 6000
+            }
+          },
+          "temperature": {
+            "type": "number",
+            "maximum": 100,
+            "minimum": -50,
+            "x-reporting": {
+              "IDLE": null,
+              "ACTIVE": 6000
+            }
           }
-        }
+        },
+        "additionalProperties": false
       },
       "historicalTelemetry": {
         "type": "object",
+        "required": [
+          "temperature",
+          "humidity",
+          "pressure"
+        ],
         "properties": {
-          "flowRate": {
+          "humidity": {
             "type": "array",
             "items": {
               "type": "array",
@@ -233,8 +116,31 @@
               "prefixItems": [
                 {
                   "type": "number",
-                  "maximum": 500,
+                  "maximum": 100,
                   "minimum": 0
+                },
+                {
+                  "type": "string"
+                }
+              ]
+            },
+            "maxItems": 24,
+            "x-buffering": {
+              "interval": 17000
+            }
+          },
+          "pressure": {
+            "type": "array",
+            "items": {
+              "type": "array",
+              "items": false,
+              "maxItems": 2,
+              "minItems": 2,
+              "prefixItems": [
+                {
+                  "type": "number",
+                  "maximum": 1200,
+                  "minimum": 300
                 },
                 {
                   "type": "string"
@@ -246,7 +152,7 @@
               "interval": 10000
             }
           },
-          "energyUsage": {
+          "temperature": {
             "type": "array",
             "items": {
               "type": "array",
@@ -256,7 +162,8 @@
               "prefixItems": [
                 {
                   "type": "number",
-                  "minimum": 0
+                  "maximum": 100,
+                  "minimum": -50
                 },
                 {
                   "type": "string"
@@ -275,202 +182,109 @@
         },
         "additionalProperties": false
       }
-    }
+    },
+    "description": "Šema za validaciju dolaznih poruka sa simulatora Model A",
+    "additionalProperties": false
   },
   "mapping": {
     "fields": {
-      "alarm": {
-        "path": "system.status.alarm"
+      "led": {
+        "path": "telemetry.led"
       },
-      "firmware": {
-        "path": "attributes.firmware"
+      "humidity": {
+        "path": "telemetry.humidity",
+        "historyPath": "historicalTelemetry.humidity"
       },
-      "flowRate": {
-        "path": "metrics.flowRate",
-        "historyPath": "historicalTelemetry.flowRate"
+      "pressure": {
+        "path": "telemetry.pressure",
+        "historyPath": "historicalTelemetry.pressure"
       },
-      "driveMode": {
-        "path": "system.status.driveMode"
-      },
-      "targetFlow": {
-        "path": "system.status.targetFlow"
-      },
-      "energyUsage": {
-        "path": "metrics.energyUsage",
-        "historyPath": "historicalTelemetry.energyUsage"
-      },
-      "pumpEnabled": {
-        "path": "system.status.pumpEnabled"
-      },
-      "serialNumber": {
-        "path": "attributes.serialNumber"
-      },
-      "hardwareModel": {
-        "path": "attributes.hardwareModel"
-      },
-      "inletPressure": {
-        "path": "metrics.inletPressure"
-      },
-      "outletPressure": {
-        "path": "metrics.outletPressure"
-      },
-      "motorTemperature": {
-        "path": "metrics.motorTemperature"
+      "temperature": {
+        "path": "telemetry.temperature",
+        "historyPath": "historicalTelemetry.temperature"
       }
     },
     "dashboard": {
       "sections": [
         {
-          "id": "alarm-section",
+          "id": "overview",
           "items": [
             {
-              "id": "alarm-card",
-              "bind": "alarm",
-              "title": "SYSTEM ALARM ACTIVE",
+              "id": "temperature",
+              "bind": "temperature",
+              "title": "Temperature",
+              "component": "value-card"
+            },
+            {
+              "id": "humidity",
+              "bind": "humidity",
+              "title": "Humidity",
+              "component": "value-card"
+            },
+            {
+              "id": "pressure",
+              "bind": "pressure",
+              "title": "Pressure",
+              "component": "value-card"
+            },
+            {
+              "id": "led",
+              "bind": "led",
+              "title": "LED State",
+              "component": "value-card"
+            },
+            {
+              "id": "visible-test",
+              "bind": "temperature",
+              "title": "VISIBLE ONLY WHEN LED IS ON",
               "component": "value-card",
               "visibleWhen": {
-                "bind": "alarm",
+                "bind": "led",
                 "equals": true
               }
             }
           ],
-          "title": "ALARM STATUS",
-          "columns": 2
+          "title": "SENSOR OVERVIEW",
+          "columns": 4
         },
         {
-          "id": "overview",
+          "id": "charts",
           "items": [
             {
-              "id": "serial-number",
-              "bind": "serialNumber",
-              "title": "Serial Number",
-              "component": "value-card"
+              "id": "temperature-chart",
+              "bind": "temperature",
+              "title": "Temperature History",
+              "colSpan": 2,
+              "component": "line-chart"
             },
             {
-              "id": "hardware-model",
-              "bind": "hardwareModel",
-              "title": "Hardware Model",
-              "component": "value-card"
-            },
-            {
-              "id": "firmware",
-              "bind": "firmware",
-              "title": "Firmware",
-              "component": "value-card"
-            },
-            {
-              "id": "flow-rate",
-              "bind": "flowRate",
-              "unit": "l/min",
-              "title": "Flow Rate",
-              "component": "value-card"
-            },
-            {
-              "id": "inlet-pressure",
-              "bind": "inletPressure",
-              "unit": "bar",
-              "title": "Inlet Pressure",
-              "component": "value-card"
-            },
-            {
-              "id": "outlet-pressure",
-              "bind": "outletPressure",
-              "unit": "bar",
-              "title": "Outlet Pressure",
-              "component": "value-card"
-            },
-            {
-              "id": "energy-usage",
-              "bind": "energyUsage",
-              "unit": "kWh",
-              "title": "Energy Usage",
-              "component": "value-card"
-            },
-            {
-              "id": "motor-temp",
-              "bind": "motorTemperature",
-              "title": "Motor Temperature",
-              "component": "value-card"
+              "id": "temperature-table",
+              "bind": "temperature",
+              "title": "Temperature Table",
+              "colSpan": 2,
+              "component": "table"
             }
           ],
-          "title": "PUMP OVERVIEW",
+          "title": "HISTORICAL DATA",
           "columns": 4
         },
         {
           "id": "controls",
           "items": [
             {
-              "id": "pump-switch",
-              "bind": "pumpEnabled",
-              "title": "Pump Power",
-              "command": "SET_PUMP_STATE",
+              "id": "led-switch",
+              "bind": "led",
+              "title": "LED Control",
+              "command": "SET_LED",
               "component": "switch",
-              "commandField": "enabled"
-            },
-            {
-              "id": "target-flow-input",
-              "max": 500,
-              "min": 0,
-              "bind": "targetFlow",
-              "step": 5,
-              "unit": "l/min",
-              "title": "Target Flow Rate",
-              "command": "SET_FLOW_TARGET",
-              "component": "numeric-input",
-              "commandField": "target"
-            },
-            {
-              "id": "pump-drive-mode",
-              "bind": "driveMode",
-              "title": "Drive Mode",
-              "command": "SET_DRIVE_MODE",
-              "component": "drive-mode-selector"
+              "commandField": "value"
             }
           ],
-          "title": "PUMP CONTROLS",
-          "columns": 2
-        },
-        {
-          "id": "analytics",
-          "items": [
-            {
-              "id": "flow-chart",
-              "bind": "flowRate",
-              "unit": "l/min",
-              "title": "Flow Rate History",
-              "colSpan": 2,
-              "component": "line-chart"
-            },
-            {
-              "id": "flow-table",
-              "bind": "flowRate",
-              "unit": "l/min",
-              "title": "Flow Rate Table",
-              "colSpan": 2,
-              "component": "table"
-            },
-            {
-              "id": "energy-chart",
-              "bind": "energyUsage",
-              "unit": "kWh",
-              "title": "Energy Consumption History",
-              "colSpan": 2,
-              "component": "line-chart"
-            },
-            {
-              "id": "energy-table",
-              "bind": "energyUsage",
-              "unit": "kWh",
-              "title": "Energy Consumption Table",
-              "colSpan": 2,
-              "component": "table"
-            }
-          ],
-          "title": "TELEMETRY HISTORY",
+          "title": "DEVICE CONTROLS",
           "columns": 4
         }
       ]
     }
   },
-  "stagedAt": "2026-08-27T09:30:26.497Z"
+  "stagedAt": "2026-08-28T10:13:53.142Z"
 }

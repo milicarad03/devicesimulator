@@ -3,6 +3,7 @@ const path = require("path");
 const { execFileSync} = require("child_process");
 const mqtt = require("mqtt");
 const winston = require("winston");
+const { createCoapClientAdapter } = require("./transports/coap-client-adapter");
 
 const ERROR_LOG_FILE =
   process.env.SIMULATOR_ERROR_LOG_FILE ||
@@ -62,6 +63,11 @@ global.simulatorLogger = logger;
 const DEVICE_ARG = process.argv[2];
 const MODEL_ARG = process.argv[3];
 const VERSION_ARG = process.argv[4];
+const DEVICE_ATTRIBUTES = {
+  serialNumber: DEVICE_ARG || "sp-100",
+  firmware: VERSION_ARG || "5.0.2",
+  hardwareModel: MODEL_ARG || "modelC"
+};
 
 if (!DEVICE_ARG || !MODEL_ARG || !VERSION_ARG) {
   handleEarlyError("Usage: node sim.js <device> <model> <version>");
@@ -80,21 +86,6 @@ if (!fs.existsSync(SCHEMA_FILE)) {
 logger.info(`Using schema profile: ${SCHEMA_FILE}`);
 
 const schema = JSON.parse(fs.readFileSync(SCHEMA_FILE, "utf8"));
-
-
-const schemaIdFromSchema = schema?.properties?.schemaId?.const;
-
-
-const finalHardwareModel = (MODEL_ARG && MODEL_ARG.toLowerCase() === "n/a")
-  ? (schemaIdFromSchema || "modelC")
-  : MODEL_ARG;
-
-const DEVICE_ATTRIBUTES = {
-  serialNumber: DEVICE_ARG || DEVICE_ID,
-  firmware: VERSION_ARG || "5.0.2",
-  hardwareModel: finalHardwareModel
-};
-
 const supportsAttributes = Boolean(
   schema?.properties?.attributes &&
     typeof schema.properties.attributes === "object" &&
@@ -102,6 +93,16 @@ const supportsAttributes = Boolean(
 );
 const BROKER_URL =
   process.env.MQTT_BROKER_URL || "mqtt://localhost:1883";
+const TRANSPORT = (process.env.TRANSPORT || "mqtt").toLowerCase();
+const COAP_BACKEND_URL =
+  process.env.COAP_BACKEND_URL || "coap://127.0.0.1:5683";
+const COAP_COMMAND_HOST =
+  process.env.COAP_COMMAND_HOST || "127.0.0.1";
+const COAP_COMMAND_PORT = Number(
+  process.env.COAP_COMMAND_PORT || 5684
+);
+const COAP_ADVERTISED_HOST =
+  process.env.COAP_ADVERTISED_HOST || COAP_COMMAND_HOST;
 const REGISTRATION_URL =
   process.env.REGISTRATION_URL ||
   "http://localhost:3000/device-certificates/register";
@@ -130,13 +131,50 @@ let deviceState = {
   targetPressure: 8,
 
   pumpEnabled: false,
-  targetFlow: 100,
-  driveMode: "ECO"
+  targetFlow: 100
 };
 const config = JSON.parse(fs.readFileSync(CONFIG_FILE, "utf8"));
 const { createTelemetryGenerator } = require("./telemetry-generator3");
 
 const telemetryGenerator = createTelemetryGenerator(schema, deviceState);
+const COMMAND_TELEMETRY_PATHS = Object.freeze({
+  led:
+    schema.commands?.SET_LED?.["x-state-path"] ||
+    "telemetry.led",
+  targetPressure:
+    schema.commands?.SET_TARGET_PRESSURE?.["x-state-path"] ||
+    "performance.stages.p2",
+  operatingProfile: "system.status.operatingProfile",
+  outputTemperature: "performance.stages.tempOut",
+  vibration: "diagnostics.health.vibration",
+});
+
+function applyOperatingProfileTelemetry(profile) {
+  const targetPressure = Number(profile?.pressure?.target);
+  const maximumTemperature = Number(
+    profile?.safety?.maxTemperature
+  );
+  const maximumVibration = Number(
+    profile?.safety?.maxVibration
+  );
+
+  telemetryGenerator.setFixedValue(
+    COMMAND_TELEMETRY_PATHS.targetPressure,
+    targetPressure
+  );
+  telemetryGenerator.setMaximumValue(
+    COMMAND_TELEMETRY_PATHS.outputTemperature,
+    maximumTemperature
+  );
+  telemetryGenerator.setMaximumValue(
+    COMMAND_TELEMETRY_PATHS.vibration,
+    maximumVibration
+  );
+  telemetryGenerator.setFixedValue(
+    COMMAND_TELEMETRY_PATHS.operatingProfile,
+    profile.mode
+  );
+}
 const MAX_LOG_SIZE = 5 * 1024 * 1024;
 
 
@@ -170,6 +208,10 @@ let operatingProfileTimer=null;
 let stagedModelUpdate = null;
 let isRestarting = false;
 let isShuttingDown = false;
+let activeCommandCorrelationId = null;
+let activeCommandCacheKey = null;
+const commandResponseCache = new Map();
+const MAX_COMMAND_RESPONSE_CACHE_SIZE = 100;
 
 
 let logCheckCounter = 0;
@@ -247,8 +289,6 @@ function getCommonNameFromCsr(csrPath) {
 
 function setupTopics(deviceId) {
   DEVICE_ID = deviceId;
-  DEVICE_ATTRIBUTES.serialNumber = DEVICE_ID;
-
   TELEMETRY_TOPIC = `iot/devices/${DEVICE_ID}/telemetry`;
   STATUS_TOPIC = `iot/devices/${DEVICE_ID}/status`;
   COMMAND_TOPIC = `iot/devices/${DEVICE_ID}/commands`;
@@ -339,15 +379,44 @@ const idleTick =
 
 
 
-function connectMqtt() {
-  if (!DEVICE_ID) throw new Error("Initialization fault: MQTT startup aborted due to undefined parameters.");
+function connectTransport() {
+  if (!DEVICE_ID) throw new Error("Initialization fault: transport startup aborted due to undefined parameters.");
 
-  logger.info(`Connecting to broker instance URL: ${BROKER_URL}`);
-  client = mqtt.connect(BROKER_URL);
+  if (!['mqtt', 'coap'].includes(TRANSPORT)) {
+    throw new Error(`Unsupported transport: ${TRANSPORT}`);
+  }
+
+  if (TRANSPORT === "coap") {
+    const coapBackend = new URL(COAP_BACKEND_URL);
+    if (coapBackend.protocol !== "coap:") {
+      throw new Error("COAP_BACKEND_URL must use the coap:// protocol.");
+    }
+    if (
+      !Number.isInteger(COAP_COMMAND_PORT) ||
+      COAP_COMMAND_PORT < 1 ||
+      COAP_COMMAND_PORT > 65535
+    ) {
+      throw new Error("COAP_COMMAND_PORT must be between 1 and 65535.");
+    }
+
+    logger.info(`Connecting to CoAP backend: ${COAP_BACKEND_URL}`);
+    client = createCoapClientAdapter({
+      deviceId: DEVICE_ID,
+      backendUrl: COAP_BACKEND_URL,
+      listenHost: COAP_COMMAND_HOST,
+      listenPort: COAP_COMMAND_PORT,
+      advertisedHost: COAP_ADVERTISED_HOST,
+      commandTopic: COMMAND_TOPIC,
+      responseTopic: RESPONSE_TOPIC,
+    });
+  } else {
+    logger.info(`Connecting to broker instance URL: ${BROKER_URL}`);
+    client = mqtt.connect(BROKER_URL);
+  }
   
 
   client.on("connect", () => {
-    logger.info("Network transport channel established to target MQTT Broker.");
+    logger.info(`Network transport channel established over ${TRANSPORT.toUpperCase()}.`);
     telemetryGenerator.setForceFull(true);
 
     client.subscribe(COMMAND_TOPIC, (err) => {
@@ -384,6 +453,31 @@ function connectMqtt() {
   client.on("message", (topic, payload) => {
     try {
       const commandObj = JSON.parse(payload.toString());
+      activeCommandCorrelationId =
+        commandObj.correlationId ||
+        commandObj.payload?.correlationId ||
+        null;
+      activeCommandCacheKey = activeCommandCorrelationId
+        ? `${commandObj.command}:${activeCommandCorrelationId}`
+        : null;
+
+      if (
+        activeCommandCacheKey &&
+        commandResponseCache.has(activeCommandCacheKey)
+      ) {
+        const cachedResponse = commandResponseCache.get(
+          activeCommandCacheKey
+        );
+        client.publish(
+          RESPONSE_TOPIC,
+          JSON.stringify(cachedResponse),
+          { qos: 1 }
+        );
+        logger.info(
+          `Duplicate command ${activeCommandCorrelationId} acknowledged without repeating its side effect.`
+        );
+        return;
+      }
       console.log("DEBUG - Primljena poruka:", commandObj);
       logger.info(`Inbound transaction processing command request token: ${commandObj.command}`);
       logger.debug(`Raw dynamic command parameters payload: ${payload.toString()}`);
@@ -707,34 +801,21 @@ function connectMqtt() {
       }
 
         deviceState.led = Boolean(commandObj.payload?.value);
-        logger.info(`Execution side effect applied -> Hardware Component state led: ${deviceState.led}`);
-        sendCommandResponse(commandObj.command, true, { state: deviceState });
-        return;
-      }
-      if (commandObj.command === "SET_DRIVE_MODE") {
-        const mode = commandObj.payload?.mode;
 
-        if (!mode) {
-          sendCommandResponse(
-            commandObj.command,
-            false,
-            { error: "INVALID_DRIVE_MODE" }
+        try {
+          telemetryGenerator.setFixedValue(
+            COMMAND_TELEMETRY_PATHS.led,
+            deviceState.led
           );
+        } catch (error) {
+          sendCommandResponse(commandObj.command, false, {
+            error: `LED_TELEMETRY_UPDATE_FAILED: ${error.message}`,
+          });
           return;
         }
 
-        deviceState.driveMode = mode;
-      
-        telemetryGenerator.setForceFull(true);
-
-        logger.info(`Drive mode updated: ${deviceState.driveMode}`);
-
-        sendCommandResponse(
-          commandObj.command,
-          true,
-          { driveMode: deviceState.driveMode }
-        );
-
+        logger.info(`Execution side effect applied -> Hardware Component state led: ${deviceState.led}`);
+        sendCommandResponse(commandObj.command, true, { state: deviceState });
         return;
       }
       if (commandObj.command === "SET_PUMP_STATE") {
@@ -821,44 +902,106 @@ function connectMqtt() {
         return;
       }
       if (commandObj.command === "SET_OPERATING_PROFILE") {
+        const payload = commandObj.payload || {};
+        const durationMinutes = Number(
+          payload.schedule?.durationMinutes
+        );
+        const targetPressure = Number(payload.pressure?.target);
+        const maximumTemperature = Number(
+          payload.safety?.maxTemperature
+        );
+        const maximumVibration = Number(
+          payload.safety?.maxVibration
+        );
+        const allowedModes =
+          schema.commands?.SET_OPERATING_PROFILE?.payload?.properties
+            ?.mode?.enum || [];
 
-          const durationMinutes = Number(commandObj.payload.schedule.durationMinutes);
-          
-          if (isNaN(durationMinutes)) {
-              logger.error("Invalid durationMinutes provided.");
-              sendCommandResponse(commandObj.command, false, { error: "Invalid duration" });
-              return;
-          }
+        const invalidProfile =
+          !Number.isInteger(durationMinutes) ||
+          durationMinutes < 1 ||
+          durationMinutes > 1440 ||
+          !Number.isFinite(targetPressure) ||
+          targetPressure < 2 ||
+          targetPressure > 16 ||
+          !Number.isFinite(maximumTemperature) ||
+          maximumTemperature < 40 ||
+          maximumTemperature > 120 ||
+          !Number.isFinite(maximumVibration) ||
+          maximumVibration < 0 ||
+          maximumVibration > 25 ||
+          (allowedModes.length > 0 && !allowedModes.includes(payload.mode));
 
-          deviceState.operatingProfile = { 
-              mode: commandObj.payload.mode, 
-              pressure: commandObj.payload.pressure, 
-              safety: commandObj.payload.safety, 
-              schedule: commandObj.payload.schedule, 
-              activatedAt: nowIso()
+        if (invalidProfile) {
+          logger.error("Invalid operating profile payload.");
+          sendCommandResponse(commandObj.command, false, {
+            error: "INVALID_OPERATING_PROFILE",
+          });
+          return;
+        }
+
+        const activatedProfile = {
+          mode: payload.mode,
+          pressure: { target: targetPressure },
+          safety: {
+            maxTemperature: maximumTemperature,
+            maxVibration: maximumVibration,
+          },
+          schedule: { durationMinutes },
+          activatedAt: nowIso(),
+        };
+
+        try {
+          applyOperatingProfileTelemetry(activatedProfile);
+        } catch (error) {
+          sendCommandResponse(commandObj.command, false, {
+            error: `PROFILE_TELEMETRY_UPDATE_FAILED: ${error.message}`,
+          });
+          return;
+        }
+
+        deviceState.targetPressure = targetPressure;
+        deviceState.operatingProfile = activatedProfile;
+
+        logger.info(
+          `Operating profile activated: ${JSON.stringify(deviceState.operatingProfile)}`
+        );
+
+        sendCommandResponse(commandObj.command, true, {
+          profile: deviceState.operatingProfile,
+        });
+
+        if (operatingProfileTimer) {
+          clearTimeout(operatingProfileTimer);
+        }
+
+        operatingProfileTimer = setTimeout(() => {
+          logger.info(
+            `Operating profile expired (${durationMinutes} min). Returning device to NORMAL mode.`
+          );
+
+          const normalProfile = {
+            mode: "NORMAL",
+            pressure: { target: 8 },
+            safety: { maxTemperature: 80, maxVibration: 3 },
+            schedule: { durationMinutes: 0 },
+            activatedAt: nowIso(),
           };
 
-          logger.info(`Operating profile activated: ${JSON.stringify( deviceState.operatingProfile)}` );
-
-          sendCommandResponse(commandObj.command, true, { profile: deviceState.operatingProfile });
-          
-          if (operatingProfileTimer) {
-            clearTimeout(operatingProfileTimer);
+          try {
+            applyOperatingProfileTelemetry(normalProfile);
+            deviceState.targetPressure = 8;
+            deviceState.operatingProfile = normalProfile;
+          } catch (error) {
+            logger.error(
+              `Unable to restore NORMAL profile telemetry: ${error.message}`
+            );
           }
 
-          operatingProfileTimer = setTimeout(() => {
-              logger.info(`Operating profile expired (${durationMinutes} min). Returning device to NORMAL mode.`);
-              
-              deviceState.operatingProfile = {
-                  mode: "NORMAL",
-                  pressure: { target: 8 },
-                  safety: { maxTemperature: 80, maxVibration: 3 },
-                  schedule: { durationMinutes: 0 },
-                  activatedAt: nowIso()
-              };
-          }, durationMinutes * 60 * 1000); 
+          operatingProfileTimer = null;
+        }, durationMinutes * 60 * 1000);
 
-          return;
+        return;
       }
 
       if (commandObj.command === "SET_MODE") {
@@ -890,15 +1033,19 @@ function connectMqtt() {
         return;
       }
 
-      if (
-        !deviceState.targetPressure
-      ) {
-        deviceState.targetPressure =
-          value;
-      } else {
-        deviceState.targetPressure =
-          value;
+      try {
+        telemetryGenerator.setFixedValue(
+          COMMAND_TELEMETRY_PATHS.targetPressure,
+          value
+        );
+      } catch (error) {
+        sendCommandResponse(commandObj.command, false, {
+          error: `TARGET_PRESSURE_TELEMETRY_UPDATE_FAILED: ${error.message}`,
+        });
+        return;
       }
+
+      deviceState.targetPressure = value;
 
       logger.info(
         `Target pressure updated to ${value}`
@@ -962,8 +1109,8 @@ function connectMqtt() {
     }
   });
 
-  client.on("error", (error) => { logger.error(`MQTT engine operational runtime error occurred: ${error.message}`); });
-  client.on("reconnect", () => { logger.warn("MQTT transport pipeline severed. Attempting retry reconnection hook..."); });
+  client.on("error", (error) => { logger.error(`${TRANSPORT.toUpperCase()} transport runtime error occurred: ${error.message}`); });
+  client.on("reconnect", () => { logger.warn(`${TRANSPORT.toUpperCase()} transport pipeline severed. Attempting retry reconnection hook...`); });
   client.on("offline", () => { logger.warn("Transport layer shifted status to OFFLINE."); });
 }
 
@@ -1030,7 +1177,27 @@ function sendTelemetry() {
 }
 
 function sendCommandResponse(command, success, extraData = {}) {
-  const response = { deviceId: DEVICE_ID, timestamp: nowIso(), command, success, ...extraData };
+  const correlationId =
+    extraData.correlationId || activeCommandCorrelationId;
+  const response = {
+    deviceId: DEVICE_ID,
+    timestamp: nowIso(),
+    command,
+    success,
+    ...extraData,
+    ...(correlationId ? { correlationId } : {}),
+  };
+
+  if (correlationId) {
+    const cacheKey = `${command}:${correlationId}`;
+    commandResponseCache.set(cacheKey, response);
+
+    if (commandResponseCache.size > MAX_COMMAND_RESPONSE_CACHE_SIZE) {
+      const oldestCorrelationId = commandResponseCache.keys().next().value;
+      commandResponseCache.delete(oldestCorrelationId);
+    }
+  }
+
   client.publish(RESPONSE_TOPIC, JSON.stringify(response), { qos: 1 });
   logger.debug(`Dispatched verification notification status response back to cloud link: ${JSON.stringify(response)}`);
 }
@@ -1080,7 +1247,7 @@ function shutdownSimulator(signalName) {
 
   fallbackTimer = setTimeout(() => {
     logger.warn(
-      "MQTT shutdown callback timed out. Closing transport forcefully."
+      `${TRANSPORT.toUpperCase()} shutdown callback timed out. Closing transport forcefully.`
     );
     client?.end(true);
     finish();
@@ -1105,7 +1272,7 @@ function shutdownSimulator(signalName) {
       { qos: 1, retain: true },
       () => {
         logger.info(
-          "Disconnecting MQTT transport interface client link... Goodbye."
+          `Disconnecting ${TRANSPORT.toUpperCase()} transport interface client link... Goodbye.`
         );
         client.end(false, {}, finish);
       }
@@ -1139,7 +1306,7 @@ async function main() {
   isTelemetryActive=false;
   try {
     await registerDevice();
-    connectMqtt();
+    connectTransport();
   } catch (error) {
     logger.error(`Fatal application runtime failure: ${error.message}`);
     process.exit(1);

@@ -8,7 +8,7 @@ class GeneratorLogger {
 
 const logger = new GeneratorLogger();
 
-function createTelemetryGenerator(schema, deviceState) {
+function createTelemetryGenerator(schema, deviceState = {}) {
   if (!schema || typeof schema !== 'object') {
     throw new Error("Invalid schema");
   }
@@ -33,6 +33,8 @@ function createTelemetryGenerator(schema, deviceState) {
   const fieldDefinitions = {};
   const historicalBuffers = {};
   const historicalToLivePath = {};
+  const fixedValues = new Map();
+  const maximumOverrides = new Map();
 
   function generateFromPattern(pattern) {
     if (pattern === "^CP-[0-9]{5}-X$") {
@@ -93,8 +95,6 @@ function createTelemetryGenerator(schema, deviceState) {
         state.baseline[currentPath] = start;
       } else if (subSchema.type === "boolean") {
         state[currentPath] = false;
-      } else if (subSchema.enum) {
-        state[currentPath] = subSchema.enum[0];
       }
     }
   }
@@ -176,20 +176,148 @@ function createTelemetryGenerator(schema, deviceState) {
     return Math.max(gcd, 100);
   }
 
-  function applyClamp() {
-    Object.keys(fieldDefinitions).forEach((path) => {
-      if (fieldDefinitions[path].type === "number" || fieldDefinitions[path].type === "integer") {
-        state[path] = clamp(
-          state[path],
-          fieldDefinitions[path].minimum ?? -Infinity,
-          fieldDefinitions[path].maximum ?? Infinity
-        );
+  function getEffectiveBounds(path) {
+    const definition = fieldDefinitions[path] || {};
+    const minimum = definition.minimum ?? -Infinity;
+    const schemaMaximum = definition.maximum ?? Infinity;
+    const configuredMaximum = maximumOverrides.get(path);
+    const maximum = configuredMaximum === undefined
+      ? schemaMaximum
+      : Math.min(configuredMaximum, schemaMaximum);
+
+    return {
+      minimum,
+      maximum: Math.max(minimum, maximum),
+    };
+  }
+
+  function normalizeFixedValue(path, value) {
+    const definition = fieldDefinitions[path];
+
+    if (!definition) {
+      throw new Error(`Telemetry field does not exist in schema: ${path}`);
+    }
+
+    if (definition.type === "boolean") {
+      if (typeof value !== "boolean") {
+        throw new Error(`Telemetry field ${path} requires a boolean value.`);
+      }
+      return value;
+    }
+
+    if (definition.type === "number" || definition.type === "integer") {
+      const numericValue = Number(value);
+
+      if (!Number.isFinite(numericValue)) {
+        throw new Error(`Telemetry field ${path} requires a numeric value.`);
+      }
+
+      const { minimum, maximum } = getEffectiveBounds(path);
+      const normalized = clamp(numericValue, minimum, maximum);
+      return definition.type === "integer" ? Math.round(normalized) : normalized;
+    }
+
+    if (definition.enum && !definition.enum.includes(value)) {
+      throw new Error(`Telemetry field ${path} does not allow value ${value}.`);
+    }
+
+    return value;
+  }
+
+  function applyFixedValues() {
+    fixedValues.forEach((value, path) => {
+      state[path] = value;
+
+      if (
+        fieldDefinitions[path]?.type === "number" ||
+        fieldDefinitions[path]?.type === "integer"
+      ) {
+        state.baseline[path] = value;
       }
     });
   }
 
+  function setFixedValue(path, value) {
+    const normalized = normalizeFixedValue(path, value);
+    fixedValues.set(path, normalized);
+    state[path] = normalized;
+
+    if (
+      fieldDefinitions[path].type === "number" ||
+      fieldDefinitions[path].type === "integer"
+    ) {
+      state.baseline[path] = normalized;
+    }
+
+    return normalized;
+  }
+
+  function clearFixedValue(path) {
+    fixedValues.delete(path);
+  }
+
+  function setMaximumValue(path, value) {
+    const definition = fieldDefinitions[path];
+
+    if (!definition) {
+      throw new Error(`Telemetry field does not exist in schema: ${path}`);
+    }
+
+    if (definition.type !== "number" && definition.type !== "integer") {
+      throw new Error(`Telemetry field ${path} does not support a numeric maximum.`);
+    }
+
+    const numericValue = Number(value);
+
+    if (!Number.isFinite(numericValue)) {
+      throw new Error(`Telemetry maximum for ${path} must be numeric.`);
+    }
+
+    const schemaMinimum = definition.minimum ?? -Infinity;
+    const schemaMaximum = definition.maximum ?? Infinity;
+    const normalized = clamp(numericValue, schemaMinimum, schemaMaximum);
+    maximumOverrides.set(path, normalized);
+
+    const effectiveMinimum = Number.isFinite(schemaMinimum)
+      ? schemaMinimum
+      : Math.min(0, normalized);
+    const operatingRange = Math.max(0, normalized - effectiveMinimum);
+    const safeBaseline = effectiveMinimum + operatingRange * 0.75;
+
+    state[path] = clamp(
+      Math.min(state[path], safeBaseline),
+      effectiveMinimum,
+      normalized
+    );
+    state.baseline[path] = safeBaseline;
+    return normalized;
+  }
+
+  function clearMaximumValue(path) {
+    maximumOverrides.delete(path);
+  }
+
+  function applyClamp() {
+    Object.keys(fieldDefinitions).forEach((path) => {
+      if (fieldDefinitions[path].type === "number" || fieldDefinitions[path].type === "integer") {
+        const { minimum, maximum } = getEffectiveBounds(path);
+        state[path] = clamp(
+          state[path],
+          minimum,
+          maximum
+        );
+      }
+    });
+
+    applyFixedValues();
+  }
+
   function maybeToggleBoolean() {
     Object.keys(fieldDefinitions).forEach(path => {
+      if (fixedValues.has(path)) {
+        return;
+      }
+
       if (
         path === "telemetry.led" ||
         path.endsWith("ledState") ||
@@ -206,20 +334,21 @@ function createTelemetryGenerator(schema, deviceState) {
 
   function normalFluctuation() {
     Object.keys(fieldDefinitions).forEach((path) => {
+      if (fixedValues.has(path)) {
+        return;
+      }
+
       if (
         path === "system.status.targetFlow" ||
-        path === "metrics.flowRate" ||
-        path === "metrics.batteryLevel" ||
-        path === "performance.stages.p2" ||
-        path === "diagnostics.health.vibration" ||
-        path === "performance.stages.tempOut"
+        path === "metrics.flowRate"
       ) {
         return;
       }
       if (fieldDefinitions[path].type !== "number" && fieldDefinitions[path].type !== "integer") return;
 
-      const min = fieldDefinitions[path].minimum ?? 0;
-      const max = fieldDefinitions[path].maximum ?? 100;
+      const bounds = getEffectiveBounds(path);
+      const min = Number.isFinite(bounds.minimum) ? bounds.minimum : 0;
+      const max = Number.isFinite(bounds.maximum) ? bounds.maximum : 100;
       const range = max - min;
       const drift = randomBetween(-0.01 * range, 0.01 * range);
 
@@ -230,12 +359,13 @@ function createTelemetryGenerator(schema, deviceState) {
 
   function peakFluctuation() {
     Object.keys(fieldDefinitions).forEach((path) => {
+      if (fixedValues.has(path)) {
+        return;
+      }
+
       if (
         path === "system.status.targetFlow" ||
-        path === "metrics.flowRate" ||
-        path === "performance.stages.p2" ||
-        path === "diagnostics.health.vibration" ||
-        path === "performance.stages.tempOut"
+        path === "metrics.flowRate"
       ) {
         return;
       }
@@ -243,8 +373,9 @@ function createTelemetryGenerator(schema, deviceState) {
       if (path.includes("maintenance") || path.includes("Runtime")) return;
       if (Math.random() > 0.3) return;
 
-      const min = fieldDefinitions[path].minimum ?? 0;
-      const max = fieldDefinitions[path].maximum ?? 100;
+      const bounds = getEffectiveBounds(path);
+      const min = Number.isFinite(bounds.minimum) ? bounds.minimum : 0;
+      const max = Number.isFinite(bounds.maximum) ? bounds.maximum : 100;
       const range = max - min;
 
       state[path] += randomBetween(0.05 * range, 0.1 * range);
@@ -254,12 +385,13 @@ function createTelemetryGenerator(schema, deviceState) {
 
   function slowRecovery() {
     Object.keys(fieldDefinitions).forEach((path) => {
+      if (fixedValues.has(path)) {
+        return;
+      }
+
       if (
         path === "system.status.targetFlow" ||
-        path === "metrics.flowRate" ||
-        path === "performance.stages.p2" ||
-        path === "diagnostics.health.vibration" ||
-        path === "performance.stages.tempOut"
+        path === "metrics.flowRate"
       ) {
         return;
       }
@@ -271,21 +403,23 @@ function createTelemetryGenerator(schema, deviceState) {
   function maybeShiftBaseline() {
     if (Math.random() < 0.05) {
       Object.keys(fieldDefinitions).forEach((path) => {
-        if (fieldDefinitions[path].type !== "number" && fieldDefinitions[path].type !== "integer") return;
-        if (
-          path === "performance.stages.p2" ||
-          path === "diagnostics.health.vibration" ||
-          path === "performance.stages.tempOut"
-        ) {
+        if (fixedValues.has(path)) {
           return;
         }
 
-        const min = fieldDefinitions[path].minimum ?? 0;
-        const max = fieldDefinitions[path].maximum ?? 100;
+        if (fieldDefinitions[path].type !== "number" && fieldDefinitions[path].type !== "integer") return;
+
+        const bounds = getEffectiveBounds(path);
+        const min = Number.isFinite(bounds.minimum) ? bounds.minimum : 0;
+        const max = Number.isFinite(bounds.maximum) ? bounds.maximum : 100;
         const range = max - min;
         let shift = randomBetween(-0.02 * range, 0.02 * range);
 
-        state.baseline[path] += shift;
+        state.baseline[path] = clamp(
+          state.baseline[path] + shift,
+          min,
+          max
+        );
       });
     }
   }
@@ -302,29 +436,7 @@ function createTelemetryGenerator(schema, deviceState) {
   }
 
   function updateDeviceState() {
-    // Podešavanje baseline-a i ciljnih vrednosti iz operativnog profila
-    if (deviceState.operatingProfile) {
-      const profile = deviceState.operatingProfile;
-      if (profile.pressure && typeof profile.pressure.target === 'number') {
-        state["performance.stages.p2"] = profile.pressure.target;
-      }
-      if (profile.safety) {
-        if (typeof profile.safety.maxVibration === 'number') {
-          const maxVib = profile.safety.maxVibration;
-          // Postavljamo baseline da drži vibracije u donjem/srednjem delu do maxVibration
-          if (!state.baseline["diagnostics.health.vibration"] || state.baseline["diagnostics.health.vibration"] > maxVib) {
-            state.baseline["diagnostics.health.vibration"] = maxVib * 0.75;
-          }
-        }
-        if (typeof profile.safety.maxTemperature === 'number') {
-          const maxTemp = profile.safety.maxTemperature;
-          // Postavljamo baseline da drži temperaturu u opsegu ispod maxTemperature
-          if (!state.baseline["performance.stages.tempOut"] || state.baseline["performance.stages.tempOut"] > maxTemp) {
-            state.baseline["performance.stages.tempOut"] = maxTemp * 0.8;
-          }
-        }
-      }
-    }
+    applyFixedValues();
 
     if (
       deviceState.targetFlow !== undefined &&
@@ -339,13 +451,6 @@ function createTelemetryGenerator(schema, deviceState) {
       state["system.status.pumpEnabled"] !== undefined
     ) {
       state["system.status.pumpEnabled"] = deviceState.pumpEnabled;
-    }
-
-    if (state["metrics.batteryLevel"] !== undefined) {
-      state["metrics.batteryLevel"] -= 0.1;
-      if (state["metrics.batteryLevel"] <= 5) {
-        state["metrics.batteryLevel"] = 100;
-      }
     }
 
     if (state["metrics.flowRate"] !== undefined) {
@@ -454,6 +559,7 @@ function createTelemetryGenerator(schema, deviceState) {
 
     Object.keys(fieldDefinitions).forEach((path) => {
       const def = fieldDefinitions[path];
+
       const reportingMode = isHeartbeat ? "IDLE" : "ACTIVE";
 
       if (!isFull) {
@@ -470,23 +576,12 @@ function createTelemetryGenerator(schema, deviceState) {
         return;
       }
 
-      // DINAMIČKO POSTAVLJANJE GORNJIH GRANICA (MAXIMUM) IZ OPERATIVNOG PROFILA
-      if (deviceState.operatingProfile) {
-        const profile = deviceState.operatingProfile;
-        if (path === "performance.stages.p2" && profile.pressure?.target !== undefined) {
-          state[path] = profile.pressure.target; // P2 drži tačnu target vrednost
-        }
-        if (path === "diagnostics.health.vibration" && profile.safety?.maxVibration !== undefined) {
-          fieldDefinitions[path].maximum = profile.safety.maxVibration; // Dozvoljava oscilacije do maxVibration
-        }
-        if (path === "performance.stages.tempOut" && profile.safety?.maxTemperature !== undefined) {
-          fieldDefinitions[path].maximum = profile.safety.maxTemperature; // Dozvoljava oscilacije do maxTemperature
-        }
-      }
-
-      if (def.enum) {
-        const val = state[path] !== undefined ? state[path] : def.enum[0];
-        setDeepValue(payload, path, val);
+      if (fixedValues.has(path)) {
+        setDeepValue(payload, path, fixedValues.get(path));
+        state.lastSent[path] = now;
+      } else if (def.enum) {
+        const randomEnum = def.enum[Math.floor(Math.random() * def.enum.length)];
+        setDeepValue(payload, path, randomEnum);
         state.lastSent[path] = now;
       } else if (def.type === "number" || def.type === "integer") {
         let val = state[path];
@@ -494,8 +589,7 @@ function createTelemetryGenerator(schema, deviceState) {
           val = Math.round(val / def.multipleOf) * def.multipleOf;
         }
 
-        const min = def.minimum ?? -Infinity;
-        const max = def.maximum ?? Infinity;
+        const { minimum: min, maximum: max } = getEffectiveBounds(path);
         val = Math.min(Math.max(val, min), max);
 
         state[path] = val;
@@ -516,9 +610,6 @@ function createTelemetryGenerator(schema, deviceState) {
           setDeepValue(payload, path, `v1.${Math.floor(Math.random() * 10)}.${Math.floor(Math.random() * 10)}`);
         } else if (path.toLowerCase().includes("serial")) {
           setDeepValue(payload, path, `SP-${Math.floor(10000 + Math.random() * 90000)}-X`);
-        } else if (path.toLowerCase().includes("operatingprofile") || path.toLowerCase().includes("drivemode") || path.toLowerCase().includes("mode")) {
-          const activeMode = deviceState.operatingProfile?.mode || deviceState.mode || state[path] || "NORMAL";
-          setDeepValue(payload, path, activeMode);
         } else {
           setDeepValue(payload, path, "OPERATIONAL");
         }
@@ -526,18 +617,20 @@ function createTelemetryGenerator(schema, deviceState) {
       }
     });
 
-    if (Object.keys(payload).length === 0) {
-      return null;
-    }
-
     const schemaId = schema.properties?.schemaId?.const;
     if (schemaId) {
       payload.schemaId = schemaId;
     }
+
+    if (Object.keys(payload).length === 0) {
+      return null;
+    }
+
     return payload;
   }
 
   function generateHeartbeat() {
+    applyFixedValues();
     return build("heartbeat");
   }
 
@@ -547,6 +640,8 @@ function createTelemetryGenerator(schema, deviceState) {
 
   function generate() {
     state.cycleCounter++;
+
+    applyFixedValues();
 
     const isFiveMinuteMark = state.cycleCounter >= 300;
 
@@ -577,7 +672,11 @@ function createTelemetryGenerator(schema, deviceState) {
     setForceFull,
     getMinimumInterval,
     getOptimalTick,
-    getOptimalHistoricalBufferTick
+    getOptimalHistoricalBufferTick,
+    setFixedValue,
+    clearFixedValue,
+    setMaximumValue,
+    clearMaximumValue
   };
 }
 

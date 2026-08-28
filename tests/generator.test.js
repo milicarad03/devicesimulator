@@ -123,6 +123,37 @@ describe("Telemetry Generator", () => {
     expect(data.val).toBe(10);
   });
 
+  it("should treat a runtime maximum as a fluctuating upper bound", () => {
+    const boundedSchema = {
+      type: "object",
+      properties: {
+        temperature: {
+          type: "number",
+          minimum: 40,
+          maximum: 120,
+        },
+      },
+    };
+    const gen = createTelemetryGenerator(boundedSchema);
+
+    gen.setMaximumValue("temperature", 46);
+
+    const readings = [];
+    for (let index = 0; index < 50; index += 1) {
+      gen.setForceFull(true);
+      const temperature = gen.generate()?.temperature;
+
+      if (temperature !== undefined) {
+        readings.push(temperature);
+      }
+    }
+
+    expect(readings.length).toBeGreaterThan(0);
+    expect(Math.max(...readings)).toBeLessThanOrEqual(46);
+    expect(readings.some((value) => value < 46)).toBe(true);
+    expect(new Set(readings).size).toBeGreaterThan(1);
+  });
+
   it("should handle schema with no properties gracefully", () => {
     const emptySchema = { type: "object" };
     const gen = createTelemetryGenerator(emptySchema);

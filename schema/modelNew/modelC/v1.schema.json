@@ -1,0 +1,73 @@
+{
+  "type": "object",
+  "properties": {
+    "schemaId": { 
+      "type": "string",
+      "const": "modelC",
+       "x-reporting": {
+        "ACTIVE": 5000,
+        "IDLE": 120000
+      }
+    },
+    "metrics": {
+      "type": "object",
+      "properties": {
+        "environment": {
+          "type": "object",
+          "properties": {
+            "temperature": { "type": "number" , 
+            "x-reporting": {
+              "ACTIVE": 3000,
+              "IDLE": null
+            }},
+            "humidity": { "type": "number",
+                "x-reporting": {
+              "ACTIVE": 5000,
+              "IDLE": null
+            } },
+            "pressure": { "type": "number",
+            "x-reporting": {
+              "ACTIVE": 5000,
+              "IDLE": null
+            }}
+          }
+        }
+      }
+    },
+    "device": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "object",
+          "properties": {
+            "led": { "type": "boolean",
+            "x-reporting": {
+              "ACTIVE": 3000,
+              "IDLE": 120000
+            } },
+            "mode": { "type": "string",
+            "x-reporting": {
+              "ACTIVE": 5000,
+              "IDLE": 120000
+            }}
+          }
+        },
+        "battery": {
+          "type": "object",
+          "properties": {
+            "level": { "type": "number" ,
+            "x-reporting": {
+              "ACTIVE": 6000,
+              "IDLE": 120000
+            }},
+            "charging": { "type": "boolean",
+              "x-reporting": {
+              "ACTIVE": 6000,
+              "IDLE": 120000
+            }}
+          }
+        }
+      }
+    }
+  }
+}
