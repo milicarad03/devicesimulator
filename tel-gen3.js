@@ -63,8 +63,6 @@ function createTelemetryGenerator(schema, deviceState) {
         parseSchema(subSchema.properties[key], nextPath, subSchema.required || []);
       });
     } else {
-  
-      //fieldDefinitions[currentPath] = subSchema;
       fieldDefinitions[currentPath] = {
         ...subSchema,
       };
@@ -264,14 +262,6 @@ function createTelemetryGenerator(schema, deviceState) {
  
   function build() {
     const payload = {};
-   // const schemaId = schema.properties?.schemaId?.const;
-   /* if (schemaId) {
-      payload.schemaId = schemaId;
-    }*/
-   
-
-   //const activeFields = fields;
-
     const now = Date.now();
 
     Object.keys(fieldDefinitions).forEach((path) => {

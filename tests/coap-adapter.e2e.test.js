@@ -56,6 +56,7 @@ function publish(adapter, topic, body, options = {}) {
 function postJson(endpoint, body) {
   const url = new URL(endpoint);
   return new Promise((resolve, reject) => {
+    const requestBody = Buffer.from(JSON.stringify(body), "utf8");
     const request = coap.request({
       hostname: url.hostname,
       port: Number(url.port),
@@ -66,6 +67,9 @@ function postJson(endpoint, body) {
     const chunks = [];
 
     request.setOption("Content-Format", "application/json");
+    if (requestBody.length > 1024) {
+      request.setOption("Block1", Buffer.from([6]));
+    }
     request.once("error", reject);
     request.once("response", (response) => {
       response.on("data", (chunk) => chunks.push(chunk));
@@ -76,7 +80,7 @@ function postJson(endpoint, body) {
         });
       });
     });
-    request.end(JSON.stringify(body));
+    request.end(requestBody);
   });
 }
 
@@ -179,6 +183,31 @@ describe("CoAP simulator transport adapter (e2e)", () => {
         deviceId,
         command: "SET_LED",
         correlationId,
+        success: true,
+      },
+    });
+
+    const modelCorrelationId = "coap-model-stage-correlation";
+    const modelStageResponse = await postJson(commandEndpoint, {
+      command: "STAGE_MODEL_VERSION",
+      payload: {
+        model: "modelC",
+        version: "1.1.5",
+        schema: {
+          description: "x".repeat(5_600),
+        },
+        mapping: { fields: {} },
+        correlationId: modelCorrelationId,
+      },
+      correlationId: modelCorrelationId,
+    });
+
+    expect(modelStageResponse).toEqual({
+      code: "2.05",
+      body: {
+        deviceId,
+        command: "STAGE_MODEL_VERSION",
+        correlationId: modelCorrelationId,
         success: true,
       },
     });

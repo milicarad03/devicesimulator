@@ -63,8 +63,6 @@ function createTelemetryGenerator(schema, deviceState) {
         parseSchema(subSchema.properties[key], nextPath, subSchema.required || []);
       });
     } else {
-  
-      //fieldDefinitions[currentPath] = subSchema;
       fieldDefinitions[currentPath] = {
         ...subSchema,
 
@@ -309,15 +307,9 @@ function createTelemetryGenerator(schema, deviceState) {
   const isHeartbeat = mode === "heartbeat";
 
     const payload = {};
-   // const schemaId = schema.properties?.schemaId?.const;
-   /* if (schemaId) {
-      payload.schemaId = schemaId;
-    }*/
     const fields = Object.keys(fieldDefinitions);
     const desiredPercentage = isFull? 1.0 : randomBetween(0.1, 0.8); 
     const activeFields = fields.filter(() => Math.random() < desiredPercentage);
-
-   //const activeFields = fields;
 
     const now = Date.now();
 

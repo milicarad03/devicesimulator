@@ -428,7 +428,6 @@ function trimLogFile() {
 }
 function sendTelemetry() {
   try {
-   // const generatedMessage = telemetryGenerator.generate();
    let generatedMessage;
     try {
       generatedMessage = telemetryGenerator.generate();

@@ -1,0 +1,290 @@
+{
+  "model": "modelA",
+  "version": "2.13",
+  "schema": {
+    "type": "object",
+    "title": "DeviceDashboard Telemetry Schema",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "commands": {
+      "SET_LED": {
+        "payload": {
+          "type": "object",
+          "required": [
+            "value"
+          ],
+          "properties": {
+            "value": {
+              "type": "boolean"
+            }
+          },
+          "additionalProperties": false
+        },
+        "x-state-path": "telemetry.led",
+        "x-idempotency": {
+          "maxAgeMs": 15000,
+          "payloadPath": "value",
+          "stateBinding": "led"
+        },
+        "x-payload-field": "value"
+      },
+      "SET_STATE": {
+        "payload": {
+          "type": "object",
+          "required": [
+            "state"
+          ],
+          "properties": {
+            "state": {
+              "enum": [
+                "ACTIVE",
+                "IDLE"
+              ],
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      }
+    },
+    "required": [
+      "schemaId"
+    ],
+    "properties": {
+      "schemaId": {
+        "type": "string",
+        "const": "modelA",
+        "x-reporting": {
+          "IDLE": 120000,
+          "ACTIVE": 6000
+        }
+      },
+      "telemetry": {
+        "type": "object",
+        "properties": {
+          "led": {
+            "type": "boolean",
+            "x-reporting": {
+              "IDLE": 120000,
+              "ACTIVE": 7000
+            }
+          },
+          "humidity": {
+            "type": "number",
+            "maximum": 100,
+            "minimum": 0,
+            "x-reporting": {
+              "IDLE": null,
+              "ACTIVE": 10000
+            }
+          },
+          "pressure": {
+            "type": "number",
+            "maximum": 1200,
+            "minimum": 300,
+            "x-reporting": {
+              "IDLE": null,
+              "ACTIVE": 6000
+            }
+          },
+          "temperature": {
+            "type": "number",
+            "maximum": 100,
+            "minimum": -50,
+            "x-reporting": {
+              "IDLE": null,
+              "ACTIVE": 6000
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "historicalTelemetry": {
+        "type": "object",
+        "required": [
+          "temperature",
+          "humidity",
+          "pressure"
+        ],
+        "properties": {
+          "humidity": {
+            "type": "array",
+            "items": {
+              "type": "array",
+              "items": false,
+              "maxItems": 2,
+              "minItems": 2,
+              "prefixItems": [
+                {
+                  "type": "number",
+                  "maximum": 100,
+                  "minimum": 0
+                },
+                {
+                  "type": "string"
+                }
+              ]
+            },
+            "maxItems": 24,
+            "x-buffering": {
+              "interval": 17000
+            }
+          },
+          "pressure": {
+            "type": "array",
+            "items": {
+              "type": "array",
+              "items": false,
+              "maxItems": 2,
+              "minItems": 2,
+              "prefixItems": [
+                {
+                  "type": "number",
+                  "maximum": 1200,
+                  "minimum": 300
+                },
+                {
+                  "type": "string"
+                }
+              ]
+            },
+            "maxItems": 24,
+            "x-buffering": {
+              "interval": 10000
+            }
+          },
+          "temperature": {
+            "type": "array",
+            "items": {
+              "type": "array",
+              "items": false,
+              "maxItems": 2,
+              "minItems": 2,
+              "prefixItems": [
+                {
+                  "type": "number",
+                  "maximum": 100,
+                  "minimum": -50
+                },
+                {
+                  "type": "string"
+                }
+              ]
+            },
+            "maxItems": 24,
+            "x-buffering": {
+              "interval": 15000
+            }
+          }
+        },
+        "x-reporting": {
+          "IDLE": 120000,
+          "ACTIVE": null
+        },
+        "additionalProperties": false
+      }
+    },
+    "description": "Šema za validaciju dolaznih poruka sa simulatora Model A",
+    "additionalProperties": false
+  },
+  "mapping": {
+    "fields": {
+      "led": {
+        "path": "telemetry.led"
+      },
+      "humidity": {
+        "path": "telemetry.humidity",
+        "historyPath": "historicalTelemetry.humidity"
+      },
+      "pressure": {
+        "path": "telemetry.pressure",
+        "historyPath": "historicalTelemetry.pressure"
+      },
+      "temperature": {
+        "path": "telemetry.temperature",
+        "historyPath": "historicalTelemetry.temperature"
+      }
+    },
+    "dashboard": {
+      "sections": [
+        {
+          "id": "overview",
+          "items": [
+            {
+              "id": "temperature",
+              "bind": "temperature",
+              "title": "Temperature",
+              "component": "value-card"
+            },
+            {
+              "id": "humidity",
+              "bind": "humidity",
+              "title": "Humidity",
+              "component": "value-card"
+            },
+            {
+              "id": "pressure",
+              "bind": "pressure",
+              "title": "Pressure",
+              "component": "value-card"
+            },
+            {
+              "id": "led",
+              "bind": "led",
+              "title": "LED State",
+              "component": "value-card"
+            },
+            {
+              "id": "visible-test",
+              "bind": "temperature",
+              "title": "VISIBLE ONLY WHEN LED IS ON",
+              "component": "value-card",
+              "visibleWhen": {
+                "bind": "led",
+                "equals": true
+              }
+            }
+          ],
+          "title": "SENSOR OVERVIEW",
+          "columns": 4
+        },
+        {
+          "id": "charts",
+          "items": [
+            {
+              "id": "temperature-chart",
+              "bind": "temperature",
+              "title": "Temperature History",
+              "colSpan": 2,
+              "component": "line-chart"
+            },
+            {
+              "id": "temperature-table",
+              "bind": "temperature",
+              "title": "Temperature Table",
+              "colSpan": 2,
+              "component": "table"
+            }
+          ],
+          "title": "HISTORICAL DATA",
+          "columns": 4
+        },
+        {
+          "id": "controls",
+          "items": [
+            {
+              "id": "led-switch",
+              "bind": "led",
+              "title": "LED Control",
+              "command": "SET_LED",
+              "component": "switch",
+              "commandField": "value"
+            }
+          ],
+          "title": "DEVICE CONTROLS",
+          "columns": 4
+        }
+      ]
+    }
+  },
+  "stagedAt": "2026-08-31T07:55:00.478Z"
+}

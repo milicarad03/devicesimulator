@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-27T09:05:35.379Z",
+  "generatedAt": "2026-08-31T08:24:12.352Z",
   "workingDirectory": "/home/rmilica/devicesimulator",
   "comparisons": [
     {
@@ -19,18 +19,18 @@
         "skippedLines": 0
       },
       "delta": {
-        "samples": 1718,
-        "totalBytes": 484711,
-        "minimumBytes": 42,
+        "samples": 2066,
+        "totalBytes": 560973,
+        "minimumBytes": 21,
         "maximumBytes": 6038,
-        "averageBytes": 282.13678696158325,
-        "medianBytes": 161,
-        "p95Bytes": 467,
+        "averageBytes": 271.526137463698,
+        "medianBytes": 160,
+        "p95Bytes": 466,
         "skippedLines": 0
       },
       "savings": {
-        "averageBytes": 181.50291892076967,
-        "percentage": 39.147406190190594
+        "averageBytes": 192.11356841865495,
+        "percentage": 41.43596115286191
       }
     },
     {

@@ -193,6 +193,11 @@ class CoapClientAdapter extends EventEmitter {
   }
 
   readRequestBody(request, callback) {
+    if (Buffer.isBuffer(request.payload)) {
+      this.validateRequestBody(request.payload, callback);
+      return;
+    }
+
     const chunks = [];
     let bytes = 0;
 
@@ -207,14 +212,26 @@ class CoapClientAdapter extends EventEmitter {
         return;
       }
 
-      const body = Buffer.concat(chunks).toString("utf8");
-      try {
-        JSON.parse(body);
-        callback(null, body);
-      } catch {
-        callback(new Error("COAP_COMMAND_INVALID_JSON"));
-      }
+      this.validateRequestBody(
+        Buffer.concat(chunks, bytes),
+        callback
+      );
     });
+  }
+
+  validateRequestBody(payload, callback) {
+    if (payload.length > MAX_PAYLOAD_BYTES) {
+      callback(new Error("COAP_COMMAND_TOO_LARGE"));
+      return;
+    }
+
+    const body = payload.toString("utf8");
+    try {
+      JSON.parse(body);
+      callback(null, body);
+    } catch {
+      callback(new Error("COAP_COMMAND_INVALID_JSON"));
+    }
   }
 
   finishCommandResponse(payload, callback) {
