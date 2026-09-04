@@ -4,9 +4,6 @@ const { execFileSync } = require("child_process");
 const mqtt = require("mqtt");
 const winston = require("winston");
 
-// ==========================================
-// WINSTON LOGGER CONFIGURATION
-// ==========================================
 const logger = winston.createLogger({
  
   level: process.env.LOG_LEVEL || "info",

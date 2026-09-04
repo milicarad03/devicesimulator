@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-08-31T08:24:12.352Z",
-  "workingDirectory": "/home/rmilica/devicesimulator",
+  "generatedAt": "2026-09-03T13:30:57.675Z",
+  "workingDirectory": "/home/mimi/projekatdiplomski/devicesimulator/devicesimulator",
   "comparisons": [
     {
       "name": "telemetry",
       "files": {
-        "full": "/home/rmilica/devicesimulator/telemetry_stats_full1.log",
-        "delta": "/home/rmilica/devicesimulator/telemetry_stats_delta1.log"
+        "full": "/home/mimi/projekatdiplomski/devicesimulator/devicesimulator/telemetry_stats_full1.log",
+        "delta": "/home/mimi/projekatdiplomski/devicesimulator/devicesimulator/telemetry_stats_delta1.log"
       },
       "full": {
         "samples": 408,
@@ -19,25 +19,25 @@
         "skippedLines": 0
       },
       "delta": {
-        "samples": 2066,
-        "totalBytes": 560973,
+        "samples": 2074,
+        "totalBytes": 561847,
         "minimumBytes": 21,
         "maximumBytes": 6038,
-        "averageBytes": 271.526137463698,
+        "averageBytes": 270.9001928640309,
         "medianBytes": 160,
         "p95Bytes": 466,
         "skippedLines": 0
       },
       "savings": {
-        "averageBytes": 192.11356841865495,
-        "percentage": 41.43596115286191
+        "averageBytes": 192.73951301832204,
+        "percentage": 41.570967838382046
       }
     },
     {
       "name": "dummy-traffic",
       "files": {
-        "full": "/home/rmilica/devicesimulator/dummy_traffic_full_MODELF1.log",
-        "delta": "/home/rmilica/devicesimulator/dummy_traffic_delta_MODELF1.log"
+        "full": "/home/mimi/projekatdiplomski/devicesimulator/devicesimulator/dummy_traffic_full_MODELF1.log",
+        "delta": "/home/mimi/projekatdiplomski/devicesimulator/devicesimulator/dummy_traffic_delta_MODELF1.log"
       },
       "full": {
         "samples": 408,

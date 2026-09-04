@@ -1,48 +1,6 @@
 {
   "type": "object",
-  "title": "DeviceDashboard Telemetry Schema",
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "commands": {
-    "SET_LED": {
-      "payload": {
-        "type": "object",
-        "required": [
-          "value"
-        ],
-        "properties": {
-          "value": {
-            "type": "boolean"
-          }
-        },
-        "additionalProperties": false
-      },
-      "x-state-path": "telemetry.led",
-      "x-idempotency": {
-        "maxAgeMs": 15000,
-        "payloadPath": "value",
-        "stateBinding": "led"
-      },
-      "x-payload-field": "value"
-    },
-    "SET_STATE": {
-      "payload": {
-        "type": "object",
-        "required": [
-          "state"
-        ],
-        "properties": {
-          "state": {
-            "enum": [
-              "ACTIVE",
-              "IDLE"
-            ],
-            "type": "string"
-          }
-        },
-        "additionalProperties": false
-      }
-    }
-  },
+  "title": "SmartPumpTelemetry",
   "required": [
     "schemaId"
   ],
@@ -52,61 +10,21 @@
       "const": "modelC",
       "x-reporting": {
         "IDLE": 120000,
-        "ACTIVE": 6000
+        "ACTIVE": 5000
       }
     },
-    "telemetry": {
-      "type": "object",
-      "properties": {
-        "led": {
-          "type": "boolean",
-          "x-reporting": {
-            "IDLE": 120000,
-            "ACTIVE": 7000
-          }
-        },
-        "humidity": {
-          "type": "number",
-          "maximum": 100,
-          "minimum": 0,
-          "x-reporting": {
-            "IDLE": null,
-            "ACTIVE": 10000
-          }
-        },
-        "pressure": {
-          "type": "number",
-          "maximum": 1200,
-          "minimum": 300,
-          "x-reporting": {
-            "IDLE": null,
-            "ACTIVE": 6000
-          }
-        },
-        "temperature": {
-          "type": "number",
-          "maximum": 100,
-          "minimum": -50,
-          "x-reporting": {
-            "IDLE": null,
-            "ACTIVE": 6000
-          }
-        }
-      },
-      "additionalProperties": false
-    },
     "attributes": {
-      "type": "object",
+     "type": "object",
       "required": [
         "serialNumber",
         "firmware",
         "hardwareModel"
       ],
       "properties": {
-        "firmware": {
+        "serialNumber": {
           "type": "string"
         },
-        "serialNumber": {
+        "firmware": {
           "type": "string"
         },
         "hardwareModel": {
@@ -115,49 +33,124 @@
       },
       "additionalProperties": false
     },
-    "historicalTelemetry": {
+    "system": {
       "type": "object",
-      "required": [
-        "temperature",
-        "humidity",
-        "pressure"
-      ],
+ 
       "properties": {
-        "humidity": {
-          "type": "array",
-          "items": {
-            "type": "array",
-            "items": false,
-            "maxItems": 2,
-            "minItems": 2,
-            "prefixItems": [
-              {
-                "type": "number",
-                "maximum": 100,
-                "minimum": 0
-              },
-              {
-                "type": "string"
+        "identity": {
+          "type": "object",
+          "properties": {
+            "serial": {
+              "type": "string",
+              "pattern": "^SP-[0-9]{5}-X$",
+              "x-reporting": {
+                "IDLE": 120000,
+                "ACTIVE": 5000
               }
-            ]
-          },
-          "maxItems": 24,
-          "x-buffering": {
-            "interval": 17000
+            },
+            "firmware": {
+              "type": "string",
+              "x-reporting": {
+                "IDLE": 120000,
+                "ACTIVE": 5000
+              }
+            }
           }
         },
-        "pressure": {
+        "status": {
+          "type": "object",
+          "properties": {
+            "pumpEnabled": {
+              "type": "boolean",
+              "x-reporting": {
+                "IDLE": 120000,
+                "ACTIVE": 5000
+              }
+            },
+            "targetFlow": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 500,
+              "x-reporting": {
+                "IDLE": 120000,
+                "ACTIVE": 5000
+              }
+            },
+            "alarm": {
+              "type": "boolean",
+              "x-reporting": {
+                "IDLE": 120000,
+                "ACTIVE": 5000
+              }
+            }
+          }
+        }
+      }
+    },
+    "metrics": {
+      "type": "object",
+      "properties": {
+        "flowRate": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 500,
+          "x-reporting": {
+            "IDLE": null,
+            "ACTIVE": 5000
+          }
+        },
+        "inletPressure": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 20,
+          "x-reporting": {
+            "IDLE": null,
+            "ACTIVE": 5000
+          }
+        },
+        "outletPressure": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 20,
+          "x-reporting": {
+            "IDLE": null,
+            "ACTIVE": 5000
+          }
+        },
+        "energyUsage": {
+          "type": "number",
+          "minimum": 0,
+          "x-reporting": {
+            "IDLE": null,
+            "ACTIVE": 5000
+          }
+        },
+        "motorTemperature": {
+        "type": "number",
+        "minimum": 0,
+        "maximum": 120,
+        "x-reporting": {
+            "IDLE": null,
+            "ACTIVE": 5000
+        }
+        }
+      }
+    },
+    "historicalTelemetry": {
+      "type": "object",
+      "properties": {
+        "flowRate": {
           "type": "array",
           "items": {
             "type": "array",
             "items": false,
-            "maxItems": 2,
             "minItems": 2,
+            "maxItems": 2,
             "prefixItems": [
               {
                 "type": "number",
-                "maximum": 1200,
-                "minimum": 300
+                "minimum": 0,
+                "maximum": 500
               },
               {
                 "type": "string"
@@ -169,18 +162,17 @@
             "interval": 10000
           }
         },
-        "temperature": {
+        "energyUsage": {
           "type": "array",
           "items": {
             "type": "array",
             "items": false,
-            "maxItems": 2,
             "minItems": 2,
+            "maxItems": 2,
             "prefixItems": [
               {
                 "type": "number",
-                "maximum": 100,
-                "minimum": -50
+                "minimum": 0
               },
               {
                 "type": "string"
@@ -200,6 +192,65 @@
       "additionalProperties": false
     }
   },
-  "description": "Šema za validaciju dolaznih poruka sa simulatora Model A",
-  "additionalProperties": false
+  "commands": {
+    "SET_STATE": {
+      "payload": {
+        "type": "object",
+        "required": [
+          "state"
+        ],
+        "properties": {
+          "state": {
+            "type": "string",
+            "enum": [
+              "ACTIVE",
+              "IDLE"
+            ]
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "SET_PUMP_STATE": {
+      "x-idempotency": {
+        "stateBinding": "pumpEnabled",
+        "payloadPath": "enabled",
+        "maxAgeMs": 15000
+      },
+      "payload": {
+        "type": "object",
+        "required": [
+          "enabled"
+        ],
+        "properties": {
+          "enabled": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "SET_FLOW_TARGET": {
+      "x-idempotency": {
+        "stateBinding": "targetFlow",
+        "payloadPath": "target",
+        "maxAgeMs": 15000,
+        "epsilon": 0.001
+      },
+      "payload": {
+        "type": "object",
+        "required": [
+          "target"
+        ],
+        "properties": {
+          "target": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 500
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  }
 }

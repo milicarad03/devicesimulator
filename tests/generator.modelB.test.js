@@ -82,10 +82,6 @@ describe("ModelB Telemetry Generator", () => {
   });
 
   it("should maintain schema-required fields even in delta (partial) payload", () => {
-    /*
-     * Prvo generišemo full payload da bismo nakon toga
-     * eksplicitno proveravali delta režim.
-     */
     generator.setForceFull(true);
     generator.generate();
 
@@ -93,11 +89,6 @@ describe("ModelB Telemetry Generator", () => {
 
     let delta = null;
 
-    /*
-     * Delta generator može zbog reporting intervala vratiti
-     * parcijalan payload različitog sadržaja, zato pokušavamo
-     * nekoliko generacija dok ne dobijemo payload.
-     */
     for (let i = 0; i < 20; i++) {
       delta = generator.generate();
 
@@ -109,12 +100,6 @@ describe("ModelB Telemetry Generator", () => {
     expect(delta).toBeDefined();
     expect(delta).not.toBeNull();
 
-    /*
-     * U ModelB JSON Schema jedino je schemaId
-     * obavezan na najvišem nivou.
-     *
-     * data i status su opcioni u delta payload-u.
-     */
     expect(delta.schemaId).toBe("modelB");
   });
 

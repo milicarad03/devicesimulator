@@ -17,12 +17,12 @@
         "additionalProperties": false
       },
       "x-state-path": "telemetry.led",
-      "x-payload-field": "value",
       "x-idempotency": {
-        "stateBinding": "led",
+        "maxAgeMs": 15000,
         "payloadPath": "value",
-        "maxAgeMs": 15000
-      }
+        "stateBinding": "led"
+      },
+      "x-payload-field": "value"
     },
     "SET_STATE": {
       "payload": {
@@ -47,26 +47,6 @@
     "schemaId"
   ],
   "properties": {
-    "attributes": {
-      "type": "object",
-      "required": [
-        "serialNumber",
-        "firmware",
-        "hardwareModel"
-      ],
-      "properties": {
-        "serialNumber": {
-          "type": "string"
-        },
-        "firmware": {
-          "type": "string"
-        },
-        "hardwareModel": {
-          "type": "string"
-        }
-      },
-      "additionalProperties": false
-    },
     "schemaId": {
       "type": "string",
       "const": "modelA",

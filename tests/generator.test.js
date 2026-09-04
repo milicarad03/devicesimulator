@@ -172,12 +172,9 @@ describe("Telemetry Generator", () => {
   });
 
   it("should generate partial payload (not full every time)", () => {
-    // 1. Dobij full
     generator.setForceFull(true);
     const fullData = generator.generate();
     const maxFields = Object.keys(fullData).length;
-
-    // 2. Pokušaj nekoliko puta da dobiješ manji payload
     let isSmaller = false;
     for (let i = 0; i < 10; i++) {
       generator.setForceFull(false);

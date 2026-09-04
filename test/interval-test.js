@@ -61,7 +61,6 @@ function collectIntervals(schemaNode, currentPath = "") {
 collectIntervals(schema);
 
 const tick = generator.getOptimalTick("ACTIVE");
-//const tick= 1000;
 
 console.log(
   `Running interval test for ${MODEL} (tick=${tick}ms)`
@@ -114,7 +113,6 @@ function inspectPayload(payload) {
         getValueByPath(payload, field);
 
     if (value !== undefined) {
-     // console.log("TEST", field, "payload detected");
       checkField(field);
     }
     });

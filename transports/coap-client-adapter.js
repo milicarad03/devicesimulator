@@ -244,8 +244,6 @@ class CoapClientAdapter extends EventEmitter {
         ? payload.toString("utf8")
         : String(payload);
       const parsed = JSON.parse(body);
-      // A valid command response is a successful CoAP exchange even when the
-      // device reports an application-level failure in `success`.
       this.respond(pending.response, "2.05", parsed);
       callback?.(null);
     } catch (error) {

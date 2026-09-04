@@ -1,3 +1,4 @@
+
 const fs = require("fs");
 const path = require("path");
 const { spawn } = require("child_process");
@@ -231,9 +232,7 @@ describe("Device simulator MQTT lifecycle (e2e)", () => {
           topic,
           payload: JSON.parse(payloadBuffer.toString()),
         });
-      } catch {
-        // The lifecycle assertions only use JSON messages.
-      }
+      } catch {}
     });
 
     await subscribeToSimulatorTopics();
@@ -272,6 +271,7 @@ describe("Device simulator MQTT lifecycle (e2e)", () => {
           ...process.env,
           SKIP_CERT: "true",
           LOG_LEVEL: "info",
+          DEVICE_HEARTBEAT_INTERVAL_MS: "200",
         },
         stdio: ["ignore", "pipe", "pipe"],
       },
@@ -294,6 +294,17 @@ describe("Device simulator MQTT lifecycle (e2e)", () => {
 
     expect(onlineStatus.deviceId).toBe(DEVICE_ID);
     expect(simulatorProcess.exitCode).toBeNull();
+
+    await delay(450);
+    expect(
+      receivedMessages.filter(
+        ({ topic, payload }) =>
+          topic === TOPICS.status &&
+          payload.deviceId === DEVICE_ID &&
+          payload.status === "online" &&
+          payload.heartbeat === true,
+      ).length,
+    ).toBeGreaterThanOrEqual(2);
 
     const initialAttributes = await waitForMessage(
       TOPICS.attributes,
@@ -427,5 +438,49 @@ describe("Device simulator MQTT lifecycle (e2e)", () => {
     await expect(
       waitForProcessExit(simulatorProcess),
     ).resolves.toBe(0);
+  });
+
+  it("publishes the MQTT Last Will when the simulator is killed", async () => {
+    receivedMessages.length = 0;
+    simulatorOutput = "";
+    simulatorProcess = spawn(
+      process.execPath,
+      ["sim.js", DEVICE_ID, MODEL, VERSION],
+      {
+        cwd: PROJECT_DIR,
+        env: {
+          ...process.env,
+          SKIP_CERT: "true",
+          LOG_LEVEL: "warn",
+          DEVICE_HEARTBEAT_INTERVAL_MS: "200",
+        },
+        stdio: ["ignore", "pipe", "pipe"],
+      },
+    );
+    simulatorProcess.stdout.on("data", (chunk) => {
+      simulatorOutput += chunk.toString();
+    });
+    simulatorProcess.stderr.on("data", (chunk) => {
+      simulatorOutput += chunk.toString();
+    });
+
+    await waitForMessage(
+      TOPICS.status,
+      (payload) =>
+        payload.deviceId === DEVICE_ID && payload.status === "online",
+    );
+    const offlineStatusPromise = waitForMessage(
+      TOPICS.status,
+      (payload) =>
+        payload.deviceId === DEVICE_ID && payload.status === "offline",
+    );
+
+    simulatorProcess.kill("SIGKILL");
+
+    await expect(offlineStatusPromise).resolves.toMatchObject({
+      deviceId: DEVICE_ID,
+      status: "offline",
+    });
+    await waitForProcessExit(simulatorProcess);
   });
 });

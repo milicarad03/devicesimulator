@@ -9,6 +9,7 @@ const {
 const {
   registerDevice,
 } = require('./registration/device-registration');
+const { DevicePresence } = require('./runtime/device-presence');
 const { TelemetryRuntime } = require('./runtime/telemetry-runtime');
 const { createTelemetryGenerator } = require('./telemetry-generator3');
 const { createTransport } = require('./transports/create-transport');
@@ -19,6 +20,7 @@ global.simulatorLogger = logger;
 let config = null;
 let client = null;
 let commandProcessor = null;
+let presence = null;
 let runtime = null;
 let deviceId = null;
 let topics = null;
@@ -65,15 +67,7 @@ function attachTransportHandlers(telemetryGenerator) {
     logger.info(
       'Publishing lifecycle status flag [ONLINE] to platform state management...',
     );
-    client.publish(
-      topics.status,
-      JSON.stringify({
-        deviceId,
-        timestamp: new Date().toISOString(),
-        status: 'online',
-      }),
-      { qos: 1, retain: true },
-    );
+    presence.start();
 
     if (config.supportsAttributes) {
       logger.info(
@@ -122,6 +116,7 @@ function shutdownSimulator(signalName, exitCode = 0) {
   );
   runtime?.clearTimers();
   commandProcessor?.clearTimers();
+  presence?.stopHeartbeat();
 
   let fallbackTimer = null;
   let finished = false;
@@ -158,21 +153,12 @@ function shutdownSimulator(signalName, exitCode = 0) {
   );
 
   try {
-    client.publish(
-      topics.status,
-      JSON.stringify({
-        deviceId,
-        timestamp: new Date().toISOString(),
-        status: 'offline',
-      }),
-      { qos: 1, retain: true },
-      () => {
-        logger.info(
-          `Disconnecting ${config.transport.toUpperCase()} transport interface client link... Goodbye.`,
-        );
-        client.end(false, {}, finish);
-      },
-    );
+    presence.publishOffline(() => {
+      logger.info(
+        `Disconnecting ${config.transport.toUpperCase()} transport interface client link... Goodbye.`,
+      );
+      client.end(false, {}, finish);
+    });
   } catch (error) {
     logger.error(
       `Shutdown status publication failed: ${error.message}`,
@@ -208,6 +194,13 @@ async function main() {
   );
 
   client = createTransport(config, deviceId, topics, logger);
+  presence = new DevicePresence({
+    client,
+    deviceId,
+    heartbeatIntervalMs: config.deviceHeartbeatIntervalMs,
+    logger,
+    statusTopic: topics.status,
+  });
   runtime = new TelemetryRuntime({
     client,
     deviceId,

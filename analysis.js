@@ -1,10 +1,6 @@
 const fs = require("fs");
 const path = require("path");
 
-// ============================================================================
-// Constants
-// ============================================================================
-
 const DEFAULT_COMPARISONS = [
   {
     name: "telemetry",
@@ -17,10 +13,6 @@ const DEFAULT_COMPARISONS = [
     deltaFile: "dummy_traffic_delta_MODELF1.log",
   },
 ];
-
-// ============================================================================
-// Utility Functions
-// ============================================================================
 
 const percentile = (sortedValues, percentage) => {
   const index = Math.max(
@@ -54,10 +46,6 @@ const calculateStatistics = (values) => {
     p95Bytes: percentile(sorted, 95),
   };
 };
-
-// ============================================================================
-// Parsing Functions
-// ============================================================================
 
 const parseMessageSizes = (filePath) => {
   const content = fs.readFileSync(filePath, "utf8");
@@ -98,6 +86,69 @@ const parseMessageSizes = (filePath) => {
   };
 };
 
+const analyzeLogs = (name, fullFile, deltaFile) => {
+  const resolvedFullFile = path.resolve(fullFile);
+  const resolvedDeltaFile = path.resolve(deltaFile);
+  const full = parseMessageSizes(resolvedFullFile);
+  const delta = parseMessageSizes(resolvedDeltaFile);
+  const averageSavingsBytes =
+    full.statistics.averageBytes - delta.statistics.averageBytes;
+  const savingsPercentage =
+    full.statistics.averageBytes === 0
+      ? 0
+      : (averageSavingsBytes / full.statistics.averageBytes) * 100;
+
+  return {
+    name,
+    files: {
+      full: resolvedFullFile,
+      delta: resolvedDeltaFile,
+    },
+    full: {
+      ...full.statistics,
+      skippedLines: full.skippedLines,
+    },
+    delta: {
+      ...delta.statistics,
+      skippedLines: delta.skippedLines,
+    },
+    savings: {
+      averageBytes: averageSavingsBytes,
+      percentage: savingsPercentage,
+    },
+  };
+};
+
+const formatNumber = (value) => Number(value.toFixed(2));
+
+const printReport = (report) => {
+  console.log(`\n${report.name.toUpperCase()} TELEMETRY SIZE`);
+  console.table({
+    FULL: {
+      samples: report.full.samples,
+      average: `${formatNumber(report.full.averageBytes)} B`,
+      median: `${formatNumber(report.full.medianBytes)} B`,
+      p95: `${formatNumber(report.full.p95Bytes)} B`,
+      minimum: `${formatNumber(report.full.minimumBytes)} B`,
+      maximum: `${formatNumber(report.full.maximumBytes)} B`,
+      skipped: report.full.skippedLines,
+    },
+    DELTA: {
+      samples: report.delta.samples,
+      average: `${formatNumber(report.delta.averageBytes)} B`,
+      median: `${formatNumber(report.delta.medianBytes)} B`,
+      p95: `${formatNumber(report.delta.p95Bytes)} B`,
+      minimum: `${formatNumber(report.delta.minimumBytes)} B`,
+      maximum: `${formatNumber(report.delta.maximumBytes)} B`,
+      skipped: report.delta.skippedLines,
+    },
+  });
+  console.log(
+    `Average DELTA savings: ${formatNumber(report.savings.averageBytes)} B ` +
+      `(${formatNumber(report.savings.percentage)}%)`,
+  );
+};
+
 const parseArguments = (args) => {
   const positional = [];
   let outputFile;
@@ -132,78 +183,6 @@ const parseArguments = (args) => {
 
   return { positional, outputFile, jsonOnly };
 };
-
-// ============================================================================
-// Analysis Functions
-// ============================================================================
-
-const analyzeLogs = (name, fullFile, deltaFile) => {
-  const resolvedFullFile = path.resolve(fullFile);
-  const resolvedDeltaFile = path.resolve(deltaFile);
-  const full = parseMessageSizes(resolvedFullFile);
-  const delta = parseMessageSizes(resolvedDeltaFile);
-  const averageSavingsBytes =
-    full.statistics.averageBytes - delta.statistics.averageBytes;
-  const savingsPercentage =
-    full.statistics.averageBytes === 0
-      ? 0
-      : (averageSavingsBytes / full.statistics.averageBytes) * 100;
-
-  return {
-    name,
-    files: {
-      full: resolvedFullFile,
-      delta: resolvedDeltaFile,
-    },
-    full: {
-      ...full.statistics,
-      skippedLines: full.skippedLines,
-    },
-    delta: {
-      ...delta.statistics,
-      skippedLines: delta.skippedLines,
-    },
-    savings: {
-      averageBytes: averageSavingsBytes,
-      percentage: savingsPercentage,
-    },
-  };
-};
-
-// ============================================================================
-// Output Functions
-// ============================================================================
-
-const formatNumber = (value) => Number(value.toFixed(2));
-
-const printStatistics = (label, statistics) => {
-  console.log(
-    `${label}: samples=${statistics.samples}, ` +
-      `avg=${formatNumber(statistics.averageBytes)} B, ` +
-      `median=${formatNumber(statistics.medianBytes)} B, ` +
-      `p95=${formatNumber(statistics.p95Bytes)} B, ` +
-      `min=${formatNumber(statistics.minimumBytes)} B, ` +
-      `max=${formatNumber(statistics.maximumBytes)} B`,
-  );
-
-  if (statistics.skippedLines > 0) {
-    console.log(`${label}: skipped invalid lines=${statistics.skippedLines}`);
-  }
-};
-
-const printReport = (report) => {
-  console.log(`\n--- ${report.name.toUpperCase()} SIZE ANALYSIS ---`);
-  printStatistics("FULL", report.full);
-  printStatistics("DELTA", report.delta);
-  console.log(
-    `Average savings: ${formatNumber(report.savings.averageBytes)} B ` +
-      `(${formatNumber(report.savings.percentage)}%)`,
-  );
-};
-
-// ============================================================================
-// Main Execution
-// ============================================================================
 
 const runAnalysis = (args = process.argv.slice(2)) => {
   const { positional, outputFile, jsonOnly } = parseArguments(args);

@@ -157,9 +157,7 @@ describe("Three device simulator processes (e2e)", () => {
 
           cleanup();
           resolve(payload);
-        } catch {
-          // Only JSON lifecycle, response and telemetry messages are relevant.
-        }
+        } catch {}
       };
 
       const timeout = setTimeout(() => {
@@ -210,9 +208,7 @@ describe("Three device simulator processes (e2e)", () => {
           topic,
           payload: JSON.parse(payloadBuffer.toString()),
         });
-      } catch {
-        // Retained-message cleanup publishes an empty payload.
-      }
+      } catch {}
     });
 
     const topics = SCENARIOS.flatMap(({ deviceId }) => {

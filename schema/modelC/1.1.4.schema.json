@@ -21,6 +21,11 @@
       }
     },
     "SET_PUMP_STATE": {
+      "x-idempotency": {
+        "stateBinding": "pumpEnabled",
+        "payloadPath": "enabled",
+        "maxAgeMs": 15000
+      },
       "payload": {
         "type": "object",
         "required": [
@@ -35,6 +40,12 @@
       }
     },
     "SET_FLOW_TARGET": {
+      "x-idempotency": {
+        "stateBinding": "targetFlow",
+        "payloadPath": "target",
+        "maxAgeMs": 15000,
+        "epsilon": 0.001
+      },
       "payload": {
         "type": "object",
         "required": [
@@ -182,7 +193,8 @@
         "hardwareModel": {
           "type": "string"
         }
-      }
+      },
+      "additionalProperties": false
     },
     "historicalTelemetry": {
       "type": "object",

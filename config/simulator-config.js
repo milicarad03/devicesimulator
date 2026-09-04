@@ -1,6 +1,15 @@
 const fs = require('fs');
 const path = require('path');
 
+const DEFAULT_DEVICE_HEARTBEAT_INTERVAL_MS = 15_000;
+
+function readNonNegativeInteger(value, fallback) {
+  if (value === undefined || value === '') return fallback;
+
+  const parsed = Number(value);
+  return Number.isInteger(parsed) && parsed >= 0 ? parsed : fallback;
+}
+
 function loadSimulatorConfig({ argv, env, baseDirectory, logger }) {
   const deviceArg = argv[2];
   const modelArg = argv[3];
@@ -56,6 +65,10 @@ function loadSimulatorConfig({ argv, env, baseDirectory, logger }) {
     runtimeConfig,
     transport: (env.TRANSPORT || 'mqtt').toLowerCase(),
     mqttBrokerUrl: env.MQTT_BROKER_URL || 'mqtt://localhost:1883',
+    deviceHeartbeatIntervalMs: readNonNegativeInteger(
+      env.DEVICE_HEARTBEAT_INTERVAL_MS,
+      DEFAULT_DEVICE_HEARTBEAT_INTERVAL_MS,
+    ),
     coapBackendUrl:
       env.COAP_BACKEND_URL || 'coap://127.0.0.1:5683',
     coapCommandHost: env.COAP_COMMAND_HOST || '127.0.0.1',

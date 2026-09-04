@@ -1,5 +1,19 @@
 const mqtt = require('mqtt');
-const { createCoapClientAdapter } = require('./coap-client-adapter');
+
+function createMqttConnectOptions(deviceId, statusTopic, now = new Date()) {
+  return {
+    will: {
+      topic: statusTopic,
+      payload: JSON.stringify({
+        deviceId,
+        timestamp: now.toISOString(),
+        status: 'offline',
+      }),
+      qos: 1,
+      retain: true,
+    },
+  };
+}
 
 function createTransport(config, deviceId, topics, logger) {
   if (!['mqtt', 'coap'].includes(config.transport)) {
@@ -7,6 +21,7 @@ function createTransport(config, deviceId, topics, logger) {
   }
 
   if (config.transport === 'coap') {
+    const { createCoapClientAdapter } = require('./coap-client-adapter');
     const backendUrl = new URL(config.coapBackendUrl);
 
     if (backendUrl.protocol !== 'coap:') {
@@ -34,7 +49,10 @@ function createTransport(config, deviceId, topics, logger) {
   }
 
   logger.info(`Connecting to broker instance URL: ${config.mqttBrokerUrl}`);
-  return mqtt.connect(config.mqttBrokerUrl);
+  return mqtt.connect(
+    config.mqttBrokerUrl,
+    createMqttConnectOptions(deviceId, topics.status),
+  );
 }
 
-module.exports = { createTransport };
+module.exports = { createMqttConnectOptions, createTransport };

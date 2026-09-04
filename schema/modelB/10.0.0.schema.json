@@ -177,6 +177,26 @@
     "schemaId"
   ],
   "properties": {
+    "attributes": {
+      "type": "object",
+      "required": [
+        "serialNumber",
+        "firmware",
+        "hardwareModel"
+      ],
+      "properties": {
+        "serialNumber": {
+          "type": "string"
+        },
+        "firmware": {
+          "type": "string"
+        },
+        "hardwareModel": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
     "system": {
       "type": "object",
       "properties": {

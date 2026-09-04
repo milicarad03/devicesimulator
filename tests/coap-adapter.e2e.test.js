@@ -36,8 +36,6 @@ function closeAgent(agent) {
     try {
       agent.close(finish);
     } catch {
-      // An agent that was never used owns an unbound socket. It cannot be
-      // closed through node-coap, but unref prevents it from keeping Jest alive.
       agent._sock?.unref?.();
       finish();
     }

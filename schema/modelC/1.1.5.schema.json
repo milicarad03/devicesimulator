@@ -20,26 +20,6 @@
         "additionalProperties": false
       }
     },
-    "SET_DRIVE_MODE": {
-      "payload": {
-        "type": "object",
-        "required": [
-          "mode"
-        ],
-        "properties": {
-          "mode": {
-            "enum": [
-              "ECO",
-              "NORMAL",
-              "SPORT",
-              "RACE"
-            ],
-            "type": "string"
-          }
-        },
-        "additionalProperties": false
-      }
-    },
     "SET_PUMP_STATE": {
       "payload": {
         "type": "object",
@@ -52,6 +32,11 @@
           }
         },
         "additionalProperties": false
+      },
+      "x-idempotency": {
+        "maxAgeMs": 15000,
+        "payloadPath": "enabled",
+        "stateBinding": "pumpEnabled"
       }
     },
     "SET_FLOW_TARGET": {
@@ -68,6 +53,12 @@
           }
         },
         "additionalProperties": false
+      },
+      "x-idempotency": {
+        "epsilon": 0.001,
+        "maxAgeMs": 15000,
+        "payloadPath": "target",
+        "stateBinding": "targetFlow"
       }
     }
   },
@@ -83,19 +74,6 @@
           "properties": {
             "alarm": {
               "type": "boolean",
-              "x-reporting": {
-                "IDLE": 120000,
-                "ACTIVE": 5000
-              }
-            },
-            "driveMode": {
-              "enum": [
-                "ECO",
-                "NORMAL",
-                "SPORT",
-                "RACE"
-              ],
-              "type": "string",
               "x-reporting": {
                 "IDLE": 120000,
                 "ACTIVE": 5000
@@ -215,7 +193,8 @@
         "hardwareModel": {
           "type": "string"
         }
-      }
+      },
+      "additionalProperties": false
     },
     "historicalTelemetry": {
       "type": "object",
